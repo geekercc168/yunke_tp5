@@ -1,0 +1,23 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <form action="{:url('admin/exam/examList')}" class="layui-form" method="get">
+            <input type="hidden" id="examid" name="eid" value="{$exam.id}">
+            <input type="hidden" id="uid" value="{$uid}">
+        </form>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row layui-col-space10" id="user-list">
+            <div class="point-content tac no-stu">
+                <div class="nodata text-center"><img src="/static/default/img/nodata.png"><br>还没有学员参加考试</div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__LIBS__/agora/AgoraRTC_N-4.2.1.js"></script>
+<script src="__LIBS__/agora/agora-rtm-sdk-1.4.1.js"></script>
+<script src="__LIBS__/agora/examMonitor.js"></script>
+{/block}

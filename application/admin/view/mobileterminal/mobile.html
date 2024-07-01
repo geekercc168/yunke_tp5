@@ -1,0 +1,32 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th >移动端名称</th>
+                <th >当前版本</th>
+                <th >最新版本</th>
+                <th width="150">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>移动手机端</td>
+                <th>{$h5version}</th>
+                <th>{$H5.version}</th>
+                <td>
+                    <input type="hidden" id="lastVersion" value="{$H5.version}">
+                    <input type="hidden" id="nowVesion" value="{$h5version}">
+                    <a  class="layui-btn layui-btn-xs layui-btn-normal upversion"  upurl="{:url('admin/Mobileterminal/downMobile',['newversion'=>$H5.version,'notes'=>$H5.notes])}"><i class="fa fa-edit"></i>下载</a><a href="https://demo.newlogo.cn" target="_blank" class="bt-ico-ask">?</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/uph5.js"></script>
+{/block}

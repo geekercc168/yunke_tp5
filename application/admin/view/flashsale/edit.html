@@ -1,0 +1,98 @@
+{extend name="iframe" /}
+{block name="body"}
+<div id="courseList" class="demo-transfer ml30"></div>
+<div class="layui-form-item mr50">
+    <label class="layui-form-label">抢购标题</label>
+    <div class="layui-input-block">
+        <input type="text" id="title" name="title"  value="{$data.title}" autocomplete="off" placeholder="比如:双11促销" class="layui-input">
+        <input type="hidden" id="id"  value="{$data.id}">
+    </div>
+</div>
+<div class="layui-form-item mr30">
+    <div class="layui-inline"  style="margin-right:0px;">
+        <label class="layui-form-label">开始时间</label>
+        <div class="layui-input-inline" style="width: 143px;">
+            <input type="text" id="starttime" name="starttime"  value="{$data.details.starttime}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline" style="margin-right:0px;margin-left: 0px;">
+        <label class="layui-form-label">结束时间</label>
+        <div class="layui-input-inline" style="width: 143px;margin-right:0px;">
+            <input type="text" id="endtime" name="endtime" value="{$data.details.endtime}"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline" style="margin-right:0px;">
+        <label class="layui-form-label">折扣</label>
+        <div class="layui-input-inline" style="width: 115px;margin-right:0px;">
+            <input type="text" id="rate" name="rate" value="{$data.details.rate}" placeholder="1表示1折出售" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</div>
+<div class="layui-form-item mt50">
+    <div class="layui-input-block" style="text-align: center;margin-left: 0px;">
+        <button class="layui-btn" lay-transferactive="getData" data-url="{:url('admin/flashsale/editPost')}" >保存</button>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['transfer', 'util'], function(){
+        var transfer = layui.transfer,util = layui.util;
+        transfer.render({
+            elem: '#courseList'
+            , title: ['选择课程', '已选课程']
+            , data:{$course}
+            ,width: 314
+            ,height:200
+            ,id: 'course'
+            ,value:{$selectCourse}
+        });
+        util.event('lay-transferactive', {
+            getData: function(othis){
+                var obj = {};
+                var url=$(this).data('url');
+                obj['id'] =$("#id").val();
+                obj['title'] =$("#title").val();
+                obj['starttime'] =$("#starttime").val();
+                obj['endtime'] =$("#endtime").val();
+                obj['rate'] =$("#rate").val();
+                obj['course'] =transfer.getData('course');
+                var index = layer.msg('请求中，请稍候', {
+                    icon: 16,
+                    time: false,
+                    shade: 0.3
+                });
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data:obj,
+                    success: function (result) {
+                        if (result.code === 0) {
+                            setTimeout(function () {
+                                parent.location.reload();
+                            }, 1000);
+                        }
+                        layer.msg(result.msg);
+                        layer.close(index);
+                    },
+                    error: function (xhr, state, errorThrown) {
+                        layer.close(index);
+                        layer.msg(state + '：' + errorThrown);
+                    }
+                });
+            }
+        });
+        laydate.render({
+            elem: '#starttime'
+            ,type: 'datetime'
+            ,trigger: 'click'
+        });
+        laydate.render({
+            elem: '#endtime'
+            ,type: 'datetime'
+            ,trigger: 'click'
+        });
+    });
+</script>
+{/block}

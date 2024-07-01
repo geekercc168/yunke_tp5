@@ -1,0 +1,68 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief">
+            <div class="layui-tab-content mt30">
+                <div class="layui-tab-item layui-show video-count">
+                    <div class="layui-row video-count-info-box">
+                        <div class="video-count-info ">
+                            <div class="ayui-col-xs5 layui-col-sm5 layui-col-md5 left">
+                                <div class="label">直播套餐</div>
+                                <div class="item">账户类型：{$res['data']['type']|getAccountType}</div>
+                                <div class="item">当前服务状态：{$res['data']['status']|getAccountStatus}</div>
+                                <div class="item">计费类型：{$res['data']['charge_type']|getAccountCharge}</div>
+                            </div>
+                            <div class="ayui-col-xs5 layui-col-sm5 layui-col-md5 right layui-col-md-offset1">
+                                <div class="item">账号有效期还剩<br><span class="left-day">{$res['data']['remain']}</span><span class="unit"> 天</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <span class="item-title">并发概况</span>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 flow-box">
+                            <div class="flow" id="flow"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__COMMON__/echarts.min.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('flow'));
+    var option = {
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: {$PeakTmmeList}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: {$PeakUserList},
+            type: 'line',
+            areaStyle: {
+                normal: {
+                    color: '#1c7fff'
+                }
+            },
+            itemStyle : {
+                normal : {
+                    color:'#1c7fff',
+                    lineStyle:{
+                        color:'#1c7fff'
+                    }
+                }
+            }}
+        ]
+    };
+    myChart.setOption(option);
+</script>
+{/block}

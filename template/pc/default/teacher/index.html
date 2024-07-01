@@ -1,0 +1,36 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-container mb50">
+    <div class="layui-row">
+        <div class="layui-col-md4 layui-col-md-offset4 mt30">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>所有名师</legend>
+            </fieldset>
+        </div>
+        <div class="yxt_teacher-list">
+            <div class="layui-row layui-col-space20">
+                {foreach name="teacher" item="vo"}
+                <div class="layui-col-md4 mt30">
+                    <div class="tea-list">
+                        <a target="_blank" title="金牌讲师 · "{$vo.id|getTeacherName} href="{:url('index/teacher/centert',['id'=>hashids_encode($vo.id)])}">
+                            <div class="tea-item-wrap">
+                                <aside class="i-tea-pic">
+                                    <img alt="金牌讲师 · "{$vo.id|getTeacherName} src="{$vo.uid|getAvatar|defaultAvatar}">
+                                </aside>
+                                <h3 class="tea-title  txtOf unFw">金牌讲师 · {$vo.id|getTeacherName}</h3>
+                                <section class="i-q-txt">
+                                    <p><span class="tea-info-txt fsize14">{$vo.brief|removeImgHtml}</span></p>
+                                </section>
+                                <section class="tea-bottom">
+                                    <i class="tea-go-icon fa fa-arrow-right"></i>
+                                </section>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

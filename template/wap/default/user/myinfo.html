@@ -1,0 +1,142 @@
+{extend name="userBase" /}
+{block name="body"}
+<div class="hui-wrap user-info mb52">
+    <div class="hui-list">
+        <a href="javascript:void(0)" style="height:auto; height:80px; padding-bottom:8px;">
+            <div class="hui-list-icons" style="width:110px; height:80px;">
+                <img id="selectImgBtn" src="{$userInfo.avatar|defaultAvatar}" />
+            </div>
+            <div class="hui-list-text" style="height:79px; line-height:79px;">
+                <div class="hui-list-text-content">
+                    {:getUserName($userInfo.id)}
+                </div>
+                <div class="hui-list-info">
+                    <span class="hui-icons hui-icons-right"></span>
+                </div>
+            </div>
+        </a>
+        <a href="javascript:hui.toast('Hello Hcoder UI !');">
+            <div class="hui-list-text">
+                账户类型 : {if condition="$userInfo.is_teacher eq 1"}教师身份{else /}普通用户{/if} | 账户余额 : {$userInfo.yue}元
+            </div>
+        </a>
+    </div>
+    <div class="hui-list">
+        <ul>
+            <li>
+                <a href="{:url('index/user/mycourse')}">
+                    <div class="hui-list-icons">
+                        <div class="iconfont icon-shipin"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        我的课程
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/user/myclassroom')}">
+                    <div class="hui-list-icons">
+                        <div class="hui-footer-icons hui-icons-write"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        我的班级
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/user/myfavourite')}">
+                    <div class="hui-list-icons">
+                        <div class="hui-footer-icons hui-icons-like"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        我的收藏
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/user/myorder')}">
+                    <div class="hui-list-icons">
+                        <div class="hui-footer-icons  hui-icons-nav"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        我的订单
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/user/mycoupon')}">
+                    <div class="hui-list-icons">
+                        <div class="hui-footer-icons hui-icons-water-fall"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        我的优惠卡
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/user/myinfo')}">
+                    <div class="hui-list-icons">
+                        <div class="hui-footer-icons hui-icons-toast"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        基本资料
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/user/card')}">
+                    <div class="hui-list-icons">
+                        <div class="hui-footer-icons hui-icons-tab"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        点卡充值
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/user/binding')}">
+                    <div class="hui-list-icons">
+                        <div class="hui-footer-icons hui-icons-check"></div>
+                    </div>
+                    <div class="hui-list-text">
+                        绑定手机
+                        <div class="hui-list-info">
+                            <span class="hui-icons hui-icons-right"></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div style="background:#FFFFFF; margin-top:28px;margin-bottom:30px;">
+        <a href="{:url('index/user/logout')}" type="button" class="hui-button hui-button-large">
+            <span class="hui-icons hui-icons-logoff"></span>退出系统
+        </a>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__HUI__/js/hui-image-cuter.js" charset="UTF-8"></script>
+
+{/block}

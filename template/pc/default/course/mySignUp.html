@@ -1,0 +1,29 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-layout" style="display:flex;justify-content: center; align-items:center;padding-top: 40px;padding-right: 40px">
+    <form action="{:request()->url()}" class="layui-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" name="username" readonly="true" value="{$data['username']}"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" name="tel" readonly="true" value="{$data['tel']}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">住址：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" name="address" readonly="true" value="{$data['address']}" class="layui-input">
+            </div>
+        </div>
+
+    </form>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

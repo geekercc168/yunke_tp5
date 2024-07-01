@@ -1,0 +1,45 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">协议类型</label>
+        <div class="layui-input-block" style="z-index: 10002">
+            <select name="type" style="z-index: 10002">
+                <option value="">请选择协议类型</option>
+                <option value="《中国移动认证服务条款》" {if condition="isset($data) and $data.type eq '《中国移动认证服务条款》'"}selected="selected"{/if}> 中国移动认证服务条款</option>
+                <option value="《隐私协议》" {if condition="isset($data) and $data.type eq '《隐私协议》'"}selected="selected"{/if}> 隐私协议</option>
+                <option value="《用户协议》" {if condition="isset($data) and $data.type eq '《用户协议》'"}selected="selected"{/if}> 用户协议</option>
+                <option value="《儿童隐私保护政策》" {if condition="isset($data) and $data.type eq '《儿童隐私保护政策》'"}selected="selected"{/if}> 儿童隐私保护政策</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">协议内容</label>
+        <div class="layui-input-block">
+            <div id="editor">{$data.agreement|default=''}</div>
+            <textarea name="agreement"  id="content" lay-verify="required" class="layui-textarea" placeholder="请输入详情内容"  style="display: none;">{$data.agreement}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">提交</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name="js"}
+<script src="__LIBS__/wangeditor/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.config.onchange = function (html) {
+        $('#content').val(html)
+    };
+    editor.config.uploadFileName = 'image';
+    editor.config.uploadImgServer = '/api/Uploader/wangEditorUp';
+    editor.create();
+    $('#content').val(editor.txt.html());
+</script>
+{/block}

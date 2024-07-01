@@ -1,0 +1,116 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form" method="post">
+<div style="padding: 20px;">
+    <div class="layui-card">
+        <div class="layui-collapse">
+            {foreach name="exam['examsetting']['questype']" item="v"}
+            <div class="layui-colla-item" id="tx_td_2">
+                <h2 class="layui-colla-title" id="question_type_{$key}">{$key|get_question_type}<i class="layui-icon layui-colla-icon"></i></h2>
+                <div class="layui-colla-content layui-show">
+                    {if condition="get_question_mark($key) eq 'TiMao'"}
+                    {foreach name="exam['examquestions'][$key]" item="v" key="k"}
+                        <p style="font-weight: bold; font-size: 15px;">{$v|get_question_info=###,"question"}</p>
+                        {foreach name="exam['subQuestions'][$v]" item="vv" key="k"}
+                        <div id="question_{$vv}" class="mt10">
+                            <p style="font-weight: bold; font-size: 15px;">{$vv|get_question_info=###,"question"}</p>
+                            {switch name=$vv|get_question_info=###,"questiontype"|get_question_mark}
+                            {case value="SingleSelect"}
+                            <div class="mt10" style="margin-left: 20px;">
+                                {$vv|get_question_info=###,"questionselect"}
+                                <div>
+                                    <input type="radio" name="{$vv}" value="A" title="A">
+                                    <input type="radio" name="{$vv}" value="B" title="B">
+                                    <input type="radio" name="{$vv}" value="C" title="C">
+                                    <input type="radio" name="{$vv}" value="D" title="D">
+                                </div>
+                            </div>
+                            {/case}
+                            {case value="MultiSelect"}
+                            <div class="mt10" style="margin-left: 20px;">
+                                {$vv|get_question_info=###,"questionselect"}
+                                <div>
+                                    {$vv|get_multiSelect}
+                                </div>
+                            </div>
+                            {/case}
+                            {case value="FillInBlanks"}
+                            <div class="mt10"　style="margin-left: 20px;">
+                                <input type="text" name="{$vv}" size="16" class="input_Exam" style="width:150px;border:0px;border-bottom:#000000 1px solid;" value="" onchange="check_index(2);">
+                            </div>
+                            {/case}
+                            {case value="TrueOrfalse"}
+                            <div class="mt10" style="margin-left: 20px;">
+                                <p>
+                                <div class="mt10">
+                                    <input type="radio" name="{$vv}" value="A" title="正确">
+                                    <input type="radio" name="{$vv}" value="B" title="错误">
+                                </div>
+                                </p>
+                            </div>
+                            {/case}
+                            {case value="ShortAnswer"}
+                            <div style="margin-left: 20px;">
+                                <input type="text" name="{$vv}" size="16" class="input_Exam" style="width:150px;border:0px;border-bottom:#000000 1px solid;" value="" onchange="check_index(2);">
+                            </div>
+                            {/case}
+                            {/switch}
+                        </div>
+                        {/foreach}
+                    {/foreach}
+                    {else /}
+                    {foreach name="exam['examquestions'][$key]" item="vv" key="k"}
+                    <div id="question_{$vv}" class="mt10">
+                        <p style="font-weight: bold; font-size: 15px;">{$vv|get_question_info=###,"question"}</p>
+                        {switch name=$vv|get_question_info=###,"questiontype"|get_question_mark}
+                        {case value="SingleSelect"}
+                        <div class="mt10" style="margin-left: 20px;">
+                            {$vv|get_question_info=###,"questionselect"}
+                            <div>
+                                <input type="radio" name="{$vv}" value="A" title="A">
+                                <input type="radio" name="{$vv}" value="B" title="B">
+                                <input type="radio" name="{$vv}" value="C" title="C">
+                                <input type="radio" name="{$vv}" value="D" title="D">
+                            </div>
+                        </div>
+                        {/case}
+                        {case value="MultiSelect"}
+                        <div class="mt10" style="margin-left: 20px;">
+                            {$vv|get_question_info=###,"questionselect"}
+                            <div>
+                                {$vv|get_multiSelect}
+                            </div>
+                        </div>
+                        {/case}
+                        {case value="FillInBlanks"}
+                        <div class="mt10"　style="margin-left: 20px;">
+                            <input type="text" name="{$vv}" size="16" class="input_Exam" style="width:150px;border:0px;border-bottom:#000000 1px solid;" value="" onchange="check_index(2);">
+                        </div>
+                        {/case}
+                        {case value="TrueOrfalse"}
+                        <div class="mt10" style="margin-left: 20px;">
+                            <p>
+                            <div class="mt10">
+                                <input type="radio" name="{$vv}" value="A" title="正确">
+                                <input type="radio" name="{$vv}" value="B" title="错误">
+                            </div>
+                            </p>
+                        </div>
+                        {/case}
+                        {case value="ShortAnswer"}
+                        <div style="margin-left: 20px;">
+                            <input type="text" name="{$vv}" size="16" class="input_Exam" style="width:150px;border:0px;border-bottom:#000000 1px solid;" value="" onchange="check_index(2);">
+                        </div>
+                        {/case}
+                        {/switch}
+                    </div>
+                    {/foreach}
+                    {/if}
+                </div>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+</div>
+</form>
+{/block}

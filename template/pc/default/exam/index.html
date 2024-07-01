@@ -1,0 +1,32 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-container mt30">
+    <div class="layui-row exam">
+        <div class="layui-col-md3">
+            <div class="p-item-pic"> <img src="/static/default/img/block1.png"> </div>
+            <div class="name">知识点练习</div>
+            <p class="des">告别纸面盲目题海战术，完成所有知识点的覆盖。</p>
+            <a href="{:url('index/exam/point')}" class="layui-btn ">开始练习</a>
+        </div>
+        <div class="layui-col-md3">
+            <div class="p-item-pic"> <img src="/static/default/img/block2.png"> </div>
+            <div class="name">错题再现</div>
+            <p class="des">告别纸面盲目题海战术，完成所有知识点的覆盖。</p>
+            <a href="{:url('index/exam/error')}" class="layui-btn">开始练习</a>
+        </div>
+        <div class="layui-col-md3">
+            <div class="p-item-pic"> <img src="/static/default/img/block3.png"> </div>
+            <div class="name">套卷练习</div>
+            <p class="des">告别纸面盲目题海战术，完成所有知识点的覆盖。</p>
+            <a href="{:url('index/exam/package',['type'=>hashids_encode(1)])}" class="layui-btn ">开始练习</a>
+        </div>
+        <div class="layui-col-md3">
+            <div class="p-item-pic"> <img src="/static/default/img/block5.png"> </div>
+            <div class="name">模拟考试</div>
+            <p class="des">告别纸面盲目题海战术，完成所有知识点的覆盖。</p>
+            <a href="{:url('index/exam/package',['type'=>hashids_encode(2)])}" class="layui-btn ">开始考试</a>
+        </div>
+    </div>
+
+</div>
+{/block}

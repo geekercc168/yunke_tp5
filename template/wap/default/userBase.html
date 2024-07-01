@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    {if condition="$title"}
+    <title>{$title}</title>
+    {else/}
+    <title>{:config('website.site_title')}</title>
+    {/if}
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="{:config('website.site_keywords')}">
+    <meta name="description" content="{:config('website.site_description')}">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="__LIBS__/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/home.base.css" media="all">
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/hui.css" />
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/mobile.css" />
+    {block name="css"}{/block}
+</head>
+<body>
+{block name="body"}{/block}
+<div id="hui-footer">
+    <a href="/" id="nav-home">
+        <div class="iconfont icon-shouye"></div>
+        <div class="hui-footer-text">首页</div>
+    </a>
+    <a href="{:url('index/course/videoindex')}" id="nav-video">
+        <div class="iconfont icon-video"></div>
+        <div class="hui-footer-text">录播</div>
+    </a>
+    <a href="{:url('index/course/liveindex')}" id="nav-live">
+        <div class="iconfont icon-zhiboguanli"></div>
+        <div class="hui-footer-text">直播</div>
+    </a>
+    <a href="{:url('index/classroom/index')}" id="nav-classroom">
+        <div class="hui-footer-icons hui-icons-write"></div>
+        <div class="hui-footer-text">班级</div>
+    </a>
+    <a href="{:url('index/user/index')}" id="nav-my">
+        <div class="iconfont icon-wode"></div>
+        <div class="hui-footer-text">我的</div>
+    </a>
+</div>
+<div class="hui-slide-menu" style="width:210px;">
+    <div class="hui-list">
+        <ul>
+            <li>
+                <a href="/">
+                    <div class="hui-list-text">
+                        <div class="hui-list-text-content" style="color:#fff;">首页</div>
+                        <div class="hui-list-info"><span class="hui-icons hui-icons-right"  style="color:#fff;"></span></div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/course/videoindex')}">
+                    <div class="hui-list-text">
+                        <div class="hui-list-text-content" style="color:#fff;">录播课程</div>
+                        <div class="hui-list-info"><span class="hui-icons hui-icons-right"  style="color:#fff;"></span></div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/course/liveindex')}">
+                    <div class="hui-list-text">
+                        <div class="hui-list-text-content"  style="color:#fff;">直播课程</div>
+                        <div class="hui-list-info "><span class="hui-icons hui-icons-right"  style="color:#fff;"></span></div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/classroom/index')}">
+                    <div class="hui-list-text">
+                        <div class="hui-list-text-content"  style="color:#fff;">班级课程</div>
+                        <div class="hui-list-info"><span class="hui-icons hui-icons-right"  style="color:#fff;"></span></div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/article/index')}">
+                    <div class="hui-list-text">
+                        <div class="hui-list-text-content"  style="color:#fff;">行业资讯</div>
+                        <div class="hui-list-info"><span class="hui-icons hui-icons-right"  style="color:#fff;"></span></div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('index/teacher/index')}">
+                    <div class="hui-list-text">
+                        <div class="hui-list-text-content"  style="color:#fff;">名师风采</div>
+                        <div class="hui-list-info"><span class="hui-icons hui-icons-right"  style="color:#fff;"></span></div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="__LIBS__/layui/layui.all.js"></script>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/common.js"></script>
+<script src="__HUI__/js/hui.js"></script>
+<script src="https://cdn.bootcss.com/stickyNavbar.js/1.3.5/jquery.stickyNavbar.min.js"></script>
+{block name="js"}{/block}
+</body>
+</html>

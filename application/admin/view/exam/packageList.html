@@ -1,0 +1,79 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="fl ">
+            <form action="{:url('admin/exam/examsList')}" class="layui-form" method="get" style="padding:0px;">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <select name="status">
+                            <option value="">批改状态</option>
+                            <option value="1" {if condition="input('status') eq  1" }selected="selected"{/if}>已批改</option>
+                            <option value="2" {if condition="input('status') eq  2" }selected="selected"{/if}>未批改</option>
+                        </select>
+                    </div>
+                    <!--<div class="layui-input-inline">
+                        <input type="text" name="name" value="{:input('name')}" autocomplete="off" placeholder="请输入用户名查询" class="layui-input"/>
+                    </div>-->
+                    <div class="layui-input-inline">
+                        <input type="text" name="mobile" value="{:input('mobile')}" autocomplete="off" placeholder="使用学员手机号查询" class="layui-input"/>
+                    </div>
+                    <div class="fl">
+                        <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:40px;">ID</th>
+                <th >考试名称</th>
+                <th  style="width:140px;">所属课程/分类</th>
+                <th  style="width:60px;">用户名</th>
+                {if condition="$regfield[1]['status']==1"}
+                <th style="width:80px;">{$regfield[1]['name']}</th>
+                {/if}
+                {if condition="$regfield[0]['status']==1"}
+                <th style="width:80px;">{$regfield[0]['name']}</th>
+                {/if}
+                <th  style="width:60px;">状态</th>
+                <th  style="width:40px;">得分</th>
+                <th  style="width:140px;">做题时间</th>
+                <th  style="width:60px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.id}</td>
+                <td>{$v.eid|get_exam_title}</td>
+                <td>{$v.pointid|get_category_name}</td>
+                <td>{$v.uid|getUserName}</td>
+                {if condition="$regfield[1]['status']==1"}
+                <td>{$v.uid|getUserSchoolBuyUid}</td>
+                {/if}
+                {if condition="$regfield[0]['status']==1"}
+                <td>{$v.uid|getUserGradeBuyUid}</td>
+                {/if}
+                <td>{$v.status|markstatus}</td>
+                {if condition="$v.status==1"}
+                <td>{$v.totalscores}分</td>
+                {else/}
+                <td>?分</td>
+                {/if}
+                <td>{$v.addtime}</td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/exam/mark', ['id'=>$v.id,'eid' => $v.eid,'uid'=>$v.uid])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="500px"><i class="layui-icon layui-icon-survey"></i></a>
+                        <a href="{:url('admin/exam/delmypaper', ['id'=>$v.id,'eid' => $v.eid,'uid'=>$v.uid])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

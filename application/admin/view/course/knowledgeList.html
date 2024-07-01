@@ -1,0 +1,28 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:60px;">id</th>
+                <th >知识点</th>
+                <th style="width:130px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="material-list">
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <th >{$v.id}</th>
+                <th >{$v.title}</th>
+                <th >
+                    <a href="{:url('admin/course/knowledgeEdit', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="500px" data-height="300px"> <i class="fa fa-edit"></i>编辑</a>
+                    <a href="{:url('admin/course/knowledgeDel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i>删除</a>
+                </th>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}

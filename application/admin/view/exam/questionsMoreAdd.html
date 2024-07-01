@@ -1,0 +1,120 @@
+{extend name="iframe" /}
+{block name="css"}
+{/block}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt30 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">科目</label>
+        <div class="layui-input-inline">
+            <select name="questionchapterid" lay-verify="required" id="chapterid" lay-filter="questionknowsid">
+                <option value="">全部分类</option>
+                {foreach name="$category" item="v" empty="$empty"}
+                <option value="{$v.id}" {if condition="isset($data) and $data.questionchapterid eq $v.id" }selected="selected"{/if}>{$v.cname}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="layui-input-inline layui-hide" id="knowledgebox">
+            <select name="questionknowsid" lay-verify="required" id="knowledge" >
+                <option value="">知识点</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">题型</label>
+        <div class="layui-input-inline">
+            <select name="questiontype" id="questiontype" lay-filter="questiontype" lay-verify="required">
+                <option value="">选择题型</option>
+                {foreach name="$type" item="v"}
+                <option value="{$v.id}－{$v.mark}" {if condition="isset($data) and $data['questiontype'] eq $v.id" }selected="selected"{/if}>{$v.type_name}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="layui-input-inline layui-hide" id="questionselectnumber">
+            <select name="questionselectnumber" lay-verify="required" >
+                <option value="2">2个选项</option>
+                <option value="3">3个选项</option>
+                <option value="4" selected="selected">4个选项</option>
+                <option value="5">5个选项</option>
+                <option value="6">6个选项</option>
+                <option value="7">7个选项</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">试题难度</label>
+        <div class="layui-input-inline">
+            <select name="questionlevel">
+                <option value="1" >易</option>
+                <option value="2" >中</option>
+                <option value="3" >难</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">题目</label>
+        <div class="layui-input-block">
+            <div id="more"></div>
+            <textarea name="morequestion" placeholder="请输入详情内容" id="morequestion"  lay-verify="required" style="display: none;"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item mt30">
+        <div class="layui-input-block">
+            <button id="other-btn" class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+    <input type="hidden" name="questioncreatetime" value="{$addtime}">
+</form>
+{/block}
+{block name="js"}
+<script src="__LIBS__/wangeditor/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor;
+    var editor = new E('#more');
+    editor.config.onchange = function (html) {
+        $('#morequestion').val(html)
+    };
+    editor.config.zIndex = 1;
+    editor.config.height = 500;
+    editor.config.uploadFileName = 'image';
+    editor.config.uploadImgServer = '/api/Uploader/wangEditorUp';
+    editor.create();
+
+    layui.use('form', function() {
+        form.on('select(questiontype)', function (data) {
+            var typemark=data.value;
+            if(typemark.indexOf("SingleSelect") != -1 || typemark.indexOf("MultiSelect") != -1){
+                $('#questionselectnumber').removeClass('layui-hide');
+            }else{
+                $('#questionselectnumber').addClass('layui-hide');
+            }
+        });
+        form.on('select(questionknowsid)', function(data){
+            var parentId=$("#chapterid").val();
+            $('#knowledgebox').addClass('layui-hide');
+            if(null!= parentId && ""!=parentId){
+                $.getJSON("/admin/course/ajaxGetKnowledge",{id:parentId},function(myJSON){
+                        var options="";
+                        if(myJSON.length>0){
+                            $('#knowledgebox').removeClass('layui-hide');
+                            options+="<option value=''>==知识点==</option>";
+                            for(var i=0;i<myJSON.length;i++){
+                                options+="<option value="+myJSON[i].id+">"+myJSON[i].title+"</option>";
+                            }
+                            $("#knowledge").html(options);
+                            form.render('select');
+                        }else{
+                            layer.msg('该分类下没有知识点，请先添加知识点');
+                            setTimeout(function () {
+                                parent.location.href="/admin/course/coursecategory"
+                            }, 1000);
+                        }
+                    }
+                )
+            }
+        })
+    })
+</script>
+{/block}

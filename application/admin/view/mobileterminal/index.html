@@ -1,0 +1,44 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th >移动端名称</th>
+                <th >状态</th>
+                <th >说明</th>
+                <th >版本</th>
+                <th width="150">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>APP安卓版</td>
+                <td>{if condition="empty($Android.domain)"}未申请
+                    {elseif condition="empty($Android.downurl) and empty($Android.brief)" /}待审核
+                    {elseif condition="empty($Android.downurl) and !empty($Android.brief)" /}审核未过
+                    {else /}审核通过
+                    {/if}</td>
+                <th>{$Android.brief|default="待审"}</th>
+                <th>{$Android.version}</th>
+                <td><a href="{:url('admin/Mobileterminal/app')}" class="layui-btn layui-btn-xs layui-btn-normal ajax-iframe" data-width="700px" data-height="500px"><i class="fa fa-edit"></i>申请</a><a href="https://demo.newlogo.cn" target="_blank" class="bt-ico-ask">?</a></td>
+            </tr>
+            <!--<tr>
+                <td>微信小程序</td>
+                <td>{if condition="empty($Weixinxcx.domain)"}未申请
+                    {elseif condition="empty($Weixinxcx.downurl)" /}待审核
+                    {else /}审核通过
+                    {/if}</td>
+                <th>说明</th>
+                <th>{$Weixinxcx.version}</th>
+                <td><a href="{:url('admin/Mobileterminal/weixinxcx')}" class="layui-btn layui-btn-xs layui-btn-normal ajax-iframe" data-width="600px" data-height="400px"><i class="fa fa-edit"></i>申请</a><a href="https://www.newlogo.cn/help.html" target="_blank" class="bt-ico-ask">?</a></td>
+            </tr>-->
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/uph5.js"></script>
+{/block}

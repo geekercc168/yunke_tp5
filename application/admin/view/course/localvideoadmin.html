@@ -1,0 +1,50 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        {if condition="$role eq 'dir'"}
+        <div class="layui-row layui-col-space30 local-videolist-box">
+            {foreach name="list" item="v"}
+            <div class="layui-col-md1 local-videolist mt10" tid="{$v.teacherid}" style="width: 120px;text-align: center;cursor:pointer">
+                <i class="fa fa-file-video-o" style="font-size: 60px;color:#FFB800"></i>
+                <div class="videotitle mt10">{$v.teachername}</div>
+            </div>
+            {/foreach}
+        </div>
+        {/if}
+        {if condition="$role eq 'file'"}
+        <div class="layui-btn-group">
+            <a href="{:url('admin/course/upvideolist')}" class="layui-btn ajax-iframe" data-width="800px" data-height="520px"><i class="layui-icon">&#xe62f;</i>上传视频</a>
+            <a href="{:url('admin/course/localvideodell')}" class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i>批量删除</a>
+            {if condition="$role eq 'dir'"}
+            <a href="{:url('admin/course/localvideoadmin')}" class="layui-btn"><i class="layui-icon">&#xe65c;</i> 返回上一级</a>
+            {/if}
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th >视频名称</th>
+                <th style="width:140px;">上传时间</th>
+                <th style="width:60px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="exam-list">
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$tid}/{$v.id}" lay-skin="primary"></td>
+                <th >{$v.id}</th>
+                <th >{$v.time}</th>
+                <th >
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/course/localvideodell', ['id' => $v.id,'tid'=>$tid])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i>删除</a>
+                    </div>
+                </th>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {/if}
+    </div>
+</div>
+{/block}

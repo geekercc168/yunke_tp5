@@ -1,0 +1,50 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item"><a href="{:url('index/user/mypopularize')}">推广链接</a></li>
+            <li class="header-item active"><a href="javascript:;">推广记录</a></li>
+        </ul>
+    </div>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>用户ID</th>
+            <th>用户名</th>
+            <th>层次关系</th>
+            <th>分成</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="oneIds" item="vo1"}
+        <tr>
+            <td>{$vo1}</td>
+            <td>{$vo1|getUserName}</td>
+            <td>一级</td>
+            <td>¥{$vo1|get_distribution_profit=$uid,###}</td>
+        </tr>
+        {/foreach}
+        {foreach name="towIds" item="vo2"}
+        <tr>
+            <td>{$vo2}</td>
+            <td>{$vo2|getUserName}</td>
+            <td>二级</td>
+            <td>¥{$vo2|get_distribution_profit=$uid,###}</td>
+        </tr>
+        {/foreach}
+        {foreach name="threeIds" item="vo3"}
+        <tr>
+            <td>{$vo3}</td>
+            <td>{$vo3|getUserName}</td>
+            <td>三级</td>
+            <td>¥{$vo3|get_distribution_profit=$uid,###}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

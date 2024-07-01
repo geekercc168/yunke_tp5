@@ -1,0 +1,99 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">创建课程</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 课程分类</label>
+                <div class="layui-input-block">
+                    <select name="cid">
+                        <option value="">请选择所属分类</option>
+                        {foreach name="courseCategory" item="v"}
+                        <option value="{$v.id}" {if condition="isset($data) and $data.cid eq $v.id"}selected="selected"{/if}>{neq name="v.level" value="1"}|{php}for($i=1;$i<$v['level'];$i++){echo ' ----';}{/php}{/neq} {$v.category_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 课程封面</label>
+                <div class="layui-input-block">
+                    <input type="text" name="picture" lay-verify="img|required" value="{$data.picture|default=''}" autocomplete="off" placeholder="请上传课程封面" class="layui-input">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position {$uploadlocation}"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 课程标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入课程标题" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 课程价格</label>
+                <div class="layui-input-block">
+                    <input type="text" name="price" value="{$data.price|default=''}" autocomplete="off" placeholder="请输入课程价格" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 招生人数</label>
+                <div class="layui-input-block">
+                    <input type="text" name="stulimit" value="{$data.stulimit|default=''}" autocomplete="off" placeholder="本班招生人数" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 虚拟学员</label>
+                <div class="layui-input-block">
+                    <input type="text" name="xuni_num" value="{$data.xuni_num|default=''}" autocomplete="off" placeholder="为增加课程的热度，可适当增加虚拟学员" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 上课地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="address" value="{$data.address|default=''}" autocomplete="off" placeholder="上课具体地址" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 开课时间</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="starttime" name="starttime" lay-verify="required" value="{$data.starttime|default=''}" placeholder="开课具体时间">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 课程简介</label>
+                <div class="layui-input-block">
+                    <div id="editor">{$data.brief|default=''}</div>
+                    <textarea name="brief" id="brief" style="display:none;">{$data.brief|default=''}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+            <input type="hidden" name="type" value="4"  class="layui-input">
+            <input type="hidden" name="status" value="1"  class="layui-input">
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__LIBS__/wangeditor/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.config.onchange = function (html) {
+        $('#brief').val(html)
+    };
+    editor.config.uploadFileName = 'image';
+    editor.config.uploadImgServer = '/api/Uploader/wangEditorUp';
+    editor.create();
+    $('#brief').val(editor.txt.html());
+    laydate.render({
+        elem: '#starttime'
+        ,type: 'datetime'
+        ,trigger: 'click'
+    });
+</script>
+{/block}

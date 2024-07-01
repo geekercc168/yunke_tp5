@@ -1,0 +1,226 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="__LIBS__/share/css/share.min.css">
+{/block}
+{block name="body"}
+<div class="layui-layout">
+    <div class="layui-layout">
+        <div class="layui-row yxt-courseinfo">
+            <div class="CoursePage_Banner">
+                <div class="layui-container yxt-course-container">
+                    <span class="yxt-breadcrumb layui-breadcrumb" lay-separator="—" style="visibility: visible;">
+                      <a href="/">首页</a><span lay-separator="">—</span>
+                      <a href="">{$info.title}</a>
+                    </span>
+                    <div class="yxt-course-before layui-row">
+                        <div class="pic layui-col-md5 layui-col-xs12">
+                            <img  src="{$info.picture}" alt="{$info.title}">
+                            <div class="classroom-tag hz-triangle tl0"><span>班级</span></div>
+                        </div>
+                        <div class="info layui-col-md7 layui-col-xs12 pdl30 pdr20 pdt10 ">
+                            <div class="layui-col-md12 mb20">
+                                <span class="course-title c-666">{$info.title}</span>
+
+                            </div>
+                            <div class="layui-col-md12  c-666 mb20 border-bottom pdb15">
+                                <i class="layui-icon layui-icon-user mr10"></i><span class="mr30">学员人数:<span class="ml10">{$info.id|getUserNum=###,3}</span></span>
+                                <i class="layui-icon layui-icon-table mr10"></i><span class="mr30">课程数:<span class="ml10">{$info.id|getClassroomCourseNum}</span></span>
+                                <span class="share-f">
+                                    <i  class="layui-icon layui-icon-star mr10 f {$isfavourite}"></i><span style="cursor:pointer;" url="{:url('index/course/favourite')}" class="f mr30 favourite {$isfavourite}" cid="{$info.id}" type="1" status="0">收藏</span>
+                                    <i  class="layui-icon layui-icon-star-fill mr10 unf {$nofavourite}" style="color: #FF5722;"></i><span style="cursor:pointer;" url="{:url('index/course/unfavourite')}" class="mr30 favourite unf {$nofavourite}" cid="{$info.id}" type="1" status="1">已收藏</span>
+                                </span>
+                                <span class="share text-center">
+                                    <i class="layui-icon layui-icon-share mr10"></i>
+                                    <span class="mr30">分享</span>
+                                    <span class="text-center share-box">
+                                        <div id="share" data-sites="wechat, qq, qzone,weibo"></div>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="layui-col-md12 mb20">
+                                <div class="layui-col-md12 c-666 mb20">
+                                    <span class="course-teacher">班主任：{$info.headteacher|getTeacherName}</span>
+                                </div>
+                                <div class="layui-col-md12 c-666 mb20 mt10">
+                                    <span class="course-teacher">师资团队：
+                                    {foreach name="teacherIds" item="vo"} <a href="{:url('index/teacher/centert',['id'=>hashids_encode($vo)])}" alt="{$vo|getTeacherName}"><img src="{$vo|getUidFromTid|getAvatar|defaultAvatar}" class="layui-nav-img tips" tips="{$vo|getTeacherName}"></a>{/foreach}
+                                    </span>
+                                </div>
+                                {if condition="$isBuy"}
+                                <div class="layui-col-md9 c-666 mb20 mt10">
+                                    <span class="course-teacher">学习总进度：{$progress}%</span>
+                                </div>
+                                {/if}
+                                {if condition="!$isBuy"}
+                                <div class="layui-col-md9 c-666 mb20 mt10">
+                                    <span class="course-teacher">价格： <span class="price mr20">{$info.price|isFree}</span>
+                                          {$info.id|flashsale=###,3,$info.price,1}
+                                    </span>
+                                </div>
+                                {/if}
+                                <div class="layui-col-md3 mt10">
+                                    {if condition="$isBuy"}
+                                    <a href="javascript:void(0)" class="layui-btn layui-layout-right mt5">已经购买</a>
+                                    {elseif condition="$info.status==0" /}
+                                    <a class="layui-btn layui-layout-right layui-btn-disabled">班级已关闭</a>
+                                    {else /}
+                                    <a href="{:url('index/Course/creatorder',['id'=>hashids_encode($info.id),'type'=>hashids_encode(3)])}" class="layui-btn layui-layout-right">加入班级</a>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-container mt30 pdb40">
+        <div class="layui-row">
+            <div class="yxt_teacher-list">
+                <div class="layui-row layui-col-space20">
+                    <div class="layui-col-md9 ">
+                        <div class="bg-fff layui-tab layui-tab-brief shadow " lay-filter="tab">
+                            <ul class="yxt-course-tab-title layui-tab-title">
+                                <li class="layui-this" lay-id="1">班级简介</li>
+                                <li lay-id="2">课程列表</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="yxt-course-brief layui-tab-item layui-show">
+                                    {$info.brief|default=$empty}
+                                </div>
+                                <div class="layui-tab-item">
+                                    {if condition="empty($liveCourse) and empty($videoCourse)"}
+                                    <div class="nodata text-center"><img src="/static/default/img/nodata.png"><br>暂无课程</div>
+                                    {else /}
+                                    <div class="class-course-list classroom-course-list">
+                                        {foreach name="liveCourse" item="vo"}
+                                        <div class="course-item">
+                                            <div class="media">
+                                                {if condition="$isBuy"}
+                                                <a class="media-left" href="{:url('index/user/mylearn',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                    <img src="{$vo['picture']}" alt="{$vo['title']}" class="">
+                                                    <div class="classroom-tag hz-triangle classroom-live-tag"><span>直播</span></div>
+                                                </a>
+                                                {else /}
+                                                <a class="media-left" href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                    <img src="{$vo['picture']}" alt="{$vo['title']}" class="">
+                                                    <div class="classroom-tag hz-triangle classroom-live-tag"><span>直播</span></div>
+                                                </a>
+                                                {/if}
+                                                <div class="media-body" style="width:70%">
+                                                    <div class="title">
+                                                        <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                            {$vo['title']}
+                                                        </a>
+                                                    </div>
+                                                    <div class="class-course-price">
+                                                        原价：
+                                                        <span class="course-price-widget">
+                                                            ¥<span class="origin-price">{$vo['price']}</span>
+                                                        </span>
+                                                    </div>
+                                                    {if condition="$isBuy"}
+                                                    <div class="class-course-price">
+                                                        <div class="layui-progress mt15" lay-showPercent="yes">
+                                                            <div class="layui-progress-bar" lay-percent="{$liveProgress[$vo['id']]}%"></div>
+                                                        </div>
+                                                    </div>
+                                                    {/if}
+                                                </div>
+                                                {if condition="$isBuy"}
+                                                <div class=" study-button ml20">
+                                                    <a href="{:url('index/user/mylearn',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}" type="button" class="layui-btn layui-btn-sm">开始学习</a>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        {/foreach}
+                                        {foreach name="videoCourse" item="vo"}
+                                        <div class="course-item">
+                                            <div class="media">
+                                                {if condition="$isBuy"}
+                                                <a class="media-left" href="{:url('index/user/mylearn',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                    <img src="{$vo['picture']}" alt="{$vo['title']}" class="">
+                                                </a>
+                                                {else /}
+                                                <a class="media-left" href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                    <img src="{$vo['picture']}" alt="{$vo['title']}" class="">
+                                                </a>
+                                                {/if}
+                                                <div class="media-body" style="width:70%">
+                                                    <div class="title">
+                                                        <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                            {$vo['title']}
+                                                        </a>
+                                                    </div>
+                                                    <div class="class-course-price">
+                                                        原价：
+                                                        <span class="course-price-widget">
+                                                            ¥<span class="origin-price">{$vo['price']}</span>
+                                                        </span>
+                                                    </div>
+                                                    {if condition="$isBuy"}
+                                                    <div class="class-course-price">
+                                                        <div class="layui-progress mt15" lay-showPercent="yes">
+                                                            <div class="layui-progress-bar" lay-percent="{$videoProgress[$vo['id']]}%"></div>
+                                                        </div>
+                                                    </div>
+                                                    {/if}
+                                                </div>
+                                                {if condition="$isBuy"}
+                                                <div class=" study-button ml20">
+                                                    <a href="{:url('index/user/mylearn',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}" type="button" class="layui-btn layui-btn-sm">开始学习</a>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        {/foreach}
+                                    </div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="bg-fff layui-card shadow">
+                            <div class="layui-card-header c-666">班级学员</div>
+                            <div class="layui-card-body">
+                                <div class="layui-row  xueyuan-list pdt10">
+                                    {foreach name="classroomUser" item="vo" empty="$empty"}
+                                    <div class="layui-col-md3 mb20">
+                                        <div class="pic">
+                                            <a href="javascript:avoid(0)" title="{$vo.uid|getUserName}"><img src="{$vo.uid|getAvatar|defaultAvatar}"></a>
+                                        </div>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use('util', function(){
+        var util = layui.util;
+        var endTime = new Date($('#endTime').val()).getTime()
+            ,serverTime = new Date($('#nowTime').val()).getTime();
+        util.countdown(endTime, serverTime, function(date, serverTime, timer){
+            var str= '<span class="layui-badge countdown">'+date[0]+'天</span>';
+            str=str+'<span class="layui-badge countdown" >'+date[1]+'时</span>';
+            str=str+'<span class="layui-badge countdown" >'+date[2]+'分</span>';
+            str=str+'<span class="layui-badge countdown" >'+date[3]+'秒</span>';
+            lay('#remain').html(str);
+        });
+    });
+</script>
+<script src="__LIBS__/share/js/jquery.share.min.js"></script>
+<script src="https://cdn.bootcss.com/stickyNavbar.js/1.3.5/jquery.stickyNavbar.min.js"></script>
+<script>
+    $('#share').share();
+</script>
+{/block}

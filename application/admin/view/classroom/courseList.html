@@ -1,0 +1,58 @@
+{extend name="iframe" /}
+{block name="body"}
+<div id="courseList" class="demo-transfer ml30"></div>
+<div class="layui-form-item mt50">
+    <div class="layui-input-block" style="text-align: center;margin-left: 0px;">
+        <input type="hidden" id="id"  value="{$data.id}">
+        <button class="layui-btn" lay-transferactive="getData" data-url="{:url('admin/classroom/editPost')}" >保存</button>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['transfer', 'util'], function(){
+        var transfer = layui.transfer,util = layui.util;
+        transfer.render({
+            elem: '#courseList'
+            , title: ['选择课程', '已选课程']
+            , data:{$course}
+            , width: 314
+            , height:290
+            , id: 'course'
+            , value:{$selectCourse}
+        });
+        util.event('lay-transferactive', {
+            getData: function(othis){
+                var obj = {};
+                var url=$(this).data('url');
+                obj['id'] =$("#id").val();
+                obj['course'] =transfer.getData('course');
+                var index = layer.msg('请求中，请稍候', {
+                    icon: 16,
+                    time: false,
+                    shade: 0.3
+                });
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    data:obj,
+                    success: function (result) {
+                        if (result.code === 0) {
+                            setTimeout(function () {
+                                parent.location.reload();
+                            }, 1000);
+                        }
+                        layer.msg(result.msg);
+                        layer.close(index);
+                    },
+                    error: function (xhr, state, errorThrown) {
+                        layer.close(index);
+                        layer.msg(state + '：' + errorThrown);
+                    }
+                });
+            }
+        })
+    });
+</script>
+{/block}

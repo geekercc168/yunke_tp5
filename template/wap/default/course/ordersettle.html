@@ -1,0 +1,34 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">订单处理</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52 pay-result">
+    <input type="hidden" id="orderid" value="{$orderid}">
+</div>
+{/block}
+{block name="js"}
+<script>
+    function checkpay() {
+        var orderid=$("#orderid").val();
+        $.ajax({
+            url:"{:Url('index/Course/checkPay')}",
+            data:{'orderid':orderid},
+            type:'post',
+            async:false,
+            dataType:'json',
+            success:function(data){
+                if(data.states){
+                    hui.closeLoading();
+                    window.location.href="{:Url('index/Course/payResult',['orderid'=>$orderid])}";
+                }
+            }
+        });
+    }
+    setInterval("checkpay()","2000");
+    hui.loading('订单处理中，请稍等...');
+    setTimeout(function(){hui.loading(false, false);}, 2000);
+</script>
+{/block}

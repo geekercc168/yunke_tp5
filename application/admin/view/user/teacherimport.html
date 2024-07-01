@@ -1,0 +1,16 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:url('admin/classroom/import')}" class="layui-form mt50" method="post" enctype="multipart/form-data">
+    <div class="layui-form-item">
+        <label class="layui-form-label">上传文件</label>
+        <div class="layui-input-block">
+            <input type="text" autocomplete="off" placeholder="请上传导入的文件" class="layui-input">
+            <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-import-teacher"><i class="fa fa-file-image-o"></i> 选择文件</button>
+        </div>
+    </div>
+</form>
+<div class="moban" style="text-align: center">
+    <a href="/data/teacher.xls">下载模板</a>
+</div>
+
+{/block}

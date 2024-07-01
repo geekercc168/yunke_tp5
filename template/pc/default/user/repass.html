@@ -1,0 +1,41 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;">修改密码</a></li>
+        </ul>
+    </div>
+    <form class="layui-form" action="{:request()->url()}" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">原始密码</label>
+            <div class="layui-input-inline">
+                <input type="text" type="password" name="oldpass"   placeholder="请输入原始密码" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-inline">
+                <input  type="password" name="password" lay-verify="required|password"   placeholder="请输入新密码" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">重复新密码</label>
+            <div class="layui-input-inline">
+                <input  type="password" name="repassword"  lay-verify="required"   placeholder="请输入新密码" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item mt50">
+            <div class="layui-input-block">
+                <button class="layui-btn"   lay-submit="" lay-filter="*">修改</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

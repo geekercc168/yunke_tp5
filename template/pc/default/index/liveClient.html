@@ -1,0 +1,38 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/livedown.css" media="all">
+<style>.mt20{margin-top: 0px !important}</style>
+{/block}
+{block name="body"}
+<div class="main">
+    <div class="top">
+        <p class="client">手机APP下载</p>
+        <p class="qiye">选择相应的平台</p>
+        <div class="download">
+            <a href="javascript:void(0)">
+                <div class="phone animated"></div>
+                <p>安卓版 扫描二维码下载</p>
+                <p><img src="{:url('index/index/qrcode',['url'=>$androidUrl])}"></p>
+            </a>
+            <a href="javascript:void(0)">
+                <div class="phone animated"></div>
+                <p>苹果版 扫描二维码下载</p>
+                <p><img src="{:url('index/index/qrcode',['url'=>$iosUrl])}"></p>
+            </a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    $(".phone").click(function(){
+        $(".barcode-container").removeClass("layui-hide");
+    });
+    $(".one").click(function(){
+        $(".barcode-container").addClass("layui-hide");
+    });
+    $(".two").click(function(){
+        $(".barcode-container").addClass("layui-hide");
+    });
+</script>
+{/block}

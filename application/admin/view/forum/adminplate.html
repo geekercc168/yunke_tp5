@@ -1,0 +1,65 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <form action="{:url('admin/forum/adminplate')}" class="layui-form" method="get">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="name" value="{:input('name')}" autocomplete="off" placeholder="请输入关键字" class="layui-input"/>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="pid">
+                        <option value="">全部分类</option>
+                        {foreach name="plate" item="v"}
+                        <option value="{$v.id}" {if condition="input('pid') eq $v.id" }selected="selected"{/if}>{$v.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="istop">
+                        <option value="">是否置顶</option>
+                        <option value="1" {if condition="input('?istop') and (input('istop') eq 1)"} selected="selected"{/if}>是</option>
+                        <option value="0" {if condition="input('?istop') and (input('istop') eq 0)"} selected="selected"{/if}>否</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-btn-group">
+        <a href="{:url('admin/forum/deltopic')}" class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i> 批量删除</a>
+    </div>
+    <table class="layui-table layui-form plate">
+        <thead>
+        <tr>
+            <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+            <th width="30">ID</th>
+            <th width="90">板块名称</th>
+            <th width="100">作者</th>
+            <th >问答标题</th>
+            <th width="100">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="data" item="v" empty="$empty"}
+        <tr>
+            <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+            <td>{$v.id}</td>
+            <td>{$v.pid|getPlateName}</td>
+            <td>{$v.uid|getUserName}</td>
+            <td>{$v.name}</td>
+            <td>
+                <div class="layui-btn-group mb0">
+                    <a href="{:url('admin/forum/reply', ['id' => $v.id])}" class="layui-btn layui-btn-xs  layui-btn-normal ajax-iframe" data-width="800px" data-height="500px">  <i class="layui-icon">&#xe614;</i></a>
+                    <a href="{:url('admin/forum/deltopic', ['id' => $v.id])}" class="layui-btn  layui-btn-xs  layui-btn-danger ajax-delete"><i class="layui-icon">&#xe640;</i></a>
+                </div>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+        <div class="page">{$data->render()}</div>
+    </table>
+</div>
+{/block}

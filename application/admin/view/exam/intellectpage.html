@@ -1,0 +1,185 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">智能组卷</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th>试卷说明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><textarea name="directions" required lay-verify="required" placeholder="请输入试卷说明" class="layui-textarea">注意事项：</br>
+1．答题前填写好自己的姓名、班级、考号等信息;</br>
+2．请将答案正确填写在答题卡上;</br>
+3．客观题直接写上答案，主观题，请用手机拍照上传图片</br></textarea></td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th>试卷名称</th>
+                    <th style="width:160px;">试卷类型</th>
+                    <th style="width:132px;">是否开放</th>
+                    <th style="width:200px;">科目分类</th>
+                    <th style="width:200px;">知识点</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="text" name="exam" lay-verify="required"  placeholder="必填" class="layui-input"></td>
+                    <td><div class="layui-input-inline">
+                        <input type="radio" name="examtype" value="1" title="练习" checked>
+                        <input type="radio" name="examtype" value="2" title="考试">
+                    </div>
+                    </td>
+                    <td><div class="layui-input-inline">
+                        <input type="radio" name="isopen" value="1" title="是" >
+                        <input type="radio" name="isopen" value="0" title="否" checked>
+                    </div>
+                    </td>
+                    <td><select name="examsubject" lay-verify="required" lay-filter="selectedsubjectid" id="selectedsubjectid">
+                        <option value="">全部分类</option>
+                        {foreach name="courseCategory" item="v"}
+                        <option value="{$v.id}">{$v.cname}</option>
+                        {/foreach}
+                    </select>
+                    </td>
+                    <td> <select name="questionknowsid" lay-verify="required" lay-filter="knowledgeid" id="knowledge" >
+                        <option value="">知识点</option>
+                    </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th style="width:160px;">开考时间</th>
+                    <th style="width:80px;">考试时长</th>
+                    <th style="width:90px;">及格线占比</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="text" id="starttime" name="starttime"  placeholder="为空即为不定时开始" class="layui-input"></td>
+                    <td><input type="text" name="examtime" lay-verify="required|Ndouble" placeholder="单位：分" class="layui-input"></td>
+                    <td><input type="text" name="passscore" lay-verify="required" placeholder="大于0小于1" class="layui-input"></td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="layui-table layui-form mt20" lay-skin="nob">
+                <thead>
+                <tr>
+                    <th style="width:140px;">题型</th>
+                    <th style="width:130px;">题数</th>
+                    <th style="width:130px;">单题分值</th>
+                    <th style="width:200px;">难度系数(简：中：难)</th>
+                    <th>试题说明</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach name="questiontype" item="v"}
+                <tr>
+                    <td>{$v.type_name}</td>
+                    <td><input type="text" name="questype[{$v.id}][number]"   class="layui-input questypenumber"  id="iselectallnumber_{$v.id}"></td>
+                    <td><input type="text" name="questype[{$v.id}][score]"   class="layui-input questypescore" id="iselectallscore_{$v.id}"></td>
+                    <td><div class="layui-input-inline" style="width: 40px;">
+                            <input type="text" name="questype[{$v.id}][simple]"  class="layui-input" style="width:40px;">
+                        </div>：
+                        <div class="layui-input-inline" style="width: 40px;">
+                            <input type="text" name="questype[{$v.id}][middle]"  class="layui-input" style="width:40px;">
+                        </div>：
+                        <div class="layui-input-inline" style="width: 40px;">
+                            <input type="text" name="questype[{$v.id}][hard]"   class="layui-input" style="width:40px;">
+                        </div>
+                    </td>
+                    <td><input type="text" name=questype[{$v.id}][describe] id="describe_{$v.id}"   value="每小题？分，本题共？个小题，共？分" class="layui-input"></td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            <div class="layui-form-item mt20">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">生成试卷</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+            <input type="hidden" name="addtime" value="{$addtime}"  class="layui-input">
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    var scoreArry=[];
+    form.on('select(selectedsubjectid)', function(data){
+        var subjectid=data.value;
+        var url='/api/author/ajaxsetsession';
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: {name:'subjectid',value:subjectid},
+            success: function (result) {
+            }
+        });
+
+        if(null!= subjectid && ""!=subjectid){
+            $.getJSON("/admin/course/ajaxGetKnowledge",{id:subjectid},function(myJSON){
+                    var options="";
+                    if(myJSON.length>0){
+                        options+="<option value=''>==知识点==</option>";
+                        for(var i=0;i<myJSON.length;i++){
+                            options+="<option value="+myJSON[i].id+">"+myJSON[i].title+"</option>";
+                        }
+                        $("#knowledge").html(options);
+                        form.render('select');
+                    }else{
+                        layer.msg('该分类下没有知识点，请先添加知识点');
+                        setTimeout(function () {
+                            parent.location.href="/admin/course/coursecategory"
+                        }, 1000);
+                    }
+                }
+            )
+        }
+    });
+    form.on('select(knowledgeid)', function(data) {
+        var knowledgeid = data.value;
+        var url = '/api/author/ajaxsetsession';
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: {name: 'knowledgeid', value: knowledgeid},
+            success: function (result) {
+            }
+        });
+    });
+    $('.questypescore').on('blur', function () {
+        var name=$(this).attr('id');
+        var idArry=  name.split("_");
+        var questypenumber=$('#iselectallnumber_'+idArry[1]).val();
+        if(questypenumber==''){
+            $(this).val('');
+            layer.msg('请先选择试题');
+        }
+        var questypescore=$(this).val();
+        var score=parseFloat(questypescore)*parseInt(questypenumber);
+        var html='每小题'+questypescore+'分，本题共'+questypenumber+'个小题，共'+score+'分';
+        $('#describe_'+idArry[1]).val(html);
+    });
+    laydate.render({
+        elem: '#starttime'
+        ,type: 'datetime'
+        ,trigger: 'click'
+    });
+</script>
+{/block}
+
+

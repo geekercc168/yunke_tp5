@@ -1,0 +1,77 @@
+{extend name="iframe" /}
+{block name="css"}
+<style type="text/css">
+    .layui-card .layui-card-body .layui-form{padding-top: 0px !important; }
+    .layui-card {box-shadow: none;}
+</style>
+{/block}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+      成绩统计分析-{$paperinfo['id']|get_exam_title}
+    </div>
+    <div class="layui-card-body">
+        <table id="analysisTable" class="commontable" style="margin-left:15px;width:97%">
+            <tbody><tr>
+                <td class="title" id="sAttendTotalNum">参加人数<br><br><span class="analysis" id="attendNum">{$count}</span></td>
+                <td class="title">通过人数<br><br><span class="analysis" id="passNum">{$passNum}</span></td>
+                <td class="title">未通过人数<br><br><span class="analysis" id="nonPassNum">{$noPassNum}</span></td>
+                <td class="title">通过率<br><br><span class="analysis" id="passRate">{$pass}</span>%</td>
+                <td class="title">最高分<br><br><span class="analysis" id="maxScore">{$maxScore}</span></td>
+                <td class="title">最低分<br><br><span class="analysis" id="minScore">{$minScore}</span></td>
+                <td class="title">平均分<br><br><span class="analysis" id="avgScore">{$avgScore}</span></td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="eid" value="{$paperinfo['id']}">
+        <input type="hidden" id="schoolstatus" value="{$regfield[1]['status']}">
+        <input type="hidden" id="schoolfield" value="{$regfield[1]['name']}">
+        <input type="hidden" id="gradestatus" value="{$regfield[0]['status']}">
+        <input type="hidden" id="gradefield" value="{$regfield[0]['name']}">
+        <table class="layui-hide" id="analysis"></table>
+    </div>
+    <div class="layui-row  learn-bottom">
+        <button url="{:url('admin/exam/export',['eid'=>$paperinfo['id'],'cid'=>$cid])}" class="layui-btn layui-btn-primary ajax-export"><i class="fa fa-file-excel-o"></i> 导出成绩</button>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use('table', function(){
+        var table = layui.table,school='',grade='';
+        var eid=$('#eid').val();
+        var schoolstatus=$('#schoolstatus').val();
+        var schoolfield=$('#schoolfield').val();
+        var gradestatus=$('#gradestatus').val();
+        var gradefield=$('#gradefield').val();
+        if(schoolstatus==1){
+            var school={field:'school', title: schoolfield};
+        }
+        if(gradestatus==1){
+            var grade={field:'grade',title: gradefield};
+        }
+        table.render({
+            elem: '#analysis'
+            ,url:'/admin/exam/useranalysis/id/'+eid
+            ,page: {
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip']
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+            }
+            ,cols: [[
+                {field:'username',  title: '姓名'}
+                ,{field:'tel',  title: '手机号'}
+                ,{field:'totalscore', title: '试卷总分'}
+                ,{field:'passscore', title: '通过分数'}
+                ,{field:'score', title: '考试成绩', sort: true}
+                ,{field:'ispass', title: '是否通过考试'}
+                ,{field:'addtime',  title: '交卷时间', sort: true}
+                ,{field:'sort', title: '排名', sort: true}
+               /* ,grade
+                ,school*/
+            ]]
+        });
+    });
+</script>
+{/block}

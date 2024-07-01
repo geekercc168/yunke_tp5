@@ -1,0 +1,48 @@
+{extend name="base" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">学员注册</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap">
+    <form action="{:url('index/user/reg')}" class="layui-form" method="post">
+        <div style="margin:20px 10px; margin-bottom:15px;" class="hui-form" id="form1">
+            <div class="hui-form-items">
+                <div class="hui-form-items-title">登录账号</div>
+                <input type="text" name="username" lay-verify="required|username" class="hui-input hui-input-clear" placeholder="字母、数字或下划线" />
+                <input type="hidden" name="__token__" value="{$Request.token}" />
+            </div>
+            <div class="hui-form-items">
+                <div class="hui-form-items-title">登录密码</div>
+                <input type="password" name="password" lay-verify="required|password" class="hui-input hui-pwd-eye" placeholder="登录密码6到20位"/>
+            </div>
+            <div class="hui-form-items">
+                <div class="hui-form-items-title">手机号码</div>
+                <input type="text" id="mobile" name="mobile" lay-verify="required|phone" class="hui-input" placeholder="可用于登录和找回账号密码"/>
+            </div>
+            {if condition="$data.status eq 1"}
+            <div class="hui-form-items" style="padding: 4px 10px 0px 10px">
+                <div class="hui-form-items-title mt10">手机验证码</div>
+                <input type="text" id="phoneCode" class="hui-input mt10" name="codeverify" value="" />
+                <div style="width:240px;height:45px;">
+                    <input type="button" class="layui-btn layui-btn-primary getPhoneCode generate_code " value=" 获取验证码" style="float:right;" url="{:url('api/author/regCode')}">
+                </div>
+            </div>
+            {/if}
+            <div class="hui-form-items" style="padding: 4px 0px 0px 10px">
+                <div class="hui-form-items-title mt10">验证码</div>
+                <input type="text" class="hui-input mt10" name="captcha" value="" />
+                <div style="width:240px;height:45px;">
+                    <img  src="{:url('admin/index/captcha')}" onclick="this.src='{:url('admin/index/captcha')}?rand='+Math.random()" />
+                </div>
+            </div>
+        </div>
+        <div style="padding:10px; padding-top:10px;margin-top:60px;">
+            <button type="button" class="hui-button hui-button-large hui-primary" id="submit" lay-submit="" lay-filter="*">注  册</button>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+{/block}

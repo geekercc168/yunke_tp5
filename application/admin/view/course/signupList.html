@@ -1,0 +1,44 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group fl">
+            <button url="{:url('admin/course/exportOfflineStu',['cid'=>$cid])}" class="layui-btn layui-btn-warm ajax-export"><i class="fa fa-file-excel-o"></i> 导出学员</button>
+        </div>
+        <div class="fl ml20">
+            <form action="{:url('admin/course/signupList')}" class="layui-form" method="get" style="padding:0px;margin:0px;">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="key" value="{:input('key')}" autocomplete="off" placeholder="用学员用户名或手机号搜索" class="layui-input"/>
+                        <input type="hidden" name="cid" value="{$cid}">
+                    </div>
+                    <div class="fl">
+                        <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:50px;">ID</th>
+                <th style="width:80px;">学员姓名</th>
+                <th style="width:100px;">学员手机号</th>
+                <th >学员地址</th>
+            </tr>
+            </thead>
+            <tbody id="material-list">
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <th >{$v.uid}</th>
+                <th >{$v.username}</th>
+                <th >{$v.tel}</th>
+                <th >{$v.address}</th>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

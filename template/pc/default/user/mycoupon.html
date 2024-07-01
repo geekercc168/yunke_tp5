@@ -1,0 +1,37 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;"> 我的优惠券</a></li>
+        </ul>
+    </div>
+    <table class="layui-table">
+    {if condition="!$empty"}
+        <thead>
+        <tr>
+            <th>优惠券</th>
+            <th>折扣</th>
+            <th>优惠券状态</th>
+            <th>使用状态</th>
+        </tr>
+        </thead>
+    {/if}
+        <tbody>
+        {foreach name="list" item="vo" empty="$empty"}
+        <tr>
+            <td>{$vo.code}</td>
+            <td>{$vo.rate|}</td>
+            <td>{$vo.status|getCouponSatatus=###,$vo.userendtime}</td>
+            <td>{$vo.usestatus|getCouponUseSatatus}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    <div class="page mt20">{$list->render()}</div>
+
+</div>
+{/block}
+{block name="js"}
+
+{/block}

@@ -1,0 +1,37 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">我的订单</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    <div class="hui-media-list mycourselist">
+        <ul style="background: #fff;padding:10px;">
+            {foreach name="list" item="vo" empty="$empty"}
+            <p class="mt10 ml10 c-999">订单号：{$vo.orderid}</p>
+            <li style="margin-bottom:0px;">
+                <a href="{:url('index/course/info',['id'=>hashids_encode($vo['cid']),'type'=>hashids_encode($vo['ctype'])])}">
+                    <div class="hui-media-list-img"><img src="{$vo.cid|getCoursePic=###,$vo.ctype}" /></div>
+                    <div class="hui-media-content ml10">
+                        <h1 class="c-999">{$vo.cid|getCourseName=###,$vo.ctype}</h1>
+                        <p>订单金额：{$vo.total}元</p>
+                    </div>
+                </a>
+            </li>
+            <div style="border-bottom: 1px dashed #ddd;padding:0px 5px 10px 0px;">
+                <p class="hui-fr mb10">
+                {if condition="$vo.state==0"}
+                <a href="{:url('index/course/repay', ['id' => $vo.id])}" class="layui-btn layui-btn-xs layui-btn-danger"> <i class="layui-icon" style="color:#fff;">支付</i></a>
+                {else/}
+                <button  class="layui-btn layui-btn-xs"> <i class="layui-icon" style="color:#fff;">成功</i></button>
+                {/if}
+                </p>
+            </div>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+{/block}
+{block name="js"}
+{/block}

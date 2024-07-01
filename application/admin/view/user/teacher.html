@@ -1,0 +1,43 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th>教师姓名</th>
+                <th>手机号</th>
+                <th>性别</th>
+                <th>出生年月</th>
+                <!--<th>地区</th>-->
+                <th>申请时间</th>
+                <th>目录ID</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.username}</td>
+                <td>{$v.mobile}</td>
+                <td>{$v.sex}</td>
+                <td>{$v.birth_y}{$v.birth_m}{$v.birth_d}</td>
+                <!--<td>{$v.provid}{$v.cityid}{$v.areaid}</td>-->
+                <td>{$v.addtime}</td>
+                <td>{$v.id|getCategoryId}</td>
+                <td>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="已审|待审" data-url="{:url('admin/user/verify', ['id' => $v.id])}" {if $v.status eq 1}checked="checked"{/if}>
+                </td>
+                <td>
+                    <a href="{:url('admin/user/details', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-normal ajax-iframe" data-width="800px" data-height="500px"><i class="fa fa-edit"></i> 详情</a>
+                    <a href="{:url('admin/user/delverify', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i> 删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

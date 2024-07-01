@@ -1,0 +1,82 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt30 mr50" method="post">
+    <div class="title" style="text-align: center;width: 100%;margin-bottom: 40px;font-size: 16px">直播回放</div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">视频平台</label>
+        <div class="layui-input-block">
+            <input type="radio" name="replaplatform" value="yunluzhi" lay-filter="selectVideoplatform" title="云录制" {if ($data.replaplatform eq yunluzhi) or ($data.replaplatform eq null)}checked="checked" {/if} >
+            <input type="radio" name="replaplatform" value="aliyun" lay-filter="selectVideoplatform" title="阿里云" {if $data.replaplatform eq aliyun }checked="checked" {/if} >
+            <input type="radio" name="replaplatform" value="local" lay-filter="selectVideoplatform" title="本地" {if $data.replaplatform eq  local}checked="checked" {/if}>
+            <input type="radio" name="replaplatform" value="share" lay-filter="selectVideoplatform" title="第三方分享" {if $data.replaplatform eq  share}checked="checked" {/if}>
+        </div>
+    </div>
+    <div id="yunluzhi"  {if ($data.replaplatform eq yunluzhi) or ($data.replaplatform eq null)} class="layui-show"{else/} class="layui-hide"{/if} >
+        <div class="layui-form-item">
+            <label class="layui-form-label">录制地址</label>
+            <div class="layui-input-block">
+                <input type="text"  name="replayurl" value='{$data.replayurl|default=null}' autocomplete="off" placeholder="阿里云oss地址" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div id="aliyun"  {if ($data.replaplatform eq aliyun)} class="layui-show"{else/} class="layui-hide"{/if} >
+        <div class="layui-form-item">
+            <label class="layui-form-label">云视频ID</label>
+            <div class="layui-input-block">
+                <input type="text"  name="videoid"  value='{$data.videoid|default=null}' autocomplete="off" placeholder="请选择云视频" class="layui-input">
+                <button href="{:url('admin/course/videolist')}" type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-iframe" data-width="800px" data-height="490px"><i class="fa fa-cloud"></i> 选择云视频</button>
+            </div>
+        </div>
+    </div>
+    <div id="local" {if $data.replaplatform eq local} class="layui-show"{else/} class="layui-hide"{/if} >
+        <div class="layui-form-item">
+            <label class="layui-form-label">本地视频</label>
+            <div class="layui-input-block">
+                <input type="text"  name="localvideo" value='{$data.localvideo|default=null}' autocomplete="off" placeholder="请选择本地视频" class="layui-input">
+                <button href="{:url('admin/course/localvideolist')}" type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-iframe" data-width="800px" data-height="490px"><i class="fa fa-cloud"></i> 选择视频</button>
+            </div>
+        </div>
+    </div>
+    <div id="share" {if $data.replaplatform eq share} class="layui-show"{else/} class="layui-hide"{/if}>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分享代码</label>
+            <div class="layui-input-block">
+                <input type="text"  name="shareurl" value='{$data.shareurl|default=null}' autocomplete="off" placeholder="请填写B站分享代码" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">试看时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="previewtimes" value="{$data.previewtimes|default=''}" autocomplete="off" placeholder="单位秒，0表示不支持试看" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">记录间隔</label>
+        <div class="layui-input-block">
+            <input type="text" name="timer" value="{$data.timer|default=''}" autocomplete="off" placeholder="单位秒，不填默认为300秒，即5分钟写入一次学习记录。" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开跑马灯</label>
+        <div class="layui-input-block">
+            <input type="radio" name="isbulletscreen" {eq name="$data.isbulletscreen|default=1" value="1"}checked{/eq} title="是" value="1"  />
+            <input type="radio" name="isbulletscreen" {eq name="$data.isbulletscreen|default=0" value="0"}checked{/eq} title="否" value="0" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支持快进</label>
+        <div class="layui-input-block">
+            <input type="radio" name="isforward" {eq name="$data.isforward|default=1" value="1"}checked{/eq} title="是" value="1"  />
+            <input type="radio" name="isforward" {eq name="$data.isforward|default=0" value="0"}checked{/eq} title="否" value="0" />
+        </div>
+    </div>
+    <input type="hidden"  name="id" value="{$data.id}" class="layui-input">
+    <div class="layui-form-item mt30">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}

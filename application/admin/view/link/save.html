@@ -1,0 +1,36 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">添加/编辑数据</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入合作伙伴名称" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 链接</label>
+                <div class="layui-input-block">
+                    <input type="text" name="href" value="{$data.href|default=''}" autocomplete="off" placeholder="http://" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sort" value="{$data.sort|default=0}" autocomplete="off" placeholder="排序" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+            <input type="hidden" name="status" value="1">
+        </form>
+    </div>
+</div>
+{/block}

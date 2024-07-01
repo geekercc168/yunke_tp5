@@ -1,0 +1,60 @@
+{extend name="articlebase" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/article.css" media="all">
+{/block}
+{block name="body"}
+<div class="layui-container">
+    <div class="layui-breadcrumb mt15" style="visibility: visible;">
+        <a href="{:url('index/article/index')}">首页</a><span lay-separator="">/</span>
+        <a href="{:url('index/article/index',['cid'=>hashids_encode($contents.cid)])}">{$contents.category_name}</a><span lay-separator="">/</span>
+        <a href="{:url('index/article/contents',['id'=>hashids_encode($contents.id)])}"><cite>{$contents.title}</cite></a>
+    </div>
+</div>
+<div class="layui-container mt15">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-card">
+                <div class="art-detail mb20">
+                    <div class="art-head">
+                        <h1 class="title">{$contents.title}</h1>
+                        <div class="meta">
+                            <span><i class="layui-icon layui-icon-user"></i>作者:{$contents.author|default="佚名"}</span>
+                            <span><i class="layui-icon layui-icon-log"></i>{$contents.create_time}</span>
+                            <a href="{:url('index/article/index',['cid'=>hashids_encode($contents.cid)])}"><i class="layui-icon layui-icon-note"></i>{$contents.category_name}</a>
+                        </div>
+                    </div>
+                    <div class="art-body ">
+                        <div class="content">
+                            {$contents.content}
+                        </div>
+                    </div>
+                    <div class="art-foot">
+                        <div class="meta">
+                            <span><i class="layui-icon layui-icon-fire"></i>阅读：{$contents.view}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">置顶推荐</div>
+                <div class="layui-card-body">
+                    <ul class="lark-list">
+                        {foreach name="tuijian" item="vo"  key ='i'}
+                        <li>
+                            {if condition="$i lt 2"}
+                            <span class="layui-badge ">{$i+1}</span>
+                            {else/}
+                            <span class="layui-badge layui-bg-gray">{$i+1}</span>
+                            {/if}
+                            <a href="{:url('index/article/contents',['id'=>hashids_encode($vo.id)])}" title="{$vo.title}">{$vo.title}</a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

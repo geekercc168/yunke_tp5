@@ -1,0 +1,74 @@
+{extend name="base" /}
+{block name="body"}
+<div class="personalCTop">
+    <div class="center">
+        <div class="teacher_Banner">
+            <div class="teacher_Banner_Img">
+                <div class="teacher_Banner_Mask"></div>
+                <img src="{$teacherInfo.uid|getAvatar|defaultAvatar}">
+            </div>
+            <div class="img"><img src="{$teacherInfo.uid|getAvatar|defaultAvatar}" alt="{$teacherInfo.id|getTeacherName}"></div>
+            <div class="fl c-fff font14 font">
+                <p class="font26 mt10">{$teacherInfo.id|getTeacherName}</p>
+                <p class="mt10">教师用户</p>
+            </div>
+            <div class="sign">
+                {$teacherInfo.sign}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-container mb50">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">教师简介</li>
+            <li>开设课程</li>
+        </ul>
+        <div class="layui-tab-content mt20">
+            <div class="layui-tab-item layui-show jianjie">
+                <span class="layui-text layui-word-aux ">
+                    {$teacherInfo.brief|cleanhtml}
+                </span>
+            </div>
+            <div class="layui-tab-item jianjie">
+                <div class="yxt_course-list">
+                    <div class="layui-row layui-col-space20">
+                        {foreach name="list" item="vo"}
+                        <div class="layui-col-md3">
+                            <div class="yxt_course-item">
+                                <div class="yxt_course-img">
+                                    <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                        <img src="{$vo['picture']}" alt="{$vo['title']}" class="img-responsive">
+                                        {if condition="$vo['type']==2"}
+                                        <span class="tags">
+                                            <span class="tag-live"></span>
+                                        </span>
+                                        {/if}
+                                    </a>
+                                </div>
+                                <div class="yxt_course-info">
+                                    <div class="title">
+                                        <a class="link-dark" href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                            {$vo['title']}
+                                        </a>
+                                    </div>
+                                    <div class="metas clearfix">
+                                        <span class="num"><i class="layui-icon layui-icon-friends"></i>{$vo.id|getUserNum=###,$vo['type']}</span>
+                                        <span class="comment"><i class="layui-icon layui-icon-menu-fill"></i> 5</span>
+                                        {if condition="$vo['price']==0"}
+                                        <span class="free"> <i class="layui-icon layui-icon-rmb mr5"></i>免费</span>
+                                        {else /}
+                                        <span class="price"> <i class="layui-icon layui-icon-rmb mr5"></i>{$vo['price']}</span>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,58 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group fl">
+            <a href="{:url('admin/classroom/addstudents',['cid'=>$cid])}" class="layui-btn layui-btn-primary ajax-iframe"  data-width="784px" data-height="470px"><i class="fa fa-plus-circle"></i>&nbsp批量添加</a>
+            <a href="{:url('admin/classroom/export',['cid'=>$cid])}" class="layui-btn layui-btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp导出学员</a>
+            <a href="{:url('admin/classroom/certificate',['cid'=>$cid])}" class="layui-btn  ajax-iframe"  data-width="630px" data-height="300px"><i class="fa fa-instagram"></i>&nbsp发放证书</a>
+        </div>
+        <div class="fl ml20">
+            <form action="{:url('admin/classroom/xueyuanList')}" class="layui-form" method="get" style="padding:0px;margin:0px;">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="key" value="{:input('key')}" autocomplete="off" placeholder="用学员用户名或手机号搜索" class="layui-input"/>
+                        <input type="hidden" name="cid" value="{$cid}">
+                        <input type="hidden" name="type" value="{$type}">
+                    </div>
+                    <div class="fl">
+                        <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:50px;">ID</th>
+                <th style="width:130px;">学员姓名</th>
+                <th style="width:120px;">学员手机号</th>
+                <th >学习进度</th>
+                <th style="width:60px;">学习证书</th>
+                <th style="width:40px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="material-list">
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <th >{$v.uid}</th>
+                <th >{$v.uid|getUserName}</th>
+                <th >{$v.uid|getUserTel}</th>
+                <th ><div class="layui-progress" lay-showPercent="yes">
+                         <div class="layui-progress-bar layui-bg-green" lay-percent="{$v.progress}%"></div>
+                    </div>
+                </th>
+                <th ></th>
+                <th >
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/classroom/detach', ['uid' => $v.uid,'cid'=>$cid])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </th>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

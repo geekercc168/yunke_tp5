@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{$sectionInfo.title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="{:config('website.icon')}" />
+    <link rel="bookmark" href="{:config('website.icon')}" />
+</head>
+<body>
+<div id="root"></div>
+<div class="param" >
+    <input type="hidden" id="channel" value="{$sectionInfo['room_id']}">
+    <input type="hidden" id="uid" value="{$param['uid']}">
+</div>
+</body>
+<script src="https://download.agora.io/edu-apaas/release/edu_sdk@2.8.21.bundle.js"></script>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/learningRecord.js"></script>
+<script src="__LIBS__/layui/layui.all.js"></script>
+<script src="__LIBS__/agora/AgoraEduLive.js"></script>
+</html>

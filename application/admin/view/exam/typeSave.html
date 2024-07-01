@@ -1,0 +1,45 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">题型名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="type_name" value="{$data.type_name|default=''}" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">题型分类</label>
+                <div class="layui-input-block">
+                    <select name="p_type">
+                        <option value="">选择分类</option>
+                        <option value="1" {if condition="isset($data) and $data.p_type eq 1"}selected="selected"{/if} >客观题</option>
+                        <option value="2" {if condition="isset($data) and $data.p_type eq 2"}selected="selected"{/if}>主观题</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">题型标识</label>
+                <div class="layui-input-block">
+                    <select name="mark">
+                        <option value="">选择标识</option>
+                        <option value="SingleSelect" {if condition="isset($data) and $data.mark eq SingleSelect"}selected="selected"{/if}>SingleSelect(单选)</option>
+                        <option value="MultiSelect" {if condition="isset($data) and $data.mark eq MultiSelect"}selected="selected"{/if}>MultiSelect(多选)</option>
+                        <option value="FillInBlanks" {if condition="isset($data) and $data.mark eq FillInBlanks"}selected="selected"{/if}>FillInBlanks(填空)</option>
+                        <option value="TrueOrfalse" {if condition="isset($data) and $data.mark eq TrueOrfalse"}selected="selected"{/if}>TrueOrfalse(判断)</option>
+                        <option value="ShortAnswer" {if condition="isset($data) and $data.mark eq ShortAnswer"}selected="selected"{/if}>ShortAnswer（简答，论述等)</option>
+                        <option value="TiMao" {if condition="isset($data) and $data.mark eq TiMao"}selected="selected"{/if}>TiMao（题帽题)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

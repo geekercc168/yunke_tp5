@@ -1,0 +1,76 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">开启与价格</li>
+            <li>苹果APP内购ID</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form action="{:url('admin/vip/setup')}" class="layui-form" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">开启状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="isvipopen" value="1" title="开启" checked="checked">
+                            <input type="radio" name="isvipopen" value="0" title="关闭" {if isset($data.isvipopen) and $data.isvipopen eq '0'}checked="checked"{/if}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">月度价格</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="vipyueprice" value="{$data.vipyueprice|default=''}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">季度价格</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="vipjiprice" value="{$data.vipjiprice|default=''}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">年度价格</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="vipnianprice" value="{$data.vipnianprice|default=''}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="layui-tab-item">
+                <form action="{:url('admin/vip/setiospproductid')}" class="layui-form" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">月度VIP</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="yue" value="{$list.yue|default=''}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">季度VIP</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="ji" value="{$list.ji|default=''}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">年度VIP</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="nian" value="{$list.nian|default=''}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

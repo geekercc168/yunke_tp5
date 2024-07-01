@@ -1,0 +1,74 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt30 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择章</label>
+        <div class="layui-input-block">
+            {if condition="$zhang"}
+            <select name="chapterid" lay-verify="required">
+            {else/}
+            <select name="chapterid">
+            {/if}
+                <option value="">选择章</option>
+                {foreach name="$zhang" item="v"}
+                <option value="{$v.id}" {if condition="$data['chapterid'] eq $v.id" }selected="selected"{/if}>{$v.title}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">课时标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入章名称" class="layui-input">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否免费</label>
+        <div class="layui-input-block">
+            <input type="radio" name="isfree" {eq name="$data.isfree|default=1" value="1"}checked{/eq} title="是" value="1" checked />
+            <input type="radio" name="isfree" {eq name="$data.isfree|default=0" value="0"}checked{/eq} title="否" value="0" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">学习内容</label>
+        <div class="layui-input-block">
+            <div id="editor">{$data.document|default=''}</div>
+            <textarea name="document" id="brief" style="display:none;">{$data.document|default=''}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input type="text" name="sort_order" value="{$data.sort_order|default=0}" autocomplete="off" placeholder="章排序,默认即可" class="layui-input">
+            <input type="hidden" name="csid" value="{$cid}"  class="layui-input">
+            <input type="hidden" name="ischapter" value="0"  class="layui-input">
+            <input type="hidden" name="status" value="1"  class="layui-input">
+            <input type="hidden" name="coursetype" value="1"  class="layui-input">
+            <input type="hidden" name="sectype" value="3"  class="layui-input">
+            <input type="hidden" name="addtime" value="{$addtime}"  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt30">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name="js"}
+<script src="__LIBS__/wangeditor/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.config.onchange = function (html) {
+        $('#brief').val(html)
+    };
+    editor.config.uploadFileName = 'image';
+    editor.config.uploadImgServer = '/api/Uploader/wangEditorUp';
+    editor.config.zIndex = 1;
+    editor.create();
+    $('#brief').val(editor.txt.html());
+</script>
+{/block}

@@ -1,0 +1,16 @@
+{extend name="docBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">{$info.title}</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    <div class="doc-player">
+        {$info.document}
+    </div>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

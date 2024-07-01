@@ -1,0 +1,23 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">起始ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="start"  autocomplete="off" placeholder="请输入起始的ID号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="end"  autocomplete="off" placeholder="请输入结束的ID号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn">导出</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}

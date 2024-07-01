@@ -1,0 +1,43 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;"> 我的订单</a></li>
+        </ul>
+    </div>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>订单号</th>
+            <th>课程</th>
+            <th>状态</th>
+            <th>总价</th>
+            <th>时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo" empty="$empty"}
+        <tr>
+            <td>{$vo.orderid}</td>
+            <td>{$vo.cid|getCourseName=###,$vo.ctype}</td>
+            <td>{$vo.state|getOrderSatatus}</td>
+            <td>{$vo.total}元</td>
+            <td>{$vo.addtime}</td>
+            <td>{if condition="$vo.state==0"}
+                <a href="{:url('index/course/repay', ['id' => $vo.id])}" class="layui-btn layui-btn-danger layui-btn-xs"> <i class="layui-icon">支付</i></a>
+                {else/}
+                <button  class="layui-btn layui-btn-xs"> <i class="layui-icon">成功</i></button>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    <div class="page mt20">{$list->render()}</div>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

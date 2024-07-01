@@ -1,0 +1,1 @@
+<?php$tpl = request()->isMobile() ? 'wap/default' : 'pc/default';return [    'template'         => [        'view_path' => '../template/' . $tpl . '/',    ],    'default_filter'=> 'htmlentities,htmlspecialchars,RemoveXSS,abacaAddslashes',];

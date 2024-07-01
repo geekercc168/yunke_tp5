@@ -1,0 +1,45 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="main_sign" id="writers" style="padding: 5px 5px;color:black;background-color:#FFF;">
+    <div id='signature' style='background-color: #FFF;'></div>
+    <button type="button" class="sign_btn" id="reset" style="margin: 10px 5px;padding: 5px 10px;">重写</button>
+   <!-- <button type="button" class="sign_btn" id="yes" style="margin: 10px 5px;padding: 5px 10px;">确认</button>-->
+    <div id="show_img" style="display: none;"><img src="" id="images"></div>
+</div>
+{/block}
+{block name="js"}
+<script src="https://www.phpclasses.org/browse/download/1/file/42277/name/jSignature.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var arguments = {
+            width: '100%',
+            height: '300px',
+            signatureLine: false,
+            "decor-color": "transparent",
+        };
+        $("#signature").jSignature(arguments);
+    });
+    $("#reset").click(function(){
+        $("#signature").jSignature("reset");
+        $("#images").attr('src','');
+    });
+    $("#yes").click(function(){
+        var $signature = $("#signature");
+        var datapair = $signature.jSignature("getData", "image");
+        $("#images").attr('src','data:' + datapair[0] + "," + datapair[1]);
+        var src_data = $("#images").attr('src');
+        $.ajax({
+            url:"{:url('index/exam/getExamImg')}",
+            data:{src_data:src_data},
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                console.log(data)
+            },
+            error:function(){
+                console.log("错误");
+            }
+        });
+    });
+</script>
+{/block}

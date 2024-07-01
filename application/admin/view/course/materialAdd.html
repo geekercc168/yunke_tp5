@@ -1,0 +1,37 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <div id="container">
+                <button id="ossup" class="layui-btn  layui-btn-primary ajax-oss"><i class="fa fa-plus-circle"></i> 上传资料</button>
+                <input class="layui-upload-file" id="file" type="file" accept="undefined" name="file">
+            </div>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th >资料名称</th>
+                <th style="width:140px;">创建时间</th>
+                <th style="width:60px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="material-list">
+            {foreach name="list" item="v" empty="$empty"}
+                <tr>
+                    <th >{$v.original_name}</th>
+                    <th >{$v.addtime}</th>
+                    <th >
+                        <div class="layui-btn-group mb0">
+                            <a href="{:url('admin/course/MaterialInsert', ['id' => $v.id,'cid'=>$cid,'cstype'=>$cstype])}" class="layui-btn layui-btn-xs ajax-insert"> <i class="layui-icon">&#xe654;</i></a>
+                            <a href="{:url('api/Uploader/ossdel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                        </div>
+                    </th>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

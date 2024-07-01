@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    {if condition="$title"}
+    <title>{$title}</title>
+    {else/}
+    <title>{:config('website.site_title')}</title>
+    {/if}
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="{:config('website.site_keywords')}">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="description" content="{:config('website.site_description')}">
+    <link rel="stylesheet" type="text/css" href="__LIBS__/layui/css/layui.css">
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/hui.css" />
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/mobile.css" />
+    {block name="css"}{/block}
+</head>
+<body>
+{block name="body"}{/block}
+{block name="foot"}{/block}
+<div class="hui-slide-menu" style="background:#fff;">
+    <div class="aui-header-set">
+        {foreach name="mobileCate" item="vo" empty="$empty"}
+        <div class="aui-header-set-list">
+            <div class="aui-flex-box">
+                <h2>{$vo.category_name}</h2>
+            </div>
+            <div class="aui-class-item">
+                {if condition="$type=='video'"}
+                {foreach name="vo.secondclass" item="voo"}
+                <a href="{:url('index/course/videoindex',array('parent'=>$voo.pid,'second'=>$voo.id))}" class="aui-header-set-item">{$voo.category_name}</a>
+                {/foreach}
+                {else /}
+                {foreach name="vo.secondclass" item="voo"}
+                <a href="{:url('index/course/liveindex',array('parent'=>$voo.pid,'second'=>$voo.id))}" class="aui-header-set-item">{$voo.category_name}</a>
+                {/foreach}
+                {/if}
+            </div>
+        </div>
+        {/foreach}
+    </div>
+</div>
+<script src="__LIBS__/layui/layui.all.js"></script>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/common.js"></script>
+<script src="__HUI__/js/hui.js"></script>
+<script src="https://cdn.bootcss.com/stickyNavbar.js/1.3.5/jquery.stickyNavbar.min.js"></script>
+{block name="js"}{/block}
+</body>
+</html>

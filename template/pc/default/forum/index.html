@@ -1,0 +1,168 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/forum.css" media="all">
+<link href="https://cdn.bootcss.com/Swiper/4.5.1/css/swiper.min.css" rel="stylesheet">
+{/block}
+{block name="body"}
+<section class="place mt20">
+    <div class="layui-container">
+        <div class="place-box">
+            <ul>
+                <li><i class="layui-icon layui-icon-location"></i> <a href="/">{:config('website.site_name')}</a><span class="Y-axis">></span><a href="{:url('index/forum/index')}">问答</a>{$platename}</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="forum mt20">
+    <div class="layui-container">
+        <div class="layui-row layui-col-space20">
+            <div class="layui-col-md8">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="forum-swiper-area">
+                            <div class="swiper-container forum-swiper">
+                                <div class="swiper-wrapper forum-slide">
+                                    {foreach name="slide" item="vo"}
+                                    <div class="swiper-slide"><a href="{$vo.jumpype|getAdUrl=###,$vo.appurl}" target="{$vo.target}"><img src="{$vo.image}" alt="{$vo.description}" ></a></div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        置顶
+                    </div>
+                    <div class="layui-card-body">
+                        <div class="forum-post-list">
+                            <ul>
+                                {foreach name="toptopic" item="v"}
+                                <li class="clearfix">
+                                    <a href="javascript:void(0)" class="headimg fl mr15">
+                                        <img src="{$v.uid|getAvatar|defaultAvatar}">
+                                    </a>
+                                    <div class="post"><a href="{:url('index/forum/detail',['id' => $v.id])}">{$v.name}</a>{if condition="$v.istop==1"}<span class="layui-badge layui-bg-black ml10">置顶</span>{/if}{if condition="$v.isessence==1"}<span class="layui-badge layui-bg-red ml10">精帖</span>{/if}</span></div>
+                                    <div class="post-info"><a class="username manage" href="#">{$v.uid|getUserName}</a>　{$v.addtime}　发表在 <a href="#">{$v.pid|getPlateName}</a><span class="fr">回复 {$v.id|replaycount}　|　浏览  {$v.hits}</span></div>
+                                </li>
+                                {/foreach}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card forum-post-box">
+                    <div class="layui-card-header">
+                        <a href="{:url('index/forum/index')}">最新问答</a>
+                    </div>
+                    <div class="layui-card-body">
+                        <div class="forum-post-list">
+                            <ul>
+                                {foreach name="topic" item="v"}
+                                <li class="clearfix">
+                                    <a href="javascript:void(0)" class="headimg fl mr15">
+                                        <img src="{$v.uid|getAvatar|defaultAvatar}">
+                                    </a>
+                                    <div class="post"><a href="{:url('index/forum/detail',['id' => $v.id])}">{$v.name}</a>{if condition="$v.isessence==1"}<span class="layui-badge layui-bg-red ml10">精帖</span>{/if}</div>
+                                    <div class="post-info"><a class="username manage" href="#">{$v.uid|getUserName}</a>　{$v.addtime|get_last_time}　发表在 <a href="{:url('index/forum/index',['pid' => $v.pid])}">{$v.pid|getPlateName}</a><span class="fr">回复 {$v.id|replaycount}　|　浏览 {$v.hits}</span></div>
+                                </li>
+                                {/foreach}
+                            </ul>
+                            <div class="page">{$topic->render()}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4 forum-right">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <h3 class="font18"><i class="fa fa-bars fa-fw"></i> 问答版块</h3>
+                        <div class="forum-block-list text-center">
+                            <ul class="font0">
+                                {foreach name="plate" item="v"}
+                                <a href="{:url('index/forum/index',['pid' => $v.id])}"><li><span class="block-img"><img src="{$v.img}"></span><span class="block-title">{$v.name}</span></li></a>
+                                {/foreach}
+                            </ul>
+                        </div>
+                        <div class="forum-post text-center mt20">
+                            <a href="{:url('index/forum/addtopic')}" class="layui-btn"><i class="fa fa-pencil-square-o fa-fw"></i>发布新帖</a>
+                        </div>
+                        <h3 class="font18 mt20"><i class="fa fa-fire fa-fw"></i> 热门帖子</h3>
+                        <div class="forum-hot-post mt10">
+                            <ul>
+                                {foreach name="top10" key="key" item="v" empty="$empty"}
+                                <li><span>{$key+1}</span><a href="{:url('index/forum/detail',['id' => $v.id])}">{$v.name}</a></li>
+                                {/foreach}
+                            </ul>
+                        </div>
+                        <h3 class="font18 mt20"><i class="fa fa-mortar-board fa-fw"></i> 推荐课程</h3>
+                        <div class="forum-rec">
+                            <div class="course-class mt15 yxt_course-list">
+                                {foreach name="tuijian" item="vo" empty="$empty"}
+                                <div class="layui-col-md12 course-pic">
+                                    <div class="yxt_course-item">
+                                        <div class="yxt_course-img">
+                                            <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                <img src="{$vo['picture']}" alt="{$vo['title']}" class="img-responsive">
+                                                {if condition="$vo['type']==2"}
+                                                <span class="tags">
+                                                    <span class="tag-live"></span>
+                                                </span>
+                                                {/if}
+                                            </a>
+                                        </div>
+                                        <div class="yxt_course-info">
+                                            <div class="title">
+                                                <a class="link-dark" href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                    {$vo['title']}
+                                                </a>
+                                            </div>
+                                            <div class="metas clearfix">
+                                                <span class="num"><i class="fa fa-user fa-fw"></i>&nbsp;{$vo.id|getUserNum=###,$vo['type']}</span>
+                                                <span class="comment"><i class="fa fa-eye fa-fw"></i>&nbsp;{$vo.views}</span>
+                                                {if condition="$vo['price']==0"}
+                                                <span class="free"> <i class="layui-icon layui-icon-rmb mr5"></i>免费</span>
+                                                {else /}
+                                                <span class="price"> <i class="layui-icon layui-icon-rmb mr5"></i>{$vo['price']}</span>
+                                                {/if}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/foreach}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{/block}
+{block name="js"}
+<script src="https://cdn.bootcss.com/Swiper/4.5.1/js/swiper.min.js"></script>
+<script src="__JS__/forum.base.js"></script>
+<script>
+    var swiper = new Swiper('.forum-swiper', {
+        loop : true,
+        autoplay:true,
+        scrollbar: {
+            el: '.swiper-scrollbar',
+            hide: true,
+        },
+    });
+    $('#top-back').hide()
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 350) {
+            $("#top-back").fadeIn();
+        } else {
+            $("#top-back").fadeOut();
+        }
+    })
+
+    function topBack() {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 300);
+    }
+</script>
+{/block}

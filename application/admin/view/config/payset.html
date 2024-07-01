@@ -1,0 +1,23 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:url('admin/config/pay')}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">分成比例</label>
+                <div class="layui-input-block">
+                    <input type="text" name="bili" value="{$data.bili|default=''}" placeholder="填写0.1-0.9，比如0.3表示教师分3成" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+{/block}

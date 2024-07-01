@@ -1,0 +1,48 @@
+{extend name="base" /}
+{block name="body"}
+<div class="down-bg-banner">
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-md4 fr download">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-container">
+    <div class="layui-row  down-list">
+        <div class="layui-col-md4 tc">
+            <h2>Android客户端</h2>
+            <p>随时随地移动学 方便高效</p>
+            <div class="down-style" style="margin:0 auto">
+                {if condition="empty($Android['downurl'])"}
+                <div style="height:120px;width:120px;border: solid #ccc 1px;margin:40px auto;line-height: 120px">敬请期待！</div>
+                {else /}
+                <img src="{:url('index/index/qrcode',['url'=>$Android['downurl'],'size'=>3,'level'=>'a'])}" alt="请用手机浏览器扫描二维码下载APP">
+                {/if}
+            </div>
+            <p style="font-size: 12px;">请用手机浏览器扫描二维码下载APP</p>
+        </div>
+        <div class="layui-col-md4 tc">
+            <h2>微信小程序</h2>
+            <p>微信小程序专属入口 让用户轻松发现你</p>
+            <div class="down-style" style="margin:0 auto">
+                <div style="height:120px;width:120px;border: solid #ccc 1px;margin:20px auto;line-height: 120px">敬请期待！</div>
+                <!--<img src="{:url('index/index/qrcode',['url'=>$Android['downurl']])}" alt="">-->
+            </div>
+        </div>
+        <div class="layui-col-md4 tc">
+            <h2>H5手机端</h2>
+            <p>不用下载APP，浏览器即可轻松移动学习</p>
+            <div class="down-style" style="margin:0 auto">
+                {if condition="empty($H5['downurl'])"}
+                <div style="height:120px;width:120px;border: solid #ccc 1px;margin:40px auto;line-height: 120px">敬请期待！</div>
+                {else /}
+                <img src="{:url('index/index/qrcode',['url'=>$H5['domain'],'size'=>4.5,'level'=>'m'])}" alt="请用手机浏览器扫描浏览网站">
+                {/if}
+            </div>
+            <p style="font-size: 12px;">请用手机浏览器扫描浏览网站</p>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,49 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:url('admin/index/teacherInfoSave')}" class="layui-form mt20 layui-form-pane" method="post">
+            <div class="layui-form-item ">
+                <label class="layui-form-label">展示姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="showname" lay-verify="username"  value="{$teacherInfo.showname}" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">教师签名</label>
+                <div class="layui-input-block">
+                    <textarea name="sign" lay-verify="smallMaxLength" class="layui-textarea">{$teacherInfo.sign}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">教师简介</label>
+                <div class="layui-input-block">
+                    <div id="editor">{$teacherInfo.brief|default=''}</div>
+                    <textarea name="brief"  id="content" lay-verify="required|smallMaxLength" class="layui-textarea" placeholder="请输入教师简介"  style="display: none;">{$teacherInfo.brief}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="hidden" name="id" value="{$teacherInfo['id']}"  class="layui-input">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">修改</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__LIBS__/wangeditor/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.config.onchange = function (html) {
+        $('#content').val(html)
+    };
+    editor.config.uploadFileName = 'image';
+    editor.config.uploadImgServer = '/api/Uploader/wangEditorUp';
+    editor.create();
+    $('#content').val(editor.txt.html());
+</script>
+{/block}

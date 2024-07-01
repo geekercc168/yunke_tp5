@@ -1,0 +1,30 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">绑定账号</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div id="agora" class="layui-show">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">声网Appid</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="agoraAppid" value="{$data.agoraAppid}" autocomplete="off" placeholder="请填写声网的Appid" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">APP 证书</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="agoraRestfulKey" value="{$data.agoraRestfulKey}" autocomplete="off" placeholder="请填写声网的APP证书" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

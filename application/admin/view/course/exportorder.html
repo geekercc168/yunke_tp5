@@ -1,0 +1,36 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">起始时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="starttime" name="starttime" placeholder="请输入订单的起始时间" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="endtime" name="endttime"  placeholder="请输入订单的起始时间" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" >导出</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name="js"}
+<script>
+    laydate.render({
+        elem: '#starttime'
+        ,type: 'datetime'
+        ,trigger: 'click'
+    });
+    laydate.render({
+        elem: '#endtime'
+        ,type: 'datetime'
+        ,trigger: 'click'
+    });
+</script>
+{/block}

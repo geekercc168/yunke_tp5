@@ -1,0 +1,34 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:100px;">试题类型</th>
+                <th >试题内容</th>
+                <th  style="width:40px;">难度</th>
+                <th  style="width:140px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.questiontype|get_question_type}</td>
+                <td class="layui-elip">{$v.question}</td>
+                <td>{$v.questionlevel|get_question_level}</td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/exam/questionsPreview', ['id' => $v.id])}" class="layui-btn  layui-btn-warm layui-btn-xs ajax-iframe" data-width="800px" data-height="460px"> <i class="layui-icon">&#xe705;</i></a>
+                        <a href="{:url('admin/exam/questionsEdit', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="460px"> <i class="layui-icon">&#xe642;</i></a>
+                        <a href="{:url('admin/exam/questionsDel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,191 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/forum.css" media="all">{/block}
+{block name="body"}
+<section class="place mt20">
+    <div class="layui-container">
+        <div class="place-box">
+            <ul>
+                <li><i class="layui-icon layui-icon-location"></i> <a href="/">{:config('website.site_name')}</a><span class="Y-axis">></span><a href="{:url('index/forum/index')}">问答</a>{$platename}</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<div class="layui-container mt20 forum">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8 content detail">
+            <div class="fly-panel detail-box">
+                <h1>{$detail.name}</h1>
+                <div class="fly-detail-info">
+                    <span class="layui-badge layui-bg-red"><a href="{:url('index/forum/index',['pid' => hashids_encode($detail.pid)])}">{$detail.pid|getPlateName}</a></span>
+                    {if condition="$detail.istop==1"}
+                    <span class="layui-badge layui-bg-black">置顶</span>
+                    {/if}
+                    {if condition="$detail.isessence==1"}
+                    <span class="layui-badge layui-bg-red">精帖</span>
+                    {/if}
+                    <div class="fly-admin-box layui-layout-right" data-id="{:hashids_encode($detail.id)}">
+                        {if condition="$isAuthor==1 or ($userInfo.forumadmin eq 1)"}
+                        <span  class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
+                        {/if}
+                        {if condition="$userInfo.forumadmin eq 1"}
+                        <span  class="layui-btn layui-btn-xs jie-admin" type="set" field="istop" rank="{$detail.istop}">置顶</span>
+                        <span  class="layui-btn layui-btn-xs jie-admin" type="set" field="isessence" rank="{$detail.isessence}">加精</span>
+                        {/if}
+                    </div>
+                    <span class="fly-list-nums">
+                        <a href="#comment"><i class="iconfont" title="回复">&#xe60c;</i> {$detail.replaycount}</a>
+                        <i class="iconfont" title="人气">&#xe60b;</i> {$detail.hits}
+                    </span>
+                </div>
+                <div class="detail-about">
+                    <a class="fly-avatar" href="javascript:void(0)">
+                        <img src="{$detail.uid|getAvatar|defaultAvatar}" alt="{$detail.uid|getUserName}">
+                    </a>
+                    <div class="fly-detail-user">
+                        <a href="javascript:void(0)" class="fly-link">
+                            <cite>{$detail.uid|getUserName}</cite>
+                        </a>
+                        <span>{$detail.addtime}</span>
+                    </div>
+                    <div class="detail-hits" id="LAY_jieAdmin" data-id="{$detail.id}">
+                        {if condition="$isAuthor==1 or ($userInfo.forumadmin eq 1)"}
+                        <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="{:url('index/forum/edittopic',['id' => hashids_encode($detail.id)])}">编辑</a></span>
+                        {/if}
+                    </div>
+                </div>
+                <div class="detail-body photos">
+                    {$detail.content}
+                </div>
+            </div>
+            <div class="fly-panel detail-box" id="flyReply">
+                <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                    <legend>回帖</legend>
+                </fieldset>
+                <ul class="jieda" id="jieda">
+                    {foreach name="replay" item="v"}
+                    {if condition="$v.accept==1"}
+                    <li data-id="{$v.id}" class="jieda-daan">{else/}
+                    <li data-id="{$v.id}">
+                    {/if}
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" href="">
+                                <img src="{$v.uid|getAvatar|defaultAvatar}" alt="{$v.uid|getUserName}">
+                            </a>
+                            <div class="fly-detail-user">
+                                <a href="" class="fly-link">
+                                    <cite>{$v.uid|getUserName}</cite>
+                                </a>
+                                {if condition="$isAuthor==1"}
+                                <span>(楼主)</span>
+                                {/if}
+                                {if condition="$userInfo.admin_id gt 0"}
+                                <span style="color:#5FB878">(教师)</span>
+                                {/if}
+                            </div>
+                            <div class="detail-hits">
+                                <span>{$v.addtime|get_last_time}</span>
+                            </div>
+                            {if condition="$v.accept==1"}
+                            <i class="iconfont icon-caina" title="最佳答案"></i>
+                            {/if}
+                        </div>
+                        <div class="detail-body jieda-body photos">
+                            {$v.content}
+                        </div>
+                        <div class="jieda-reply">
+                            <span type="reply">
+                                <i class="iconfont icon-svgmoban53"></i> 回复
+                            </span>
+                            {if condition="$isAuthor==1 or ($userInfo.forumadmin eq 1)"}
+                            <div class="jieda-admin">
+                               <!-- <span type="edit">编辑</span>-->
+                                <span class="jiedaActive" type="del">删除</span>
+                                {if condition="!$detail.knot==1"}
+                                <span class="jieda-accept" type="accept">采纳</span>
+                                {/if}
+                             </div>
+                            {/if}
+                        </div>
+                    </li>
+                    {/foreach}
+                </ul>
+                {if condition="$islogin"}
+                <div class="layui-form layui-form-pane">
+                    <form action="{:url('index/forum/reply')}" method="post">
+                        <div class="layui-form-item layui-form-text">
+                            <a name="comment"></a>
+                            <div class="layui-input-block">
+                                <textarea id="L_content" name="content" required lay-verify="required|bigMaxLength" placeholder="请输入内容"  class="layui-textarea fly-editor" style="height: 150px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <input type="hidden" name="tid" value="{$detail.id}">
+                            <input type="hidden" name="__token__" value="{$Request.token}" />
+                            <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
+                        </div>
+                    </form>
+                </div>
+                {/if}
+            </div>
+        </div>
+        <div class="layui-col-md4 forum-right">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <h3 class="font18"><i class="fa fa-bars fa-fw"></i> 问答版块</h3>
+                    <div class="forum-block-list text-center">
+                        <ul class="font0">
+                            {foreach name="plate" item="v"}
+                            <a href="{:url('index/forum/index',['pid' => hashids_encode($v.id)])}"><li><span class="block-img"><img src="{$v.img}"></span><span class="block-title">{$v.name}</span></li></a>
+                            {/foreach}
+                        </ul>
+                    </div>
+                    <div class="forum-post text-center mt20">
+                        <a href="{:url('index/forum/addtopic')}" class="layui-btn"><i class="fa fa-pencil-square-o fa-fw"></i>发布新帖</a>
+                    </div>
+                    <h3 class="font18 mt20"><i class="fa fa-mortar-board fa-fw"></i> 推荐课程</h3>
+                    <div class="forum-rec">
+                        <div class="course-class mt15 yxt_course-list">
+                            {foreach name="tuijian" item="vo" empty="$empty"}
+                            <div class="layui-col-md12 course-pic">
+                                <div class="yxt_course-item">
+                                    <div class="yxt_course-img">
+                                        <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                            <img src="{$vo['picture']}" alt="{$vo['title']}" class="img-responsive">
+                                            {if condition="$vo['type']==2"}
+                                            <span class="tags">
+                                                    <span class="tag-live"></span>
+                                                </span>
+                                            {/if}
+                                        </a>
+                                    </div>
+                                    <div class="yxt_course-info">
+                                        <div class="title">
+                                            <a class="link-dark" href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                {$vo['title']}
+                                            </a>
+                                        </div>
+                                        <div class="metas clearfix">
+                                            <span class="num"><i class="fa fa-user fa-fw"></i>&nbsp;{$vo.id|getUserNum=###,$vo['type']}</span>
+                                            <span class="comment"><i class="fa fa-eye fa-fw"></i>&nbsp;{$vo.views}</span>
+                                            {if condition="$vo['price']==0"}
+                                            <span class="free"> <i class="layui-icon layui-icon-rmb mr5"></i>免费</span>
+                                            {else /}
+                                            <span class="price"> <i class="layui-icon layui-icon-rmb mr5"></i>{$vo['price']}</span>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/forum.base.js"></script>
+{/block}

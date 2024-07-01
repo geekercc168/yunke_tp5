@@ -1,0 +1,33 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="dingming-result">课程共有{$allUser}人，{foreach name="times" item="v"}第{$v.times}次： {$v.dingmingnum}人签到，{$v.weiqiandao}人未签到！{/foreach}</div>
+<table lay-filter="dingingdata" lay-skin="nob" lay-size="sm">
+    <thead style="background: #2E343E">
+        <tr style="background: #2E343E">
+            <th lay-data="{field:'uid', width:80}">用户ID</th>
+            <th lay-data="{field:'username', width:130, sort:true}">用户名</th>
+            <th lay-data="{field:'times',width:110, sort:true}">签到次数</th>
+            <th lay-data="{field:'addtimes', sort:true}">签到时间</th>
+        </tr>
+    </thead>
+    <tbody style="background: #2E343E">
+    {foreach name="list" item="v"}
+        <tr>
+            <td>{$v.uid}</td>
+            <td>{$v.username}</td>
+            <td>第{$v.times}次签到</td>
+            <td>{$v.addtimes}</td>
+        </tr>
+    {/foreach}
+    </tbody>
+</table>
+{/block}
+{block name="js"}
+<script>
+    var table = layui.table;
+    table.init('dingingdata', {
+        height: 300
+        ,limit: 10
+    });
+</script>
+{/block}

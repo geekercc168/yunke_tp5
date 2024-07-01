@@ -1,0 +1,108 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">课程管理：{$data.title}</div>
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/course/videoAddZhang', ['cid' => $data.id])}" class="layui-btn layui-btn-primary ajax-iframe" data-width="800px" data-height="520px"><i class="fa fa-plus-circle"></i> 添加章</a>
+            <a href="{:url('admin/course/videoAddSection',['cid' => $data.id])}" class="layui-btn layui-btn-primary ajax-iframe" data-width="800px" data-height="520px"><i class="fa fa-plus-circle"></i> 视频课程</a>
+            <a href="{:url('admin/course/videoAddDoc',['cid' => $data.id])}" class="layui-btn layui-btn-primary ajax-iframe" data-width="1000px" data-height="520px"><i class="fa fa-plus-circle"></i> 文本课程</a>
+            <a href="{:url('admin/course/videoaddExam', ['cid' => $data.id])}" class="layui-btn layui-btn-primary ajax-iframe" data-width="800px" data-height="520px"><i class="fa fa-plus-circle"></i> 添加试卷</a>
+            <a href="{:url('admin/course/materialAdd',['cid' => $data.id,'cstype'=>$data.type])}" class="layui-btn layui-btn-primary ajax-iframe" data-width="800px" data-height="520px"><i class="fa fa-plus-circle"></i> 添加资料<span class="layui-badge">{$data.material_id|json_count}</span></a>
+            <a href="{:url('admin/course/progress', ['cid' => $data.id,'cstype'=>$data.type])}" class="layui-btn layui-btn-primary ajax-iframe" data-width="800px" data-height="500px"><i class="fa fa-plus-circle"></i> 进度管理</a>
+            <a href="{:url('admin/course/videodelsection')}" class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i> 批量删除</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:40px;">ID</th>
+                <th >章节名称</th>
+                <th style="width:100px;">课程类型</th>
+                <th  style="width:60px;">是否免费</th>
+                <th  style="width:60px;">支持快进</th>
+                <th  style="width:140px;">发布时间</th>
+                <th  style="width:50px;">排序</th>
+                <th  style="width:85px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="sectionlist" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.title}</td>
+                <td>{$v.sectype|section_type}</td>
+                <td>
+                  {if condition="empty($v.seclist)"}
+                    <input type="checkbox" name="isfree" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/course/videoEditZhang', ['id' => $v.id])}" {if $v.isfree eq 1}checked="checked" {/if}>
+                  {/if}
+                </td>
+                <td>
+                    {if condition="empty($v.seclist)"}
+                    <input type="checkbox" name="isforward" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/course/videoEditZhang', ['id' => $v.id])}" {if $v.isforward eq 1}checked="checked" {/if}>
+                    {/if}
+                </td>
+                <td>{$v.addtime}</td>
+                <td >
+                    <input type="text" name="sort_order" value="{$v.sort_order}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/course/videoEditZhang', ['id' => $v.id])}">
+                </td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        {if condition="$v.ischapter==1"}
+                        <a href="{:url('admin/course/videoEditZhang', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="600px" data-height="400px"> <i class="layui-icon">&#xe642;</i></a>
+                        {/if}
+                        {if condition="$v.ischapter==0"}
+                        {switch name="v.sectype"}
+                        {case value="1"}<a href="{:url('admin/course/videoEditSection', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="520px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                        {case value="2"}<a href="{:url('admin/course/videoEditAudio', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="520px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                        {case value="3"}<a href="{:url('admin/course/videoEditDoc', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="1000px" data-height="520px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                        {case value="4"}<a href="{:url('admin/course/videoEditExam', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="520px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                        {/switch}
+                        {/if}
+                        {if condition="$v.sectype==4"}
+                        <a href="{:url('admin/exam/analysis', ['id' => $v.paperid,'cid'=>$data.id])}" class="layui-btn layui-btn-xs layui-btn-warm ajax-iframe" data-width="1000px" data-height="550px"> <i class="layui-icon">&#xe62c;</i></a>
+                        {/if}
+                        <a href="{:url('admin/course/videodelsection', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {foreach name="v['seclist']|default=''" item="vv"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$vv.id}" lay-skin="primary"></td>
+                <td>{$vv.id}</td>
+                <td>&nbsp;&nbsp;&nbsp;└{$vv.title}</td>
+                <td>{$vv.sectype|section_type}</td>
+                <td>
+                    <input type="checkbox" name="isfree" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/course/videoEditZhang', ['id' => $vv.id])}" {if $vv.isfree eq 1}checked="checked" {/if}>
+                </td>
+                <td>
+                    <input type="checkbox" name="isforward" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/course/videoEditZhang', ['id' => $vv.id])}" {if $vv.isforward eq 1}checked="checked" {/if}>
+                </td>
+                <td>{$vv.addtime}</td>
+                <td >
+                    <input type="text" name="sort_order" value="{$vv.sort_order}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/course/videoEditZhang', ['id' => $vv.id])}">
+                </td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        {switch name="vv.sectype"}
+                             {case value="1"}<a href="{:url('admin/course/videoEditSection', ['id' => $vv.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                             {case value="2"}<a href="{:url('admin/course/videoEditAudio', ['id' => $vv.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                             {case value="3"}<a href="{:url('admin/course/videoEditDoc', ['id' => $vv.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="1000px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                             {case value="4"}<a href="{:url('admin/course/videoEditExam', ['id' => $vv.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>{/case}
+                        {/switch}
+                        {if condition="$vv.sectype==4"}
+                        <a href="{:url('admin/exam/analysis', ['id' => $vv.paperid,'cid'=>$data.id])}" class="layui-btn layui-btn-xs layui-btn-warm ajax-iframe" data-width="1000px" data-height="550px"> <i class="layui-icon">&#xe62c;</i></a>
+                        {/if}
+                        <a href="{:url('admin/course/videodelsection', ['id' => $vv.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page"></div>
+    </div>
+</div>
+{/block}

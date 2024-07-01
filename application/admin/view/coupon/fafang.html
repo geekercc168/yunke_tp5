@@ -1,0 +1,36 @@
+{extend name="iframe" /}
+{block name="css"}
+{/block}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <table class="layui-table layui-form">
+        <thead>
+        <tr>
+            <th style="width:90px;">发放条件</th>
+            <th >用户领取数量</th>
+            <th style="width:120px;">折扣</th>
+            <th  style="width:70px;">状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="data" item="v" empty="$empty"}
+        <tr>
+            <td>{$v.title}</td>
+            <td><input type="text" name="numbs" value="{$v['details']['numbs']}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/Coupon/fafang',['id' => $v.id])}"></td>
+            <td><select name="rate" id="select" lay-filter="select"  data-url="{:url('admin/Coupon/fafang',['id' => $v.id])}">
+                    <option value="-1"  {if $v.details.rate eq -1} selected{/if}>选择折扣</option>
+                    {foreach name="rate" item="vv"}
+                    <option value="{$vv}" {if $v.details.rate eq $vv} selected{/if}>{$vv}折卡</option>
+                    {/foreach}
+                </select>
+            </td>
+            <td><input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="开启|关闭" data-url="{:url('admin/Coupon/fafang',['id' => $v.id])}" {if $v.details.status eq 1}checked="checked" {/if}></td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</form>
+{/block}
+{block name="js"}
+
+{/block}

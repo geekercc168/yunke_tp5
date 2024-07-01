@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设备检测</title>
+    <link rel="stylesheet" href="/static/libs/detection/css/Detection.css">
+</head>
+<body>
+<div class="detection">
+    <div id="detection-box"></div>
+</div>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="/static/libs/detection/js/classroom.js"></script>
+<script src="/static/libs/detection/js/player.js"></script>
+<script src="/static/libs/detection/js/CorePlayer.js"></script>
+<script src="/static/libs/detection/js/realtimecat.js"></script>
+<script src="/static/libs/detection/js/webrtc.js"></script>
+<script src="/static/libs/detection/js/Detection.js"></script>
+<script>
+    BJY.init({
+        env: 'production',
+        class: {
+            webrtcType: 1 // 如果是客户端，传0
+        },
+        user: {
+            type: 1
+        },
+        playback: true, // 避免连socket失败
+        partner: {}
+    }).then(() => {
+        return BJY.getExtension().init();
+    }).then(() => {
+        var detectionNew = BJY.DetectionNew.create({
+            el: $("#detection-box")[0],
+            props: {
+                onDetectResult(success) {
+                    $('#join-form', window.parent.document).removeClass('layui-hide');
+                    $('#detection', window.parent.document).addClass('layui-hide');
+                    detectionNew.destroy();
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+
+</html>

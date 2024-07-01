@@ -1,0 +1,36 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">网站域名</label>
+        <div class="layui-input-block">
+            <input type="text" name="domain"  autocomplete="off" placeholder="请输入网站域名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">小程序名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="appname"  autocomplete="off" placeholder="请输入app名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">小程序图标1024*1024</label>
+        <div class="layui-input-block">
+            <input type="text" name="appicon" autocomplete="off" placeholder="请上传app图标" class="layui-input">
+            <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-images"><i class="fa fa-file-image-o"></i> 选择图片</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">微信appid</label>
+        <div class="layui-input-block">
+            <input type="text" name="appid"  autocomplete="off" placeholder="微信appid，需开通微信app支付，h5支付，微信登录" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">提交</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}

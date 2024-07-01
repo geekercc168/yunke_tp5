@@ -1,0 +1,56 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">教师详情</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52 course-info">
+    <div class="hui-tab">
+        <div class="hui-tab-title" id="course-tab">
+            <div>教师简介</div>
+            <div>所教课程</div>
+        </div>
+        <div class="hui-tab-body">
+            <div class="hui-tab-body-items">
+                <div class="hui-tab-item">
+                    <div class="pd10">
+                        <span class="layui-text layui-word-aux" >
+                            {$teacherInfo.brief}
+                        </span>
+                    </div>
+                </div>
+                <div class="hui-tab-item">
+                    <div class="hui-flex pd10 index-course-list" style="flex-wrap:wrap;">
+                        {foreach name="list" item="vo"}
+                        <div  class="item">
+                            <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                <div class="image"><img src="{$vo['picture']}" style="height: auto;"></div>
+                                <div class="hui-center-title title mt10">{$vo['title']}</div>
+                                <div class="tll ml10">
+                                    <i class="layui-icon layui-icon-user metas"></i>
+                                    <span class="metas">{$vo.id|getUserNum=###,$vo['type']}</span>
+                                    <span class="hui-icons hui-icons-play metas ml10"></span>
+                                    <span class="metas">{$vo.id|getCourseNum=###,$vo['type']}</span>
+                                    {if condition="$vo['price']==0"}
+                                    <span class="free">免费</span>
+                                    {else /}
+                                    <span class="price"><i class="layui-icon layui-icon-rmb mr5" style="font-size: 14px"></i>{$vo['price']}</span>
+                                    {/if}
+                                </div>
+                            </a>>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__HUI__/js/hui-tab.js"></script>
+<script type="text/javascript">
+    hui.tab('.hui-tab');
+</script>
+{/block}

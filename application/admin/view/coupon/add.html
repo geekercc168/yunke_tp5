@@ -1,0 +1,35 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">打折折扣</label>
+        <div class="layui-input-block">
+            <input type="text" name="rate"  autocomplete="off" placeholder="比如：7就是七折" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">生成数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="count"  autocomplete="off" placeholder="要生成的打折数量，为整数" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">卡号位数</label>
+        <div class="layui-input-block">
+            <input type="text" name="figures"  autocomplete="off" placeholder="打折卡数字的位数，为整数" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">有效期</label>
+        <div class="layui-input-block">
+            <input type="text" name="youxiaoqi"  autocomplete="off" placeholder="有效期从获取优惠券那天算起，单位天" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}

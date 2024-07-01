@@ -1,0 +1,32 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;"> 我的收藏</a></li>
+        </ul>
+    </div>
+    {foreach name="myFavourite" item="vo" empty="$empty"}
+    <div class="layui-row  mycourse">
+        <div class="layui-col-md3 mycourse-left">
+            <div class="mycourse-pic">
+                <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['courseInfo']['id']),'type'=>hashids_encode($vo['courseInfo']['type'])))}"><img src="{$vo['courseInfo']['picture']}"></a>
+            </div>
+        </div>
+        <div class="layui-col-md9 mycourse-detail mt10">
+            <div class="layui-row mt10">
+                <div class="mycourse-title font18">{$vo['courseInfo']['title']}</div>
+            </div>
+            <div class="layui-row mt15">
+                <div class="layui-col-md3 mycourse-title c-61">课时：{$vo['courseInfo']['id']|getCourseNum=###,$vo['courseInfo']['type']}</div>
+                <div class="layui-col-md5 mycourse-title c-61">课程有效期：{$vo['courseInfo']['youxiaoqi']|youxiaoqi}</div>
+                <div class="layui-col-md3 mycourse-title c-61">主讲老师：{$vo['courseInfo']['teacher_id']|getTeacherName}</div>
+            </div>
+        </div>
+    </div>
+    {/foreach}
+</div>
+{/block}
+{block name="js"}
+
+{/block}

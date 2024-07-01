@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>{$info.title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="__LIBS__/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/learn.css" media="all">
+    <link rel="stylesheet" type="text/css" href="__CSS__/base.css" media="all">
+    <link rel="shortcut icon" href="{:config('website.icon')}" />
+    <link rel="bookmark"href="{:config('website.icon')}" />
+</head>
+<body>
+<div class="layui-layout learn-box">
+    <div class="layui-row learn-header">
+        {if condition="$info.previewtimes neq 0"}
+        <div class="layui-col-md10 learn-title"><a href="{:url('index/course/info',array('id'=>hashids_encode($info['csid']),'type'=>hashids_encode($info['coursetype'])))}"><i class="layui-icon layui-icon-left"></i>{$info.title}</a></div>
+        {else /}
+        <div class="layui-col-md10 learn-title"><a href="{:url('index/user/mylearn',array('id'=>hashids_encode($info.csid),'type'=>hashids_encode($info['coursetype'])))}"><i class="layui-icon layui-icon-left"></i>{$info.title}</a></div>
+        {/if}
+        <div class="layui-col-md2 layui-layout-right mr50 "><span class="fr"><a href="{:url('index/user/index')}" class="c-fff">个人中心</a></span></div>
+        <input type="hidden" id="cid"  value="{$info.csid}">
+        <input type="hidden" id="sid"  value="{$info.id}">
+        <input type="hidden" id="seek"  value="{$learnInfo.seek|default=0}">
+        <input type="hidden" id="learnover"  value="{$learnInfo.status}">
+    </div>
+    <div class="layui-row learn-content">
+        <div class="learn-playroom">
+            <iframe src="{$info.sharevideo}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="100%" > </iframe>
+        </div>
+        <div class="learn-right-box">
+            <a href="javascript:void(0);" id="aside-slide" class="btn-slide l am-show-lg-up"><i>〉</i></a>
+            <div class="learn-r-wrap">
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">目录</li>
+                        <li>笔记</li>
+                        <li>评论</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show learn-seclist-box">
+                            <div class="layui-collapse" lay-accordion>
+                                {if condition="!empty($secList[0]['section'])"}
+                                {foreach name="secList" item="vo"}
+                                <div class="layui-colla-item ">
+                                    <h2 class="layui-colla-title">{$vo.title}</h2>
+                                    <div class="layui-colla-content layui-show">
+                                        <ul class="learn-seclist yxt-course-seclist check-learn" id="learn-seclist">
+                                            {foreach name="vo['section']" item="voo"}
+                                            <li class="layui-elip"><a {if condition="$voo.id eq $info.id"} class="success-color"{/if} href="javascript:avoid(0)" target="_blank" sid="{$voo['id']}" type="{$voo['coursetype']}" url="{:url('index/Course/checkBuy')}">
+                                                {if condition="$voo['sectype'] eq 1"}
+                                                <span class="fr time mr10"><i class="fa fa-play-circle-o fa-fw"></i>{$voo['playtimes']}</span>
+                                                {/if}
+                                                {if condition="($voo['sectype'] eq 4) AND (getexamstarttime($voo['paperid']) neq '0')"}
+                                                <span class="fr time mr10"><i class="fa fa-clock-o fa-fw"></i>{$voo['paperid']|getexamstarttime}</span>
+                                                {/if}
+                                                {:getSecIcon($voo.sectype)}
+                                                <em >{$voo.title}</em>{:isStudyBySid($voo.csid,$voo.id,$voo.coursetype)}{if condition="$voo['isfree']==1"}<span class="layui-badge  ml10">免费</span>{elseif condition="$voo['previewtimes'] neq 0" /}<span class="layui-badge  ml10">试看</span>{else /}{/if}</a>
+                                            </li>
+                                            {/foreach}
+                                        </ul>
+                                    </div>
+                                </div>
+                                {/foreach}
+                                {else /}
+                                <div class="layui-colla-item ">
+                                    <div class="layui-colla-content layui-show">
+                                        <ul class="learn-seclist yxt-course-seclist check-learn">
+                                            {foreach name="secList" item="voo"}
+                                            <li class="layui-elip"><a {if condition="$voo.id eq $info.id"} class="success-color"{/if} href="javascript:avoid(0)" target="_blank" sid="{$voo['id']}" type="{$voo['coursetype']}" url="{:url('index/Course/checkBuy')}">
+                                                {if condition="$voo['sectype'] eq 1"}
+                                                <span class="fr time mr10"><i class="fa fa-play-circle-o fa-fw"></i>{$voo['playtimes']}</span>
+                                                {/if}
+                                                {if condition="($voo['sectype'] eq 4) AND (getexamstarttime($voo['paperid']) neq '0')"}
+                                                <span class="fr time mr10"><i class="fa fa-clock-o fa-fw"></i>{$voo['paperid']|getexamstarttime}</span>
+                                                {/if}
+                                                {:getSecIcon($voo.sectype)}
+                                                <em >{$voo.title}</em>{:isStudyBySid($voo.csid,$voo.id,$voo.coursetype)}{if condition="$voo['isfree']==1"}<span class="layui-badge  ml10">免费</span>{elseif condition="$voo['previewtimes'] neq 0" /}<span class="layui-badge  ml10">试看</span>{else /}{/if}</a>
+                                            </li>
+                                            {/foreach}
+                                        </ul>
+                                    </div>
+                                </div>
+                                {/if}
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="notes-box">
+                                <div class="notes-box-text">
+                                    <textarea class="f-fM" id="quesContent" lay-verify="smallMaxLength" placeholder="在此记录你的笔记......"></textarea>
+                                </div>
+                                <div class="notes-box-btn tar mt10 mb20">
+                                    <a href="javascript:void(0)" class="addNotes" cid="{$info.csid}" sid="{$info.id}" type="{$info.coursetype}" url="{:url('index/Course/addNotes')}" geturl="{:url('index/Course/getNotes')}" title="保存">保&nbsp;&nbsp;存</a>
+                                </div>
+                            </div>
+                            <div class="notes-list">
+                                <ul id="noteslist">
+                                    {foreach name="note" item="vo"}
+                                    <li id="courseNote{$vo.id}">
+                                        <div class="notes-list-box">
+                                            <section class="mt10  mr10">
+                                                <p class="c-999  font-12">{$vo.contents}</p>
+                                            </section>
+                                            <section class="mt10 mr10">
+                                                <span class="c-999  l-h-30 font-12 "> {$vo.addtime}</span>
+                                                <span class="c-666">
+                                                      <a class="layui-btn  btn-del layui-btn-sm fr delNotes" id="{$vo.id}" url="{:url('index/Course/delNotes')}"><i class="layui-icon">&#xe640;</i></a>
+					                            </span>
+                                            </section>
+                                        </div>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="notes-box">
+                                <div class="notes-box-text">
+                                    <textarea class="f-fM" id="commentContent" lay-verify="smallMaxLength" placeholder="在此填写您的评论......"></textarea>
+                                </div>
+                                <div class="notes-box-btn tar mt10 mb20">
+                                    <a href="javascript:void(0)" class="addComment" cid="{$info.csid}" sid="{$info.id}" type="{$info.coursetype}" url="{:url('index/Course/addComment')}" geturl="{:url('index/Course/getComment')}" title="保存">保&nbsp;&nbsp;存</a>
+                                </div>
+                            </div>
+                            <div class="notes-list">
+                                <ul id="commentlist">
+                                    {foreach name="comment" item="vo"}
+                                    <li id="courseComment{$vo.id}">
+                                        <div class="notes-list-box">
+                                            <section class="mt10  mr10">
+                                                <p class="c-999  font-12">评论：{$vo.contents}</p>
+                                                {if condition="$vo['replay']"}
+                                                <p style="font-size: 11px;color:#5FB878;margin-top: 8px;">回复：{$vo.replay}</p>
+                                                {/if}
+                                            </section>
+                                            <section class="mt10 mr10">
+                                                <span class="c-999  l-h-30 font-12 "> {$vo.addtime}</span>
+                                                <span class="c-666">
+                                                      <a class="layui-btn  btn-del layui-btn-sm fr delComment" id="{$vo.id}" url="{:url('index/Course/delComment')}"><i class="layui-icon">&#xe640;</i></a>
+					                            </span>
+                                            </section>
+                                        </div>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="__LIBS__/layui/layui.all.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="__COMMON__/common.js"></script>
+<script src="https://g.alicdn.com/de/prismplayer/2.8.2/hls/aliplayer-vod-anti-min.js"></script>
+<script src="https://cdn.bootcss.com/stickyNavbar.js/1.3.5/jquery.stickyNavbar.min.js"></script>
+<script>
+</script>
+</html>

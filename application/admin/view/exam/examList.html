@@ -1,0 +1,68 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <form action="{:url('admin/exam/examList')}" class="layui-form" method="get">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="exam" value="{:input('exam')}" autocomplete="off" placeholder="请输入试卷标题关键字" class="layui-input"/>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="cid">
+                        <option value="">全部分类</option>
+                        {foreach name="courseCategory" item="v"}
+                        <option value="{$v.id}" {if condition="input('examsubject') eq $v.id" }selected="selected"{/if}>{neq name="v.level" value="1"}|{for start="1" end="$v.level"} &#45;&#45;&#45;&#45;{/for}{/neq} {$v.category_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div>
+                    <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/exam/selfpage')}" class="layui-btn"><i class="fa fa-plus-circle"></i> 手动组卷</a>
+            <a href="{:url('admin/exam/intellectpage')}" class="layui-btn"><i class="fa fa-plus-circle"></i> 智能组卷</a>
+            <a href="{:url('admin/exam/examDel')}" class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i> 批量删除</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:20px;">ID</th>
+                <th >考试名称</th>
+                <th style="width:80px;">是否开放</th>
+                <th style="width:120px;">组卷人</th>
+                <th  style="width:130px;">考试科目</th>
+                <th  style="width:135px;">组卷时间</th>
+                <th  style="width:125px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td class="layui-elip">{$v.exam}</td>
+                <td><input type="checkbox" name="isopen" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/exam/examIsOpen', ['id' => $v.id])}" {if $v.isopen eq 1}checked="checked" {/if}></td>
+                <td>{$v.examauthorid|getTeacherName}</td>
+                <td>{$v.examsubject|get_category_name}</td>
+                <td>{$v.addtime}</td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/exam/examPreview', ['id' => $v.id])}" class="layui-btn  layui-btn-warm layui-btn-xs ajax-iframe" data-width="800px" data-height="500px"> <i class="layui-icon">&#xe705;</i></a>
+                        <a href="{:url('admin/exam/examEdit', ['id' => $v.id])}" class="layui-btn layui-btn-xs" data-width="800px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>
+                        <a href="{:url('admin/exam/examDel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                        <a href="{:url('admin/exam/analysis', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-warm ajax-iframe" data-width="1000px" data-height="550px"> <i class="layui-icon">&#xe62c;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

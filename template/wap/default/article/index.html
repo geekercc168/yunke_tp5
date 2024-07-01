@@ -1,0 +1,72 @@
+{extend name="base" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f"></h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap article mb52" >
+    <div class="pd10" >
+        <div id="x-cate">
+            <div class="hui-segment" id="cate">
+                <a href="{:url('index/article/index')}" class="cate hui-segment-active">全部</a>
+                {foreach name="category" item="v"}
+                <a href="{:url('index/article/index',['cid'=>hashids_encode($v.id)])}" class="cate">{$v.category_name}</a>
+                {/foreach}
+            </div>
+        </div>
+        <div id="domsIn" style=" text-align:center;">
+            <div class="hui-media-list" style="padding:10px;">
+                <ul>
+                    {foreach name="list" item="vo" empty="$empty"}
+                    <li>
+                        <a href="{:url('index/article/contents',['id'=>hashids_encode($vo.id)])}">
+                            <div class="hui-media-list-img"><img src="{$vo.image}" /></div>
+                            <div class="hui-media-content">
+                                <h1 style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{$vo.title}</h1>
+                                <p>{$vo.summary}</p>
+                                <p class="mt7 hui-fr">{$vo.update_time}</p>
+                            </div>
+                        </a>
+                    </li>
+                    {/foreach}
+                </ul>
+                <div class="page">{$list->render()}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="foot"}
+<div id="hui-footer">
+    <a href="/" id="nav-home">
+        <div class="iconfont icon-shouye"></div>
+        <div class="hui-footer-text">首页</div>
+    </a>
+    <a href="{:url('index/course/videoindex')}" id="nav-video">
+        <div class="iconfont icon-video"></div>
+        <div class="hui-footer-text">录播</div>
+    </a>
+    <a href="{:url('index/course/liveindex')}" id="nav-live">
+        <div class="iconfont icon-zhiboguanli"></div>
+        <div class="hui-footer-text">直播</div>
+    </a>
+    <a href="{:url('index/classroom/index')}" id="nav-classroom">
+        <div class="hui-footer-icons hui-icons-write"></div>
+        <div class="hui-footer-text">班级</div>
+    </a>
+    <a href="{:url('index/user/index')}" id="nav-my">
+        <div class="iconfont icon-wode"></div>
+        <div class="hui-footer-text">我的</div>
+    </a>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    hui('#x-cate').scrollX(3, '.cate');
+    $(function () {
+        var index={$cid};
+        hui('#cate a').eq(index).addClass('hui-segment-active').siblings().removeClass('hui-segment-active');
+    })
+</script>
+{/block}

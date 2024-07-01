@@ -1,0 +1,41 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <input type="hidden" id="count" value="{$count}">
+            <input type="hidden" id="PageSize" value="{$PageSize}">
+            <input type="hidden" id="curr" value="{$curr}">
+            <input type="hidden" id="url" value="/admin/educloud/getplaybacklist/page/">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:120px;">RoomId</th>
+                <th style="width:160px;">回放标题</th>
+                <th >视频状态</th>
+                <th >视频时长</th>
+                <th >观看次数</th>
+                <th  style="width:130px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.room_id}</td>
+                <td>{$v.name}</td>
+                <td>{$v.status|getVideoStatus}</td>
+                <td>{$v.length}</td>
+                <td>{$v.play_times}</td>
+                <td>
+                    <a href="{$v.play_url}" target="_blank" class="layui-btn layui-btn-xs"><i class="fa fa-trash-o"></i> 观看</a>
+                    <a href="{:url('admin/educloud/delPlayback', ['id' => $v.room_id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i> 删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page" id="page"></div>
+    </div>
+</div>
+{/block}

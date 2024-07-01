@@ -1,0 +1,1 @@
+<?phpnamespace app\api\controller;use app\common\controller\IndexBase;abstract class LoginAbstract  extends IndexBase{    abstract function login();    abstract function callback();}

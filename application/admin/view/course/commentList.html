@@ -1,0 +1,36 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group fl">
+            <a href="{:url('admin/course/addvirtualcomment',['cid'=>$cid,'$cstype'=>$cstype])}" class="layui-btn  ajax-iframe"  data-width="700px" data-height="400px"><i class="fa fa-plus-circle"></i>&nbsp评论马甲</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;">id</th>
+                <th style="width:80px;">学员姓名</th>
+                <th >评论内容</th>
+                <th style="width:60px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="material-list">
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <th >{$v.id}</th>
+                <th >{$v.uid|getUserName}</th>
+                <th ><p style="font-size: 11px;">评论：{$v.contents}</p><p style="font-size: 11px;color:#FF5722">回复：{$v.replay|default=""}</p></th>
+                <th >
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/course/commentsRe', ['id' => $v.id])}" class="layui-btn layui-btn-xs  ajax-iframe" data-width="600px" data-height="400px"> <i class="layui-icon">&#xe642;</i></a>
+                        <a href="{:url('admin/course/commentsDel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a></a>
+                    </div>
+                </th>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

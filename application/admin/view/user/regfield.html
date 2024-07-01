@@ -1,0 +1,89 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">字段设置</li>
+                <li>字段开启</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-btn-group">
+                        <a href="{:url('admin/user/gradeAdd')}" class="layui-btn ajax-iframe" data-width="600px" data-height="400px"><i class="fa fa-plus-circle"></i> 添加{$regfield[0]['name']}</a>
+                        <a href="{:url('admin/user/gradeNameEdit')}" class="layui-btn layui-btn-primary ajax-iframe" data-width="400px" data-height="240px"><i class="fa fa-plus-circle"></i> 编辑字段名称</a>
+                    </div>
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th width="100px">ID</th>
+                            <th>分类名称</th>
+                            <th width="100px">排序</th>
+                            <th width="200px">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach name="grade" item="v" empty="$empty"}
+                        <tr>
+                            <td>{$v.id}</td>
+                            <td>{$v.name}</td>
+                            <td>
+                                <input type="text" name="sort_order" value="{$v.sort_order}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/user/gradeEdit', ['id' => $v.id])}">
+                            </td>
+                            <td>
+                                <a href="{:url('admin/user/gradeEdit', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-normal ajax-iframe" data-width="600px" data-height="400px"><i class="fa fa-edit"></i> 编辑</a>
+                                <a href="{:url('admin/user/gradeDell', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i> 删除</a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                    <div class="layui-btn-group mt10">
+                        <a href="{:url('admin/user/schoolAdd',['type'=>'school '])}" class="layui-btn ajax-iframe" data-width="600px" data-height="400px"><i class="fa fa-plus-circle"></i> 添加{$regfield[1]['name']}</a>
+                        <a href="{:url('admin/user/schoolNameEdit')}" class="layui-btn layui-btn-primary ajax-iframe" data-width="400px" data-height="300px"><i class="fa fa-plus-circle"></i> 编辑字段名称</a>
+                    </div>
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th width="100px">ID</th>
+                            <th>分类名称</th>
+                            <th width="100px">排序</th>
+                            <th width="200px">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach name="school" item="v" empty="$empty"}
+                        <tr>
+                            <td>{$v.id}</td>
+                            <td>{$v.name}</td>
+                            <td>
+                                <input type="text" name="sort_order" value="{$v.sort_order}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/user/schoolEdit', ['id' => $v.id])}">
+                            </td>
+                            <td>
+                                <a href="{:url('admin/user/schoolEdit', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-normal ajax-iframe" data-width="600px" data-height="400px"><i class="fa fa-edit"></i> 编辑</a>
+                                <a href="{:url('admin/user/schoolDell', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i> 删除</a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-tab-item ">
+                    <form action="{:url('admin/user/regfield')}" class="layui-form" method="post">
+                        {foreach name="regfield" item="v" }
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{$v.name}</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/user/regfield', ['id' => $v.id])}" {if $v.status eq 1}checked="checked" {/if}>
+                            </div>
+                        </div>
+                        {/foreach}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+{/block}

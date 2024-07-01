@@ -1,0 +1,36 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-container">
+    <div class="layui-row mt10">
+        <ul>
+            <li class="layui-col-xs3 layui-col-sm3 layui-col-md3 pd10" >
+                <div class="video-pic" id="upload-container">
+                    <i class="fa fa-plus"></i>
+                    <div class="video-title">点击选择上传的视频</div>
+                    <div class="shadow"></div>
+                </div>
+                <button id="picker" style="display: none;">点击上传文件</button>
+                <input type="hidden" id="flag" value="{$flag}">
+            </li>
+        </ul>
+        <ul class="radio" id="">
+            {foreach name="list" item="v" key="key"}
+            <li class="layui-col-xs3 layui-col-sm3 layui-col-md3 pd10">
+                <div class="video-pic">
+                    <img src="{$v.CoverURL|defaultVideoPic}">
+                    <input  id="userId" type="text" name="dir" class="layui-hide" value="{$dir}"/>
+                    <input  type="hidden" id="name" type="text" name="name" class="layui-hide" value="{$v.name}"/>
+                    <input  type="hidden" name="localvideo" value="{$v.id}">
+                    <div class="video-title">{$v.name}</div>
+                    <div class="shadow"></div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__LIBS__/webuploader/webuploader.js"></script>
+<script src="__COMMON__/upvideolocal.js"></script>
+{/block}

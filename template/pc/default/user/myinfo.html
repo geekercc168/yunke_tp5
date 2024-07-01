@@ -1,0 +1,84 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;">基本资料</a></li>
+        </ul>
+    </div>
+    <form class="layui-form" action="{:request()->url()}" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">登录账号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" disabled="undisabled"  lay-verify="required|username" value="{$userInfo.username|default=''}"  autocomplete="off" class="layui-input  layui-disabled">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="nickname" lay-verify="required|username" value="{$userInfo.nickname|default=''}" placeholder="请输入显示昵称" autocomplete="off" class="layui-input">
+                <input type="hidden" name="__token__" value="{$Request.token}" />
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" {if condition="$userInfo['sex']==0"}checked{/if} name="sex" value="0" title="保密"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>保密</div></div>
+                <input type="radio" {if condition="$userInfo['sex']==1"}checked{/if} name="sex" value="1" title="男"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>男</div></div>
+                <input type="radio" {if condition="$userInfo['sex']==2"}checked{/if} name="sex" value="2" title="女"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>女</div></div>
+            </div>
+        </div>
+        {if condition="$regfield[0]['status']==1"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">年级</label>
+            <div class="layui-input-block" style="width:350px;">
+                <select name="greadId">
+                    <option value="">选择年级</option>
+                    {foreach name="grade" item="v"}
+                    <option value="{$v.id}" {if condition="$userInfo.greadId eq $v.id" }selected="selected"{/if}>{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        {/if}
+        {if condition="$regfield[1]['status']==1"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">学校</label>
+            <div class="layui-input-block" style="width:350px;">
+                <select name="schoolId">
+                    <option value="">选择学校</option>
+                    {foreach name="school" item="v"}
+                    <option value="{$v.id}" {if condition="$userInfo.schoolId eq $v.id"}selected="selected"{/if}>{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        {/if}
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="mobile" disabled="undisabled"  value="{$userInfo.mobile|default=''}" placeholder="请先绑定手机号" autocomplete="off" class="layui-input layui-disabled">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">头像</label>
+            <div class="layui-input-block">
+                <input type="text" name="avatar" lay-verify="img"  value="{$userInfo.avatar|default=''}" autocomplete="off" placeholder="请上传头像" class="layui-input">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-position {$uploadlocation}"><i class="fa fa-file-image-o"></i> 选择图片</button>
+            </div>
+        </div>
+        <input type="hidden" name="id"  value="{$userInfo.id}">
+        <div class="layui-form-item mt50">
+            <div class="layui-input-block">
+                <button class="layui-btn"  lay-filter="i" lay-submit="">保存修改</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

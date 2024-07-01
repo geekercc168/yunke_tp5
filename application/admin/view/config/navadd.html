@@ -1,0 +1,54 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">编辑数据</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 上级菜单</label>
+                <div class="layui-input-block">
+                    <select name="pid">
+                        <option value="0">顶级菜单</option>
+                        {foreach name="category" item="v"}
+                        <option value="{$v.id}" {if condition="isset($data) and $data.pid eq $v.id"}selected="selected"{/if}>{neq name="v.level" value="1"}|{php}for($i=1;$i<$v['level'];$i++){echo ' ----';}{/php}{/neq} {$v.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 菜单名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" value="{$data.name|default=''}" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 菜单URL</label>
+                <div class="layui-input-block">
+                    <input type="text" name="url" value="{$data.url|default=''}" autocomplete="off" placeholder="请输入菜单URL" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 显示排序</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sort_order" value="{$data.sort_order|default='10'}" autocomplete="off" placeholder="请输入菜单显示排序" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 打开方式</label>
+                <div class="layui-input-block">
+                    <select name="target">
+                        <option value="_blank">新窗口打开</option>
+                        <option value="_self">本窗口打开</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

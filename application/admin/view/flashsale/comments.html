@@ -1,0 +1,36 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group fl">
+            <a href="{:url('admin/flashsale/addComments')}" class="layui-btn ajax-iframe" data-width="600px" data-height="400px"><i class="fa fa-plus-circle"></i> 添加评论</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th  style="width:100px;">用户名</th>
+                <th  >评论内容</th>
+                <th  style="width:30px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="comment" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.username}</td>
+                <td>{$v.comment}</td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/flashsale/delcomment', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$comment->render()}</div>
+    </div>
+</div>
+{/block}
+

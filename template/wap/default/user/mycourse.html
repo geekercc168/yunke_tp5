@@ -1,0 +1,34 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">我的课程</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    <div class="hui-media-list mycourselist" style="padding:10px;">
+        <ul>
+            {foreach name="myCourse" item="vo" empty="$empty"}
+            <li>
+                <a href="{:url('index/course/info',['id'=>hashids_encode($vo['courseInfo']['id']),'type'=>hashids_encode($vo['courseInfo']['type'])])}">
+                    <div class="hui-media-list-img"><img src="{$vo['courseInfo']['picture']}" /></div>
+                    <div class="hui-media-content ml10">
+                        <h1 class="layui-elip">{$vo['courseInfo']['title']}</h1>
+                        <p>正在学习：{$vo['lastStudy']['title']|default="还未学习"}</p>
+                        <p>有效期剩余：{$vo['remain']}</p>
+                        <p><div class="layui-progress mt10" lay-showPercent="yes">
+                                <div class="layui-progress-bar" lay-percent="{$vo['progress']}%"></div>
+                            </div>
+                        </p>
+                    </div>
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+
+{/block}

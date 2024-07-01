@@ -1,0 +1,82 @@
+{extend name="userbase" /}
+{block name="css"}
+<style media='print'>
+    @page{
+        size:portrait;
+        margin:0mm auto;
+    }
+</style>
+<style>
+    .layui-table td, .layui-table tr {border-color: #000;}
+</style>
+{/block}
+{block name="body"}
+<div class="fly-panel fly-panel-user" style="padding-bottom:50px">
+    <div class="prientbbox" style="padding:50px 50px 0px 50px;font-family: 宋体;">
+        <div class="layui-row mt30" style="color: #000; text-align: center;font-size: 16px;font-weight: bold" > 学习证明 </div>
+        <table class="layui-table mt20" lay-size="lg" style="color: #000;">
+            <colgroup>
+                <col width="90">
+                <col width="290">
+                <col>
+            </colgroup>
+            <tbody>
+            <tr>
+                <td>姓名</td>
+                <td>{$data['userName']}</td>
+            </tr>
+            <tr>
+                <td>身份证号</td>
+                <td>{$data['userName']}</td>
+            </tr>
+            <tr>
+                <td>结业时间</td>
+                <td>{$data['addtime']}</td>
+            </tr>
+            <tr>
+                <td>培训内容</td>
+                <td>{$data['certificatetitle']}</td>
+            </tr>
+            <tr>
+                <td>学时</td>
+                <td>{$data['xueshi']}学时</td>
+            </tr>
+            <tr>
+                <td>证书编号</td>
+                <td>{$data['cardId']}</td>
+            </tr>
+            <tr >
+                <td colspan="2" style="height: 200px">
+                    <div class="title">扫码查看培训课程</div>
+                    <div ><img src="{:url('index/index/qrcode',['url'=>$data['QRCodeUrl']])}" style="max-width:112px;margin-top: 5px"></div>
+                    <div style="float: right">{$data['organ']}</div><br>
+                    <div style="float: right;margin-right: 20px;margin-top: 10px">{$data['createtime']}</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align: right;margin-right: 50px"><button class="layui-btn mt10" id="print">打印</button></div>
+</div>
+{/block}
+{block name="js"}
+<script src="https://www.jq22.com/demo/jQueryPrint201709042243/jQuery.print.js"></script>
+<script>
+    $("#print").on('click',function () {
+        $(".prientbbox").print({
+            globalStyles: true,
+            mediaPrint: false,
+            stylesheet: null,
+            noPrintSelector: ".no-print",
+            iframe: true,
+            append: null,
+            prepend: null,
+            manuallyCopyFormValues: true,
+            deferred: $.Deferred(),
+            timeout: 750,
+            title: null,
+            doctype: '<!doctype html>'
+        })
+    })
+</script>
+{/block}

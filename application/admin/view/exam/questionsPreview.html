@@ -1,0 +1,60 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card no-shadow">
+    <div class="layui-card-body pdb50">
+        {if condition="$data.questionsequence eq '1'"}
+        <blockquote class="layui-elem-quote layui-quote-nm">{$data.question}</blockquote>
+        {foreach name="data.subQuestions" item="v" empty="$empty"}
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+              {$v.question}
+            </div>
+        </div>
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+              {$v.questionselect}
+            </div>
+        </div>
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-text">
+             答案： {$v.questionanswer}
+            </div>
+        </div>
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-text">
+             解析： {$v.questiondescribe}
+            </div>
+        </div>
+        <hr class="layui-bg-gray mt20">
+        {/foreach}
+        {if condition="$NoBtn neq '1'"}
+        <a href="{:url('admin/exam/addSubQuestions', ['questionparent' =>$data.id,'questionchapterid'=>$data.questionchapterid])}" class="layui-btn  fr ajax-iframe" data-width="860px" data-height="540px">添加子题</a>
+        {/if}
+        {else /}
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                {$data.question}
+            </div>
+        </div>
+        {if condition="!empty($data.questionselect)"}
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                {$data.questionselect}
+            </div>
+        </div>
+        {/if}
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-text">
+                答案： {$data.questionanswer}
+            </div>
+        </div>
+        <div class="layui-row  ml20 mt20">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-bg-gray">
+                解析： {$data.questiondescribe}
+            </div>
+        </div>
+        {/if}
+    </div>
+</div>
+
+{/block}

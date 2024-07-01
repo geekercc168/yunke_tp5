@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-cn" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    {if condition="$title"}
+    <title>{$title}</title>
+    {else/}
+    <title>{:config('website.site_title')}</title>
+    {/if}
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="{:config('website.site_keywords')}">
+    <meta name="description" content="{:config('website.site_description')}">
+    <link rel="stylesheet" type="text/css" href="__LIBS__/layui/css/layui.css">
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/hui.css" />
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/mobile.css" />
+</head>
+<body style="height: 100%">
+<iframe  allowusermedia='allowusermedia' height="100%" width="100%" allowfullscreen='true'  frameborder="0" id="intclassiframe" name="intclassiframe" style="display:none;background: #fff"></iframe>
+<div class="hui-wrap learn-box">
+    <div class="live-learn learn-content">
+        <div class="layui-row live-player">
+            <div class="layui-col-md12">
+                <span class="live-starttime "></span>
+            </div>
+            <div class="layui-col-md12 mt50">
+
+            </div>
+            <div class="layui-col-md12 mt20">
+                (请下载APP进行直播课程的学习)
+            </div>
+            <a class="layui-btn mt50"  href="{:url('index/index/appshere')}">点击下载</a>
+        </div>
+    </div>
+    <div class="hui-tab course-info">
+        <div class="hui-tab-title">
+            <div>章节</div>
+            <div>笔记</div>
+            <div>评价</div>
+        </div>
+        <div class="hui-tab-body">
+            <div class="hui-tab-body-items">
+                <div class="hui-tab-item">
+                    {if condition="!empty($secList[0]['section'])"}
+                    {foreach name="secList" item="vo" empty="$empty"}
+                    <div class="hui-accordion course-section">
+                        <div class="hui-accordion-title">{$vo.title}</div>
+                        <div class="hui-accordion-content hui-list section-list">
+                            <ul  class="check-learn">
+                                {foreach name="vo['section']" item="voo"}
+                                <li>
+                                    <a href="javascript:void(0)" target="_blank" sid="{$voo['id']}" type="2" url="{:url('index/Course/checkBuy')}">
+                                        <div class="hui-list-text fontsize-12">{:isStudyBySid($voo.csid,$voo.id,$voo.coursetype)}{:getSecIcon($voo.sectype)}{$voo.title}
+                                            {if condition="$voo['isfree']==1"}<span class="layui-badge  layui-bg-green">免费</span>{/if}
+                                            <i  style="font-size: 12px;float:right;margin-right:10px;">{:getLiveStatus($voo.starttime,$voo.duration)}</i>
+                                        </div>
+                                    </a>
+                                </li>
+                                {/foreach}
+                            </ul>
+                        </div>
+                    </div>
+                    {/foreach}
+                    {else /}
+                    <div class="hui-list section-list">
+                        <ul>
+                            {foreach name="secList" item="voo"}
+                            <li>
+                                <a href="javascript:void(0)" target="_blank" sid="{$voo['id']}" type="2" url="{:url('index/Course/checkBuy')}">
+                                    <div class="hui-list-text fontsize-12">{:isStudyBySid($voo.csid,$voo.id,$voo.coursetype)}{:getSecIcon($voo.sectype)}{$voo.title}
+                                        {if condition="$voo['isfree']==1"}<span class="layui-badge  layui-bg-green">免费</span>{/if}
+                                        <i  style="font-size: 12px;float:right;margin-right:10px;">{:getLiveStatus($voo.starttime,$voo.duration)}</i>
+                                    </div>
+                                </a>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                    {/if}
+                </div>
+                <div class="hui-tab-item course-user-info">
+                    <div class="hui-form-textarea ml10 mar10">
+                        <textarea  id="quesContent"  placeholder="在此记录你的笔记......"></textarea>
+                    </div>
+                    <a href="javascript:void(0)" class="addNotes hui-button hui-button-small hui-fr mr12 mt-10" cid="{$info.csid}" sid="{$info.id}" type="{$info.coursetype}" url="{:url('index/Course/addNotes')}" geturl="{:url('index/Course/getNotes')}" title="保存">保&nbsp;&nbsp;存</a>
+                    <ul id="noteslist" class="noteslist mt10 pd20">
+                        {foreach name="note" item="vo"}
+                        <li id="courseNote{$vo.id}">
+                            <div class="notes-list-box">
+                                <section class="mt10  mr10">
+                                    <p class="c-999  font-12">{$vo.contents}</p>
+                                </section>
+                                <section class="mt10 mr10  hui-fr">
+                                    <span class="c-999 font-10"> {$vo.addtime}</span>
+                                    <span class="c-666">
+                                        <a class="layui-btn  btn-del layui-btn-sm fr delNotes" id="{$vo.id}" url="{:url('index/Course/delNotes')}"><i class="layui-icon">&#xe640;</i></a>
+                                    </span>
+                                </section>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+                <div class="hui-tab-item course-user-info">
+                    <div class="hui-form-textarea ml10 mar10">
+                        <textarea  id="commentContent"  placeholder="在此填写您的评论......"></textarea>
+                    </div>
+                    <a href="javascript:void(0)" class="addComment hui-button hui-button-small hui-fr mr12 mt-10" cid="{$info.csid}" sid="{$info.id}" type="{$info.coursetype}" url="{:url('index/Course/addComment')}" geturl="{:url('index/Course/getComment')}" title="保存">保&nbsp;&nbsp;存</a>
+                    <ul id="commentlist" class="noteslist mt10 pd20">
+                        {foreach name="comment" item="vo"}
+                        <li id="courseComment{$vo.id}">
+                            <div class="notes-list-box">
+                                <section class="mt10  mr10">
+                                    <p class="c-999  font-12">{$vo.contents}</p>
+                                </section>
+                                <section class="mt10 mr10  hui-fr">
+                                    <span class="c-999 font-10 "> {$vo.addtime}</span>
+                                    <span class="c-666">
+                                        <a class="layui-btn  btn-del layui-btn-sm fr delComment" id="{$vo.id}" url="{:url('index/Course/delComment')}"><i class="layui-icon">&#xe640;</i></a>
+                                    </span>
+                                </section>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="cid" name="cid" value="{$info.csid}">
+    <input type="hidden" id="sid" name="sid" value="{$info.id}">
+</div>
+<script src="__LIBS__/layui/layui.all.js"></script>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/jquery.stickyNavbar.min.js"></script>
+<script src="__COMMON__/common.js"></script>
+<script src="__HUI__/js/hui.js"></script>
+<script src="__HUI__/js/hui-tab.js"></script>
+<script src="__HUI__/js/hui-accordion.js"></script>
+<script>
+    hui.tab('.hui-tab');
+    hui.accordion(true, true);
+</script>
+</body>
+</html>

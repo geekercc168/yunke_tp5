@@ -1,0 +1,43 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="  " method="post">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:30px;">ID</th>
+                <th style="width:60px;">用户名</th>
+                <th >评论</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="ids[]" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.username}</td>
+                <td>{$v.comment}</td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+        <input type="hidden" name="cid" value="{$cid}">
+        <input type="hidden" name="cstype" value="{$cstype}">
+    </div>
+</div>
+<div class="layui-form-item mt10 fr mr20">
+    <div class="">
+        <button id="other-btn" class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+    </div>
+</div>
+</form>
+{/block}
+{block name="js"}
+
+{/block}
+
+
+

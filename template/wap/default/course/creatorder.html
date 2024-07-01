@@ -1,0 +1,89 @@
+{extend name="base" /}
+{block name="css"}
+<style type="text/css">
+    div{overflow: visible;}
+</style>
+{/block}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-header-user"></div>
+    <div id="hui-header-sreach">
+        <div id="hui-header-sreach-icon"></div>
+        <form><input type="search" id="searchKey" onkeydown="if(event.keyCode==13)return false;" placeholder="请输入商品关键字" /></form>
+    </div>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap order">
+    <div class="hui-media-list" style="padding:10px;">
+        <ul>
+            <li>
+                <a href="">
+                    <div class="hui-media-list-img"  style="width:170px"><img src="{$courseInfo.picture}" /></div>
+                    <div class="hui-media-content ml10">
+                        <h1 class="mt5">{$courseInfo.title}</h1>
+                        <p class="mt10">原价：<span ><i class="layui-icon layui-icon-rmb mr5"></i><span id="yuan-price">{$courseInfo.price}</span></span></p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="hui-common-title mt10">
+        <div class="hui-common-title-line"></div>
+        <div class="hui-common-title-txt">结算信息</div>
+        <div class="hui-common-title-line"></div>
+    </div>
+    <div class="note">
+        使用优惠券可以抵消部分金额哦
+    </div>
+    <form action="{:request()->url()}" class="layui-form" method="post">
+        <div class="layui-input-inline inline" style="width:250px;">
+            <select name="coupon" id="coupon">
+                <option value="none">请选择优惠券</option>
+                {foreach name="mycoupon" item="vo"}
+                <option value="{$vo.code}">{$vo.code}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="layui-input-inline" style="float:right">
+            <a class="layui-btn ml10 mycoupon" cid="{$courseInfo.id}" price="{$courseInfo.price}" type="{$courseInfo.type}" usetype="2" url="{:url('index/course/couponUsed')}">使用</a>
+        </div>
+        <input type="hidden" id="usedCoupon" name="usedCoupon">
+        <div class="pd20 details">
+            <div class="info mt5">订单原价:<i class="layui-icon layui-icon-rmb mr5"></i>{$courseInfo.price}</div>
+            <div class="info mt5">优惠类型:<span id="coupon-type">暂无</span></div>
+            <div class="info mt5">订单支付价格:<span id="coupon-price">{$courseInfo.price}</span></div>
+        </div>
+        <div class="hui-common-title mt20">
+            <div class="hui-common-title-line"></div>
+            <div class="hui-common-title-txt">支付方式</div>
+            <div class="hui-common-title-line"></div>
+        </div>
+        <div class="hui-flex payment mb70">
+            <div class="box">
+                <div class="check" id="alipay">
+                    <img src="__IMG__/alipay.png">
+                    <span class="icon"></span>
+                </div>
+            </div>
+            <div class="box">
+                <div class="check " id="wxpay">
+                    <img src="__IMG__/wxpay.png">
+                    <span class="icon"></span>
+                </div>
+            </div>
+            <div class="box">
+                <div class="check " id="yuepay">
+                    <img src="__IMG__/yuepay.png">
+                    <span class="icon"></span>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" lay-verify="payment" id="payment" name="payment" value="">
+        <div class="course-info-footer" style="left:10px;right:10px;position: fixed;z-index: 10;bottom: 0px;">
+            <button  type="submit" class="hui-button hui-button-large hui-danger" lay-filter="f" lay-submit="">提交订单</button>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+{/block}

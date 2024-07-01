@@ -1,0 +1,19 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">点卡充值</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    <form class="hui-form" action="{:request()->url()}" method="post">
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">卡号</div>
+            <input type="text" class="hui-input hui-input-clear" name="number" placeholder="请输入充值卡卡号" />
+        </div>
+        <button type="button"  class="hui-button hui-button-large hui-primary"  lay-submit="" lay-filter="*" style="margin-top:15px;">充值</button>
+    </form>
+</div>
+{/block}
+{block name="js"}
+{/block}

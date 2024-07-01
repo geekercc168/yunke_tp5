@@ -1,0 +1,111 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/article.css" media="all">
+{/block}
+{block name="body"}
+<div class="article-panel article-column">
+    <div class="layui-container">
+        <ul class="layui-clear">
+            {foreach name="category" item="v"}
+            <li><a href="{:url('index/article/index',['cid'=>hashids_encode($v.id)])}">{$v.category_name}</a></li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+<div class="layui-container mb20">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8 ">
+            <div class="layui-carousel" id="banner" lay-anim="" lay-indicator="inside" lay-arrow="hover" style="width: 100%; height: 360px;">
+                <div carousel-item>
+                    {foreach name="slide" item="vo" empty="$empty"}
+                    <div class="article-carousel-item">
+                        <a href="{$vo.jumpype|getAdUrl=###,$vo.appurl}" target="{$vo.target}">
+                            <img src="{$vo.image}">
+                            <div class="name"><span>{$vo.description}</span></div>
+                        </a>
+                    </div>
+                    {/foreach}
+                </div>
+            </div>
+            <div class="layui-card mt15 shadow">
+                <div class="layui-card-header">
+                    <span class="lark-this">精选推荐</span>
+                </div>
+                <div class="layui-card-body">
+                    <ul class="art-list">
+                        {foreach name="list" item="vo" empty="$empty"}
+                        <li class="layui-row layui-col-space15">
+                            <div class="layui-col-md4 art-thumb">
+                                <a href="{:url('index/article/contents',['id'=>hashids_encode($vo.id)])}"><img src="{$vo.image}"></a>
+                            </div>
+                            <div class="layui-col-md8 art-intro">
+                                <h2><a href="{:url('index/article/contents',['id'=>hashids_encode($vo.id)])}">{$vo.title}</a></h2>
+                                <p class="summary">{$vo.summary}</p>
+                                <div class="meta">
+                                    <span><i class="layui-icon layui-icon-log"></i>{$vo.update_time}</span>
+                                        <a href="{:url('index/article/index',['cid'=>hashids_encode($vo.cid)])}"><i class="layui-icon layui-icon-note"></i>{$vo.category_name}
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    <div class="page">{$list->render()}</div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-card shadow" style="height: 360px; overflow: hidden;">
+                <div class="layui-card-header">
+                    置顶推荐
+                </div>
+                <div class="layui-card-body">
+                    <ul class="lark-list">
+                        {foreach name="tuijian" item="vo" key="i" empty="$empty"}
+                        <li>
+                            {if condition="$i lt 2"}
+                            <span class="layui-badge ">{$i+1}</span>
+                            {else/}
+                            <span class="layui-badge layui-bg-gray">{$i+1}</span>
+                            {/if}
+                            <a href="{:url('index/article/contents',['id'=>hashids_encode($vo.id)])}" title="{$vo.title}">{$vo.title}</a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+            <div class="layui-card shadow">
+                <div class="layui-card-header">
+                    最新发表
+                </div>
+                <div class="layui-card-body">
+                    <ul class="lark-list">
+                        {foreach name="new" item="vo" key="i" empty="$empty"}
+                        <li>
+                            {if condition="$i lt 2"}
+                            <span class="layui-badge ">{$i+1}</span>
+                            {else/}
+                            <span class="layui-badge layui-bg-gray">{$i+1}</span>
+                            {/if}
+                            <a href="{:url('index/article/contents',['id'=>hashids_encode($vo.id)])}" title="{$vo.title}">{$vo.title}</a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['carousel'], function(){
+        var carousel = layui.carousel;
+        carousel.render({
+            elem: '#banner'
+            ,width: '100%'
+            ,arrow: 'always'
+        });
+    });
+</script>
+{/block}

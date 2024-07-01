@@ -1,0 +1,49 @@
+{extend name="base" /}
+{block name="css"} <link rel="stylesheet" type="text/css" href="__CSS__/home.nav.css" media="all">{/block}
+{block name="body"}
+<div class="layui-container">
+    <div class="yxt_course-list mt20 mb20">
+        <div class="layui-row layui-col-space20 mb50">
+            {foreach name="list" item="vo" empty="$empty"}
+            <div class="layui-col-md3 course-pic">
+                <div class="yxt_course-item">
+                    <div class="yxt_course-img">
+                        <a href="{:url('index/classroom/info',array('id'=>hashids_encode($vo['id'])))}">
+                            <img src="{$vo['picture']}" alt="{$vo['title']}" class="img-responsive">
+                            <div class="layer">
+                                <ul>
+                                    <li><i class="layui-icon layui-icon-friends"></i><span>{$vo.id|getUserNum=###,$vo['type']}</span> 人已加入学习</li>
+                                    <li><i class="layui-icon layui-icon-template-1"></i><span>{$vo['id']|getClassroomCourseNum}</span> 个课程</li>
+                                </ul>
+                            </div>
+                            <div class="classroom-tag hz-triangle"><span>班级</span></div>
+                        </a>
+                    </div>
+                    <div class="yxt_course-info" style="padding: 15px;">
+                        <div class="title">
+                            <a class="link-dark" href="{:url('index/classroom/info',array('id'=>hashids_encode($vo['id'])))}">
+                                {$vo['title']}
+                            </a>
+                        </div>
+                        <a href="{:url('index/classroom/info',array('id'=>hashids_encode($vo['id'])))}" type="button" class="layui-btn layui-btn-fluid mt10">加入班级</a>
+                    </div>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/nav.js"></script>
+<script type="text/javascript">
+    $(function(){
+        new SelectTag({
+            child : ".default", //所有默认
+            over : 'on', //当前选中
+            all : ".all" // 默认全部
+        });
+    })
+</script>
+{/block}

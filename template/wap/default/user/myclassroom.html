@@ -1,0 +1,30 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">我的班级</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    <div class="hui-media-list mycourselist" style="padding:10px;">
+        <ul>
+            {foreach name="myclassroom" item="vo" empty="$empty"}
+            <li>
+                <a href="{:url('index/classroom/info',array('id'=>hashids_encode($vo['courseInfo']['id'])))}">
+                    <div class="hui-media-list-img"><img src="{$vo['courseInfo']['picture']}" /></div>
+                    <div class="hui-media-content ml10">
+                        <h1 class="layui-elip">{$vo['courseInfo']['title']}</h1>
+                        <p>班级课程数:{$vo['courseInfo']['id']|getClassroomCourseNum}个</p>
+                        <p>班级学员数:{$vo['courseInfo']['id']|getUserNum=###,3}人</p>
+                    </div>
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+
+{/block}

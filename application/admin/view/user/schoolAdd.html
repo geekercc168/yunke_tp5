@@ -1,0 +1,24 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">学校名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" value="{$data.name|default=''}" autocomplete="off" placeholder="请输入年级" class="layui-input">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input type="text" name="sort_order" value="{$data.sort_order|default=0}" autocomplete="off" placeholder="章排序,默认即可" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}

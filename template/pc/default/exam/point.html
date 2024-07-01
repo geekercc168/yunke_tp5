@@ -1,0 +1,83 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/exam.css" media="all">
+<link rel="stylesheet" type="text/css" href="__CSS__/home.nav.css" media="all">
+{/block}
+{block name="body"}
+<div class="layui-container mt30">
+    <div class="cation-content">
+        <div class="cation-middle mt30">
+            <dl class="cation-list">
+                <dd>
+                    <a href="#" rel="" name="parent" class="all on">全部</a>
+                    {foreach name="parent" item="vo"}
+                    <a href="#" rel="{$vo.id}" name="parent" class="default">{$vo.category_name}</a>
+                    {/foreach}
+                </dd>
+            </dl>
+            {if condition="$second"}
+            <dl class="cation-list">
+                <dd>
+                    <a href="#" rel="" name="second" class="all on">全部</a>
+                    {foreach name="second" item="vo"}
+                    <a href="#" rel="{$vo.id}" name="second" class="default">{$vo.category_name}</a>
+                    {/foreach}
+                </dd>
+            </dl>
+            {/if}
+            {if condition="$third"}
+            <dl class="cation-list">
+                <dd>
+                    <a href="#" rel="" name="third" class="all on">全部</a>
+                    {foreach name="third" item="vo"}
+                    <a href="#" rel="{$vo.id}" name="third" class="default">{$vo.category_name}</a>
+                    {/foreach}
+                </dd>
+            </dl>
+            {/if}
+        </div>
+    </div>
+</div>
+<div class="layui-container mt30">
+    <div class="layui-row exam-category">
+        <div class="point-content">
+            <div class="header">
+                <div class="name">考点</div>
+                <div class="topic">答题情况</div>
+                <div class="operate">操作</div>
+            </div>
+            <div  class="point-row point-border">
+                <div  class="child">
+                    {foreach name="knowledge" item="vo" empty="$empty"}
+                    <div  class="point-row">
+                        <div  class="content">
+                            <div  class="name">
+                                <span  class="icon icon-point"></span>
+                                <span >{$vo.title}</span>
+                            </div>
+                            <div  class="topic">{$vo.id|get_doquestion_num}/{$vo.id|get_question_num}</div>
+                            <div  class="operate">
+                                <div ><a  href="{:url('index/exam/dopoint',array('kid'=>hashids_encode($vo['id'])))}" class="">开始答题</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+            </div>
+            <div class="page">{$knowledge->render()}</div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__COMMON__/nav.js"></script>
+<script type="text/javascript">
+    $(function(){
+        new SelectTag({
+            child : ".default", //所有默认
+            over : 'on', //当前选中
+            all : ".all" // 默认全部
+        });
+    })
+</script>
+{/block}

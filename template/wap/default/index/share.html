@@ -1,0 +1,101 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <title>{:config('website.site_name')}-APP下载</title>
+    <meta name="description" content={:config('website.site_description')}>
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/share.css" />
+</head>
+<body>
+<header>
+    <figure>
+        <img src="{:config('website.big_logo')}" alt="" title="" width="120" height="120">
+        <figcaption>
+            <h2>{:config('website.site_name')}</h2>
+            <p>{:config('website.site_keywords')}</p>
+        </figcaption>
+    </figure>
+</header>
+<div class="xian"></div>
+<article class="pingfen">
+    <div class="pingfen-fen">
+        <div class="pingfen-fen_shu">
+            <div class="fenZz">
+                <span>4.9</span>
+                <img src="__HUI__/img/share/fen.png" alt="" title="" width="141" height="27">
+            </div>
+            <p>{$share['comment_times']}<i>个评分</i></p>
+        </div>
+        <div class="astrict-crowd">
+            <div class="astrict-crowdt">
+                <div class="astrict-crowd_">
+                    <p>{$share['install_times']}万+</p>
+                    <span>次安装</span>
+                </div>
+                <div class="astrict-crowd_">
+                    <p>{$share['app_age']}+</p>
+                    <span>年龄</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</article>
+<a class="xiazai" data-clipboard-text="" href="{$androidUrl}">立即下载</a>
+<div class="linellae"></div>
+<div class="wenz">
+    <span>应用介绍：</span>
+    <h2><a href="" class="introduce">  {:config('website.site_description')}  </a></h2>
+</div>
+<div class="linellae"></div>
+<article class="browse">
+    <h2>应用预览：</h2>
+    <div class="browse-1">
+        <section class="browse-">
+            <figure>
+                <img src="{$share['share_img_1']}" width="288" alt="" height="512" title="">
+            </figure>
+            <figure>
+                <img src="{$share['share_img_2']}" width="288" alt="" height="512" title="">
+            </figure>
+            <figure>
+                <img src="{$share['share_img_3']}" width="288" alt="" height="512" title="">
+            </figure>
+            <figure>
+                <img src="{$share['share_img_4']}" width="288" alt="" height="512" title="">
+            </figure>
+            <figure>
+                <img src="{$share['share_img_5']}" width="288" alt="" height="512" title="">
+            </figure>
+        </section>
+    </div>
+</article>
+<div class="linellae"></div>
+<article class="pinmgl">
+    <h2 class="pf">用户评论：</h2>
+    <div class="fea">
+        <img src="__HUI__/img/share/gaokao-pinglun.png" alt="" title="" width="1005" height="240">
+    </div>
+    <article class="sincere">
+        <article id="ping1" class="sincere_">
+            {foreach name="comment" item="v"}
+            <div class="zhen1a">
+                <p>{$v.username}</p>
+                <h2>{$v.comment}</h2>
+                <div class="banerb">
+                    <div class="five_x1"><img src="__HUI__/img/share//icon_star.png"><__HUI__/img/share/ src="img/icon_star.png"><img src="__HUI__/img/share//icon_star.png"><img src="__HUI__/img/share//icon_star.png"> </div>
+                    <div class="xianT">
+                        <div class="ben">
+                            版本：<i>{:config('version')}</i>
+                        </div>
+                        <div class="ben">
+                            <span>{$v.addtime}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/foreach}
+          </article>
+    </article>
+</article>
+</body></html>

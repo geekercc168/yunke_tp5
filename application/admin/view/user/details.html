@@ -1,0 +1,91 @@
+{extend name="iframe" /}
+{block name="css"}
+<style>
+    #tooltip{
+        position:absolute;
+        background:#333;
+        display:none;
+        color:#fff;
+        width:400px;
+        height:auto;
+    }
+    #tooltip img{width: 100%;height:auto;}
+</style>
+{/block}
+{block name="body"}
+<div class="layui-container">
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>教师姓名</td>
+            <td>{$details.username}</td>
+        </tr>
+        <tr>
+            <td>联系方式</td>
+            <td>{$details.mobile}</td>
+        </tr>
+        <tr>
+            <td>性别</td>
+            <td>{$details.sex}</td>
+        </tr>
+        <tr>
+            <td>出生年月</td>
+            <td>{$details.birth_y}{$details.birth_m}{$details.birth_d}</td>
+        </tr>
+        <!--<tr>
+            <td>地址</td>
+            <td>{$details.provid}{$details.cityid}{$details.areaid}</td>
+        </tr>-->
+        <tr>
+            <td>身份证号</td>
+            <td>{$details.identity}</td>
+        </tr>
+        <tr>
+            <td>身份证正面</td>
+            <td><img src="{$details.identity_z}" class="tooltip" ></td>
+        </tr>
+        <tr>
+            <td>身份证反面</td>
+            <td><img src="{$details.identity_f}" class="tooltip" ></td>
+        </tr>
+        <tr>
+            <td>职业证书</td>
+            <td><img src="{$details.certificate}" class="tooltip" ></td>
+        </tr>
+        <tr>
+            <td>个人简介</td>
+            <td>{$details.brief}</td>
+        </tr>
+        <tr>
+            <td>申请时间</td>
+            <td>{$details.addtime}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{/block}
+{block name="js"}
+<script>
+    $(function(){
+        $(".tooltip").hover(
+            function(e){
+                $("body").append("<div id='tooltip'><img src="+$(this).attr("src")+"></div>")
+                $("#tooltip").css({
+                    left: e.pageX+20+"px",
+                    top: e.pageY-100+"px"
+                }).show("fast")
+            },
+            function(){
+                $("#tooltip").remove()
+            }
+        ).mousemove(function(e){$("#tooltip").css({
+            left: e.pageX+20+"px",
+            top: e.pageY-100+"px"
+        })})
+    })
+</script>
+{/block}

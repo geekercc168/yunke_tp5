@@ -1,0 +1,41 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">提现金额</label>
+        <div class="layui-input-block">
+            <input type="text" name="money"  autocomplete="off" placeholder="请输入提现金额" class="layui-input">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收款方式</label>
+        <div class="layui-input-block">
+            <select name="type" >
+                <option value="">选择收款方式</option>
+                <option value="支付宝">支付宝</option>
+                <option value="微信">微信</option>
+            </select>
+            <input type="hidden" name="addtime" value="{$addtime}"  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收款账户</label>
+        <div class="layui-input-block">
+            <input type="text" name="account"  autocomplete="off" placeholder="请输入收款账户" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">账户姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="name"  autocomplete="off" placeholder="请输入收款姓名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">提交</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}

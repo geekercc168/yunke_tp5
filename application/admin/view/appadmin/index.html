@@ -1,0 +1,28 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width: 120px">版本</th>
+                <th>详情</th>
+                <th style="width: 150px">时间</th>
+                <th style="width: 120px">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.version}</td>
+                <th>{$v.notes}</th>
+                <th>{$v.addtime}</th>
+                <td><a href="{:url('admin/Appadmin/down', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-normal ajax-action"><i class="fa fa-download"></i>下载源码</a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}

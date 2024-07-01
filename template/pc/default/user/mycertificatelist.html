@@ -1,0 +1,29 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;"> 我的证书</a></li>
+        </ul>
+    </div>
+    <div class=" mt30">
+        <div class="layui-row layui-col-space20 ">
+            {foreach name="list" item="vo" empty="$empty"}
+            <div class="layui-col-md4 package">
+                <div  class="item" style="height: 250px;padding:10px;text-align: center">
+                    <div  class="pic">
+                        <img src="{$vo.imgurl}" style="width: 100%;height: 100%;">
+                    </div>
+                    <button class="layui-btn layui-btn-xs mt10 " >
+                        <a href="{:url('index/user/prove',['id' => $vo.id])}"  style="color: #fff">打印证明</a>
+                    </button>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

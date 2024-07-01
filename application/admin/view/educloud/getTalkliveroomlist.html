@@ -1,0 +1,44 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <input type="hidden" id="count" value="{$count}">
+            <input type="hidden" id="PageSize" value="{$PageSize}">
+            <input type="hidden" id="curr" value="{$curr}">
+            <input type="hidden" id="url" value="/admin/educloud/getliveroomlist/page/">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:120px;">RoomId</th>
+                <th style="width:160px;">直播间标题</th>
+                <th >直播类型</th>
+                <th >开始时间</th>
+                <th >教师码</th>
+                <th >管理码</th>
+                <th >学生码</th>
+                <th  style="width:80px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.serial}</td>
+                <td>{$v.roomname}</td>
+                <td>{$v.roomtype}</td>
+                <td>{$v.starttime|stampTodata}</td>
+                <td>{$v.chairmanpwd }</td>
+                <td>{$v.assistantpwd }</td>
+                <td>{$v.confuserpwd }</td>
+                <td>
+                    <a href="{:url('admin/educloud/delTalkLiveroom', ['id' => $v.serial])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i> 删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page" id="page"></div>
+    </div>
+</div>
+{/block}

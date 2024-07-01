@@ -1,0 +1,98 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:url('admin/config/jifen')}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">登录</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="login" value="{$data.login|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">积分</div>
+                <label class="layui-form-label">每天</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="logintimes" value="{$data.logintimes|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">次</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">提问</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="tiwen" value="{$data.tiwen|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">积分</div>
+                <label class="layui-form-label">每天</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="tiwentimes" value="{$data.tiwentimes|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">次</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">回答</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="huida" value="{$data.huida|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">积分</div>
+                <label class="layui-form-label">每天</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="huidatimes" value="{$data.huidatimes|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">次</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">采纳</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="caina" value="{$data.caina|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">积分</div>
+                <label class="layui-form-label">每天</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="cainatimes" value="{$data.cainatimes|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">次</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">套卷</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="taojuan" value="{$data.taojuan|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">积分</div>
+                <label class="layui-form-label">每天</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="taojuantimes" value="{$data.taojuantimes|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">次</div>
+                <div class="layui-form-mid layui-word-aux">只有及格才能获取积分</div>
+
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">知识点</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="dian" value="{$data.dian|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">积分</div>
+                <label class="layui-form-label">每天</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="diantimes" value="{$data.diantimes|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">次</div>
+                <div class="layui-form-mid layui-word-aux">只有做对才能获取积分</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">购课</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="gouke" value="{$data.gouke|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid ">倍积分</div>
+                <div class="layui-form-mid layui-word-aux">根据课程价格获取积分</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

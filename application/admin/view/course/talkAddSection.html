@@ -1,0 +1,165 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt30 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择章</label>
+        <div class="layui-input-block">
+            {if condition="$zhang"}
+            <select name="chapterid" lay-verify="required">
+                {else/}
+                <select name="chapterid">
+                    {/if}
+                    <option value="">选择章</option>
+                    {foreach name="$zhang" item="v"}
+                    <option value="{$v.id}" {if condition="$data['chapterid'] eq $v.id" }selected="selected"{/if}>{$v.title}</option>
+                    {/foreach}
+                </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">课时标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value="{$data.title|default=''}" lay-verify="required" autocomplete="off" placeholder="请输入章名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否免费</label>
+        <div class="layui-input-block">
+            <input type="radio" name="isfree" {eq name="$data.isfree|default=1" value="1"}checked{/eq} title="是" value="1" checked />
+            <input type="radio" name="isfree" {eq name="$data.isfree|default=0" value="0"}checked{/eq} title="否" value="0" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开播时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="starttime" name="starttime" lay-verify="required" value="{$data.starttime|default=''}" placeholder="直播课程开课时间">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">直播时长</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="duration" lay-verify="required" value="{$data.duration|default=''}" autocomplete="off" placeholder="请填写直播时长，单位分钟" >
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">直播类型</label>
+        <div class="layui-input-block">
+            <select name="roomtype" lay-verify="required"  lay-filter="roomtype">
+                <option value="">请选择直播类型</option>
+                <option value="0">一对一</option>
+                <option value="3">一对多</option>
+            </select>
+        </div>
+        <input type="hidden" name="csid" value="{$cid}"  class="layui-input">
+        <input type="hidden" name="ischapter" value="0"  class="layui-input">
+        <input type="hidden" name="status" value="1"  class="layui-input">
+        <input type="hidden" name="sectype" value="1"  class="layui-input">
+        <input type="hidden" name="coursetype" value="2"  class="layui-input">
+        <input type="hidden" name="addtime" value="{$addtime}"  class="layui-input">
+        <input type="hidden" id="layout" name="roomlayout" value=""  class="layui-input">
+        <input type="hidden" id="colourid" name="colourid" value="purple"  class="layui-input">
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">视频分辨率</label>
+        <div class="layui-input-block">
+            <select name="videotype" lay-verify="required">
+                <option value="0">200*150</option>
+                <option value="1">320x240</option>
+                <option value="2">640x480</option>
+                <option value="3">1280x720</option>
+                <option value="4">1920x1080</option>
+                <option value="5">80*48</option>
+                <option value="6">960*540</option>
+                <option value="7">640*360</option>
+                <option value="8">320*180</option>
+                <option value="9">160*120</option>
+                <option value="10">80*60</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">视频帧率</label>
+        <div class="layui-input-block">
+            <select name="videoframerate" lay-verify="required">
+                <option value="0">10</option>
+                <option value="1">15</option>
+                <option value="2">20</option>
+                <option value="3">25</option>
+                <option value="4">30</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">教室布局</label>
+        <div class="layui-input-block">
+            <div id="roomLayout_type" class="form-group " style="">
+                <div>
+                    <div class="imgSizetype" onclick="select_Layout(51)">
+                        <div class="selectImg selectImg51"></div>
+                    </div>
+                    <div class="imgSizetype" onclick="select_Layout(52)">
+                        <div class="selectImg selectImg52"></div>
+                    </div>
+                    <div class="imgSizetype" onclick="select_Layout(53)">
+                        <div class="selectImg selectImg53"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="rowroomLayout" class="form-group layui-hide" style="">
+                <div>
+                    <div class="imgSize" onclick="selectLayout(1)">
+                        <div class="selectImg selectImg1" style="display: block;"></div>
+                    </div>
+                    <div class="imgSize" onclick="selectLayout(2)">
+                        <div class="selectImg selectImg2" style="display: none;"></div>
+                    </div>
+                    <div class="imgSize" onclick="selectLayout(3)">
+                        <div class="selectImg selectImg3" style="display: none;"></div>
+                    </div>
+                    <div class="imgSize" onclick="selectLayout(4)">
+                        <div class="selectImg selectImg4" style="display: none;"></div>
+                    </div>
+                    <div class="imgSize" onclick="selectLayout(6)">
+                        <div class="selectImg selectImg6" style="display: none;"></div>
+                    </div>
+                    <div class="imgSize" onclick="selectLayout(7)">
+                        <div class="selectImg selectImg7" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择颜色</label>
+        <div class="layui-input-block">
+            <div class="selectColor">
+                <div class="colorOut" id="colorOut_1" datatype="purple" data-id="#4F3D84" onclick="selectColor(1)" style="border: 2px solid rgba(79, 61, 132, 0.6);">
+                    <div class="colorInner" style="background: #4F3D84"></div>
+                </div>
+                <div class="colorOut" id="colorOut_2" datatype="black" data-id="#2C2C30" onclick="selectColor(2)" style="border: none;">
+                    <div class="colorInner" style="background: #2C2C30"></div>
+                </div>
+                <div class="colorOut" id="colorOut_3" datatype="tigerlily" data-id="#F1633A" onclick="selectColor(3)" style="border: none;">
+                    <div class="colorInner" style="background: #F1633A"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item mt30">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name="js"}
+<script>
+    laydate.render({
+        elem: '#starttime'
+        ,type: 'datetime'
+        ,trigger: 'click'
+    });
+
+</script>
+{/block}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>证书详情查询</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="{:config('website.site_keywords')}">
+    <meta name="description" content="{:config('website.site_description')}">
+    <link type="text/css" rel="stylesheet" href="__HUI__/css/mobile.css" />
+</head>
+<body style="background: #1890ff;">
+<div class="certificate-box">
+    <div class="userInfo mt10">
+        <div class="title">
+            <span>人员信息</span>
+        </div>
+        <div class="line"></div>
+        <div class="info">
+            <div class="item">姓名：{$userName}</div>
+            <div class="item">身份证号码：{$cardId}</div>
+            <div class="item">培训类别：{$title}</div>
+        </div>
+    </div>
+    <div class="userInfo mt20">
+        <div class="title">
+            <span>课程信息</span>
+        </div>
+        <div class="line"></div>
+        {foreach name="data" item="vo"}
+        <div class="info">
+            <div class="title">{$vo.name}</div>
+            <div class="item">学时：{$vo.xueshi}学时</div>
+            <div class="item">学时时长：{$vo.duration|sec_to_minute2}</div>
+            <div class="item">培训讲师：{$vo.teacher}</div>
+            <div class="line mt10"></div>
+        </div>
+        {/foreach}
+    </div>
+</div>
+</body>
+</html>

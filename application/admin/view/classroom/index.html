@@ -1,0 +1,82 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <form action="{:url('admin/classroom/index')}" class="layui-form" method="get">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="title" value="{:input('title')}" autocomplete="off" placeholder="请输入班级名称" class="layui-input"/>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="is_top">
+                        <option value="">是否推荐</option>
+                        <option value="1" {if condition="input('?is_top') and (input('is_top') eq 1)"} selected="selected"{/if}>是</option>
+                        <option value="0" {if condition="input('?is_top') and (input('is_top') eq 0)"} selected="selected"{/if}>否</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="status">
+                        <option value="">是否上架</option>
+                        <option value="1" {if condition="input('?status') and (input('status') eq 1)"} selected="selected"{/if}>是</option>
+                        <option value="0" {if condition="input('?status') and (input('status') eq 0)"} selected="selected"{/if}>否</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/classroom/add', ['cid' => input('cid')])}" class="layui-btn"><i class="fa fa-plus-circle"></i> 创建班级</a>
+            <a href="{:url('admin/classroom/del')}" class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i> 批量删除</a>
+            <a href="{:url('admin/classroom/edit', ['name' => 'is_top', 'value' => '1'])}" class="layui-btn layui-btn-primary ajax-batch"><i class="fa fa-thumbs-up"></i> 设置推荐</a>
+            <a href="{:url('admin/classroom/edit', ['name' => 'is_top', 'value' => '0'])}" class="layui-btn layui-btn-primary ajax-batch"><i class="fa fa-times-circle"></i> 取消推荐</a>
+            <a href="{:url('admin/classroom/edit', ['name' => 'status', 'value' => '1'])}" class="layui-btn layui-btn-primary ajax-batch"><i class="fa fa-send"></i> 设置上架</a>
+            <a href="{:url('admin/classroom/edit', ['name' => 'status', 'value' => '0'])}" class="layui-btn layui-btn-primary ajax-batch"><i class="fa fa-times-circle"></i> 取消上架</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:20px;">ID</th>
+                <th >班级标题</th>
+                <th  style="width:40px;">排序</th>
+                <th  style="width:70px;">有效期(天)</th>
+                <th  style="width:50px;">推荐</th>
+                <th  style="width:65px;">状态</th>
+                <th  style="width:65px;">课程数</th>
+                <th  style="width:65px;">学员数</th>
+                <th  style="width:65px;">班主任</th>
+                <th  style="width:115px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.title}</td>
+                <td><input type="text" name="sort_order" value="{$v.sort_order}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/classroom/edit', ['id' => $v.id])}"></td>
+                <td><input type="text" name="youxiaoqi" value="{$v.youxiaoqi}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/classroom/edit', ['id' => $v.id])}"></td>
+                <td><input type="checkbox" name="is_top" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/classroom/edit', ['id' => $v.id])}" {if $v.is_top eq 1}checked="checked" {/if}></td>
+                <td><input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="上架|下架" data-url="{:url('admin/classroom/edit', ['id' => $v.id])}" {if $v.status eq 1}checked="checked" {/if}></td>
+                <td><a href="{:url('admin/classroom/courseList', ['id' => $v.id])}" class="ajax-iframe" data-width="800px" data-height="500px"><span class="layui-badge">{$v.id|getClassroomCourseNum}</span></a></td>
+                <td><a href="{:url('admin/classroom/xueyuanList', ['cid' => $v.id,'type'=>$v.type])}" class="ajax-iframe" data-width="800px" data-height="500px"><span class="layui-badge">{$v.id|getTrueUserNum=###,3}</span></a></td>
+                <td>{$v.headteacher|getTeacherName}</td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/classroom/edit', ['id' => $v.id])}" class="layui-btn layui-btn-xs"> <i class="layui-icon">&#xe642;</i></a>
+                        <a href="{:url('admin/classroom/del', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                        <a href="{:url('admin/classroom/courseList', ['id' => $v.id])}" class="layui-btn  layui-btn-xs  layui-btn-normal ajax-iframe"  data-width="800px" data-height="500px"><i class="layui-icon">&#xe614;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

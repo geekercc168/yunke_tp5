@@ -1,0 +1,58 @@
+{extend name="userbase"/}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;"> 我的班级</a></li>
+        </ul>
+    </div>
+    {foreach name="myclassroom" item="vo" empty="$empty"}
+    <div class="layui-row  mycourse">
+        <div class="layui-col-md3 mycourse-left">
+            <div class="mycourse-pic">
+                <a href="{:url('index/classroom/info',['id'=>hashids_encode($vo['courseInfo']['id'])])}"><img src="{$vo['courseInfo']['picture']}"></a>
+            </div>
+        </div>
+        <div class="layui-col-md7 mycourse-detail mt10">
+            <div class="layui-row mt10">
+                <div class="mycourse-title font18">{$vo['courseInfo']['title']}</div>
+            </div>
+            <div class="layui-row mt15">
+                <div class="layui-col-md3 mycourse-title c-61">课程数：{$vo['courseInfo']['id']|getClassroomCourseNum}</div>
+                <div class="layui-col-md5 mycourse-title c-61">有效期剩余：{$vo['remain']}</div>
+                <div class="layui-col-md3 mycourse-title layui-elip c-61">班主任：{$vo['courseInfo']['headteacher']|getTeacherName}</div>
+            </div>
+            <div class="layui-row mt10">
+                <div class="mycourse-title c-61 mr20">学习总进度：
+                    <div class="layui-progress" lay-showPercent="true">
+                        <div class="layui-progress-bar layui-bg-green" lay-percent="{$vo['progress']}%"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {if condition="$vo['isDaoQi']"}
+        <div class="layui-col-md2 " style="margin-top:90px;">
+            <a href="{:url('index/Course/creatorder',['id'=>hashids_encode($vo['courseInfo']['id']),'type'=>hashids_encode($vo['courseInfo']['type'])])}"
+               class="layui-btn layui-btn-danger layui-btn-sm layui-btn-fluid  layui-layout-right mt10" >班级到期请重新购买</a>
+        </div>
+        {/if}
+    </div>
+    {/foreach}
+</div>
+{/block}
+{block name="js"}
+<script>
+    $(function() {
+        $('.circle').each(function(index, el) {
+            var num = $(this).find('span').text() * 3.6;
+            if (num<=180) {
+                $(this).find('.right').css('transform', "rotate(" + num + "deg)");
+            } else {
+                $(this).find('.right').css('transform', "rotate(180deg)");
+                $(this).find('.left').css('transform', "rotate(" + (num - 180) + "deg)");
+            };
+        });
+    });
+</script>
+{/block}

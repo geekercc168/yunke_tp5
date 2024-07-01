@@ -1,0 +1,33 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/educloud/addvideocategory')}" class="layui-btn ajax-iframe" data-width="400px" data-height="250px"><i class="fa fa-plus-circle"></i> 添加分类</a>
+        </div>
+        <input type="hidden" id="count" value="{$SubTotal}">
+        <input type="hidden" id="PageSize" value="{$PageSize}">
+        <input type="hidden" id="curr" value="{$curr}">
+        <input type="hidden" id="url" value="/admin/educloud/videocategory/page/">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>分类名称</th>
+                <th width="50">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.CateId}</td>
+                <td>{$v.CateName}</td>
+                <td><a href="{:url('admin/educloud/delvideocategory', ['id' => $v.CateId])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i> 删除</a></td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page" id="page"></div>
+    </div>
+</div>
+{/block}

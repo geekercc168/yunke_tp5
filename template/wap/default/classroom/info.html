@@ -1,0 +1,183 @@
+{extend name="base" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">{$info.title}</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    <div class="course-info">
+        <img style="width:100%;height:200px;" src="{$info.picture}" />
+        <div class="details">
+            <div class="hui-flex">
+                <div class="userNum" style="width:33%"><i class="layui-icon layui-icon-user mr10"></i>学员:{$info.id|getUserNum=###,3}</div>
+                <div class="courseNum" style="width:33%"><i class="layui-icon layui-icon-component mr10"></i>课程:{$info.id|getClassroomCourseNum}</div>
+                <div class="browseNum" style="width:33%"><i class="layui-icon layui-icon-read mr10"></i>浏览:{$info.views}</div>
+            </div>
+            <div class="line"></div>
+            <div>
+                <div class="classroom price fontsize-12 hui-flex">师资团队：
+                    {foreach name="teacherIds" item="vo"}
+                    <a href="{:url('index/teacher/centert',['id'=>$vo])}" alt="{$vo|getTeacherName}">
+                        <div class="teachers"><img class="layui-nav-img" src="{$vo|getUidFromTid|getAvatar|defaultAvatar}" /></div>
+                    </a>
+                    {/foreach}
+                </div>
+                {if condition="$isBuy"}
+                <div class="youxiao fontsize-12">学习总进度：{$progress}%</div>
+                {/if}
+                {if condition="!$isBuy"}
+                <div class="price fontsize-12">价格：<i>{$info.price|isFree}</i></div>
+                <div class="price fontsize-12"> {$info.id|flashsale=###,3,$info.price,1}</div>
+                {/if}
+            </div>
+        </div>
+        <div>
+            <div class="hui-tab">
+                <div class="hui-tab-title" id="course-tab">
+                    <div>班级简介</div>
+                    <div>课程列表</div>
+                    <div>课程评论</div>
+                    <div>师资团队</div>
+                </div>
+                <div class="hui-tab-body course-section-box">
+                    <div class="hui-tab-body-items classroom">
+                        <div class="hui-tab-item">
+                            <div class="mar10 course-brief">{$info.brief}</div>
+                        </div>
+                        <div class="hui-tab-item">
+                            <div class="mar10">
+                                <div class="hui-media-list courselist" style="padding-top:10px;">
+                                    <ul>
+                                        {foreach name="liveCourse" item="vo"}
+                                        <li>
+                                            <a style="height:200px;" href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                <div class="hui-media-list-img" ><img  src="{$vo['picture']}" /></div>
+                                                <div class="hui-media-content ml10 mt5">
+                                                    <h1>{$vo['title']}</h1>
+                                                    <p>课程原价：{$vo['price']}</p>
+                                                    {if condition="$isBuy"}
+                                                    <p><div class="layui-progress mt10" lay-showPercent="yes">
+                                                            <div class="layui-progress-bar" lay-percent="{$liveProgress[$vo['id']]}%"></div>
+                                                        </div>
+                                                    </p>
+                                                    {/if}
+                                                </div>
+                                            </a>
+                                        </li>
+                                        {/foreach}
+                                        {foreach name="videoCourse" item="vo"  empty="$empty"}
+                                        <li>
+                                            <a style="height:200px;" href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                                                <div class="hui-media-list-img"><img src="{$vo['picture']}" /></div>
+                                                <div class="hui-media-content ml10 mt5">
+                                                    <h1>{$vo['title']}</h1>
+                                                    <p>课程原价：{$vo['price']}</p>
+                                                    {if condition="$isBuy"}
+                                                    <p><div class="layui-progress mt10" lay-showPercent="yes">
+                                                            <div class="layui-progress-bar" lay-percent="{$liveProgress[$vo['id']]}%"></div>
+                                                        </div>
+                                                    </p>
+                                                    {/if}
+                                                </div>
+                                            </a>
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hui-tab-item">
+                            <div class="hui-list list comment">
+                                <ul>
+                                    {foreach name="comment" item="vo" empty="$empty"}
+                                    <li class="">
+                                        <aside class="noter-pic">
+                                            <img width="50" height="50" class="picImg" src="{$vo.uid|getAvatar|defaultAvatar}">
+                                        </aside>
+                                        <div class="of">
+                                            <div class="clearfix">
+                                                <div class="hui-fl name">{$vo.uid|getUserName}</div>
+                                                <div class="hui-fr time">{$vo.addtime}</div>
+                                            </div>
+                                            <div class="mt5 contents">{$vo.contents}</div>
+                                        </div>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                                <!--<div class="page">{$comment->render()}</div>-->
+                            </div>
+                        </div>
+                        <div class="hui-tab-item">
+                            <div class="mar10">
+                                <div class="hui-list list comment">
+                                    {foreach name="teacherIds" item="vo"  empty="$empty"}
+                                    <ul>
+                                        <li class="" style="border-bottom:none;">
+                                            <aside class="noter-pic">
+                                                <img width="50" height="50" class="picImg" src="{$vo|getAvatar|defaultAvatar}">
+                                            </aside>
+                                            <div class="of">
+                                                <div class="clearfix">
+                                                    <div class="hui-fl name" style="line-height: 40px;">{$vo|getTeacherName}</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <div class="mt5 contents">{$vo|getTeacherBrief}</div>
+                                    </ul>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="foot"}
+<div id="hui-footer" class="course-info-footer">
+    <a href="/" id="nav-home">
+        <div class="hui-footer-icons hui-icons-home" style="font-size: 18px;"></div>
+        <div class="hui-footer-text">首页</div>
+    </a>
+    <a href="javascript:void(0)" id="nav-favate">
+        <div class="hui-footer-icons hui-icons-star f {$isfavourite}"></div>
+        <div class="hui-footer-text f {$isfavourite} "><span  url="{:url('index/course/favourite')}" class=" mr30 favourite" cid="{$info.id}" type="3" status="0">收藏</span></div>
+        <div class="hui-footer-icons hui-icons-like unf {$nofavourite}"></div>
+        <div class="hui-footer-text unf {$nofavourite}"><span  url="{:url('index/course/unfavourite')}" class="mr30 favourite" cid="{$info.id}" type="3" status="1">已收藏</span></div>
+    </a>
+    {if condition="$info.status==0"}
+    <button type="button" class="hui-button hui-fl course-info-btn buy" style="width: 60% !important;" disabled="disabled">班级已关闭</button>
+    {elseif condition="$isBuy" /}
+    <button type="button" class="hui-button hui-primary hui-fl course-info-btn buy" style="width: 60% !important;">已经购买</button>
+    {else /}
+    <button type="button" class="hui-button hui-fl course-info-btn price" style="background: #FCFCFC">{$info.id|flashsale=###,3,$info.price,2}</button>
+    <a href="{:url('index/Course/creatorder',['id'=>hashids_encode($info.id),'type'=>hashids_encode(3)])}" type="button" class="hui-button hui-danger hui-fl course-info-btn buy">加入班级</a>
+    {/if}
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/layui.base.js"></script>
+<script src="__HUI__/js/hui-tab.js"></script>
+<script src="__HUI__/js/hui-accordion.js"></script>
+<script type="text/javascript">
+    hui.tab('.hui-tab');
+    hui.accordion(true, true);
+</script>
+<script>
+    layui.use('util', function(){
+        var util = layui.util;
+        var endTime = new Date($('#endTime').val()).getTime()
+            ,serverTime = new Date($('#nowTime').val()).getTime();
+        util.countdown(endTime, serverTime, function(date, serverTime, timer){
+            var str= '<span class="layui-badge countdown">'+date[0]+'天</span>';
+            str=str+'<span class="layui-badge countdown" >'+date[1]+'时</span>';
+            str=str+'<span class="layui-badge countdown" >'+date[2]+'分</span>';
+            str=str+'<span class="layui-badge countdown" >'+date[3]+'秒</span>';
+            lay('#remain').html(str);
+        });
+    });
+</script>
+{/block}

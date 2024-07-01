@@ -1,0 +1,36 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt30 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">培训内容</label>
+        <div class="layui-input-block">
+            <input type="text" id="certificatetitle"  name="certificatetitle"  autocomplete="off" placeholder="请填写证书上显示的培训内容" class="layui-input">
+            <button  id="certificateyl"  type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-iframe" data-width="450px" data-height="380px"><i class="fa fa-eye"></i> 证书预览</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">培训机构</label>
+        <div class="layui-input-block">
+            <input type="text"  name="organ"  autocomplete="off" placeholder="请填写培训机构" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt30">
+        <div class="layui-input-block">
+            <button class="layui-btn"  lay-filter="i" lay-submit="">发放</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name="js"}
+<script>
+    $(function(){
+        var dom = document.getElementById('certificateyl');
+        var kemu=$("#certificatetitle").val();
+        dom.setAttribute('href', '/index/user/certificate/kemu/'+kemu);
+        $("#certificatetitle").on("input",function(e){
+            dom.setAttribute('href', '/index/user/certificate/kemu/'+e.delegateTarget.value);
+        });
+    });
+</script>
+{/block}

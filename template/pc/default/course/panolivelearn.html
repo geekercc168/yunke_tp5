@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>{$sectionInfo.title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="__LIBS__/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/panoroom.css" media="all">
+    <link rel="stylesheet" href="/static/default/fonts/livefont/iconfont.css">
+    <link rel="shortcut icon" href="{:config('website.icon')}" />
+    <link rel="bookmark" href="{:config('website.icon')}" />
+</head>
+<body>
+<input type="hidden" id="cid" name="cid" value="{$sectionInfo.csid}">
+<input type="hidden" id="sid" name="sid" value="{$sectionInfo.id}">
+<input type="hidden" id="type" name="type" value="2">
+<iframe name="my-iframe" id="detection" src="/index/course/detection" frameborder="0" width="100%" height="100%" scrolling="no"></iframe>
+<div class="pano">
+    <div class="layui-row pano-center ">
+        <div class="pano-right">
+            <div class="t-video-box">
+                <div class="t-video" id="t-video">
+                    <div class="novideo iconfont icon-shexiangtou-guanbi"></div>
+                </div>
+            </div>
+            <div class="t-s-video-box layui-hide">
+                <div class="t-video" id="s-video"></div>
+                {if condition="$role eq 'T'"}
+                    <div class="s-video-shut iconfont icon-a-ziyuan28" id="s-video-shut"></div>
+                {/if}
+            </div>
+            <div class="pano-tab layui-tab layui-tab-brief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">聊天</li>
+                    <li>学员</li>
+                    <li>课评</li>
+                </ul>
+                <div class="layui-tab-content" >
+                    <div class="layui-tab-item layui-show">
+                        <div class="chat">
+                            <div class="chatlistbox"  id="chatlistbox">
+                                <div class="chatlist">
+                                    <ul id="chatlist">
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="submit">
+                                <input  type="text" placeholder="请输入" autocomplete="off" class="layui-input" id="messageContent">
+                                <button type="button" class="layui-btn  layui-btn-sm messageSubmit" id="messageSubmit">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="user">
+                            <div class="userlistbox">
+                                <div class="user-list">
+                                    <ul id="user-list">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="chat">
+                            <div class="commentbox"  id="commentbox">
+                                <div class="commentlist">
+                                    <ul id="commentlist">
+                                        {foreach name="comment" item="vo"}
+                                        <li>
+                                            <span class="username">{$vo.uid|getUserName}</span>
+                                            <span class="contends">{$vo.contents}</span>
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="submit">
+                                <input  type="text" placeholder="请输入对这节课的评论" autocomplete="off" class="layui-input" id="commentContent">
+                                <button type="button" class="layui-btn  layui-btn-sm messageSubmit" id="commentSubmit">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pano-main">
+            <div class="whiteboard-box">
+                <div class="whiteboard" id="whiteboard">
+                {if condition="$role eq 'T'"}
+                    <div class="jushouBtn layui-hide" tips="举手" ><div class="iconfont icon-shouxing"></div></div>
+                    <div class="startclass">
+                        <div class="cameraclass" id="startvideo">
+                            <div class="iconfont icon-a-ziyuan28 tubiao"></div>
+                            <div class="title">摄像头</div>
+                        </div>
+                        <div class="shareclass" id="startScreenShare">
+                            <div class="iconfont icon-pingmugongxiang tubiao"></div>
+                            <div class="title">屏幕共享</div>
+                        </div>
+                        <div class="whiteboaaradclass" id="openwhiteboard">
+                            <div class="iconfont icon-baibanwhiteboard8 tubiao"></div>
+                            <div class="title">电子白板</div>
+                        </div>
+                    </div>
+                {else /}
+                    <input type=button class="layui-btn startclass"  value="老师正在上课的路上...">
+                {/if}
+                    <input type=button class="layui-btn startclass layui-hide"  id="classover" value="下课了，请休息一会...">
+                </div>
+            </div>
+            {if condition="$role eq 'S'"}
+            <div class="tools" style="justify-content:space-between;margin-left: 20px">
+                <div></div>
+                <div class="coursetitle">{$sectionInfo['title']}</div>
+                <ul class="media-box stu-tools">
+                    <li class="item" tips="举手" id="stu-handup"><div class="iconfont icon-shouxing"></div></li>
+                </ul>
+            </div>
+            {/if}
+            {if condition="$role eq 'T'"}
+            <div class="tools">
+                <div class="media-box">
+                    <div class="iconfont icon-a-ziyuan28 layui-hide" id="camera-shut"></div>
+                    <div class="iconfont icon-shexiangtou-guanbi color-red" id="camera-on"></div>
+                    <div class="iconfont icon-sanjiaojiantou" id="cam-sel-show" style="margin-left: -3px;"></div>
+                    <div class="iconfont icon-maikefeng1 layui-hide" id="speaker-shut"></div>
+                    <div class="iconfont icon-mic-off-full  color-red" id="speaker-on"></div>
+                    <div class="iconfont icon-sanjiaojiantou" id="mics-sel-show" style="margin-left: -3px;"></div>
+                    <select class="cam_sel layui-hide" id="cam_sel"></select>
+                    <select class="mics_sel layui-hide" id="mics_sel"></select>
+                </div>
+                <ul class="tools-box layui-hide">
+                    <li class="item" tips="课件交互" appliancename="PanoRtc.Constants.ShapeType.Click"><div class="iconfont icon-zuoshangjiantou"></div></li>
+                    <li class="item active" tips="铅笔" appliancename="PanoRtc.Constants.ShapeType.Pen"><div class="iconfont icon-huabi"></div></li>
+                    <div class="iconfont icon-sanjiaojiantou pen-optins" id="pen-optins"></div>
+                    <li class="item" tips="激光笔" appliancename="PanoRtc.Constants.ShapeType.LaserPointer"><div class="iconfont icon-icon_jiguangbi"></div></li>
+                    <li class="item" tips="直线" appliancename="PanoRtc.Constants.ShapeType.Line"><div class="iconfont icon-line"></div></li>
+                    <li class="item" tips="箭头" appliancename="PanoRtc.Constants.ShapeType.Arrow"><div class="iconfont icon--youshangjiantou-nor"></div></li>
+                    <li class="item" tips="矩形" appliancename="PanoRtc.Constants.ShapeType.Rect"><div class="iconfont icon-juxing"></div></li>
+                    <li class="item" tips="椭圆" appliancename="PanoRtc.Constants.ShapeType.Ellipse"><div class="iconfont icon-yuanxinyuan"></div></li>
+                    <li class="item" tips="文本" appliancename="PanoRtc.Constants.ShapeType.Text"><div class="iconfont icon-zitiyanse"></div></li>
+                    <li class="item" tips="选择" appliancename="PanoRtc.Constants.ShapeType.Select"><div class="iconfont icon-xuanze"></div></li>
+                    <li class="item" tips="橡皮擦" appliancename="PanoRtc.Constants.ShapeType.Brush"><div class="iconfont icon-xiangpica"></div></li>
+                    <div class="iconfont icon-sanjiaojiantou pen-optins" id="eraser-optins"></div>
+                    <li class="item" tips="移动" appliancename="PanoRtc.Constants.ShapeType.Drag"><div class="iconfont icon-shouxing"></div></li>
+                    <li class="item" tips="课件" appliancename="PanoRtc.Constants.ShapeType.Click" id="pptfile"> <div class="iconfont icon-wenjianjia"></div></li>
+                    <li class="item" tips="上一页" id="prevPage"> <div class="iconfont icon-jiantou_shangyiye_o"></div></li>
+                    <li class="item" tips="页码"  style="font-size: 15px;"><span id="CurrentPage">1</span>/<span id="TotalPages">1</span></li>
+                    <li class="item" tips="下一页" id="nextPage"> <div class="iconfont icon-jiantou_xiayiye_o"></div></li>
+                    <li class="item" tips="新增页" id="addPage"> <div class="iconfont icon-jiahao"></div></li>
+                </ul>
+                <div class="up-file layui-hide up-file-box">
+                    <div class="up-file-shutdown iconfont icon-close"></div>
+                    <div class="pano-tab layui-tab layui-tab-brief">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">上传课件</li>
+                        </ul>
+                        <div class="layui-tab-content" >
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-row layui-col-space20 selectbox">
+                                    <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                                        <div class="selectfile upfile" type="doc">
+                                            <div class="layui-row">
+                                                <div class="layui-col-xs2 layui-col-sm2 layui-col-md2 selectli1">
+                                                    <i class="layui-icon layui-icon-file"></i>
+                                                </div>
+                                                <div class="layui-col-xs8 layui-col-sm8 layui-col-md8 selectli2">
+                                                    <div class="title">上传普通课件</div>
+                                                    <div class="sec">转码时间较短</div>
+                                                </div>
+                                                <div class="layui-col-xs1 layui-col-sm1 layui-col-md1 selectli3">
+                                                    <i class="layui-icon layui-icon-upload-circle"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                                        <div class="selectfile upfile" type="courseware">
+                                            <div class="layui-row">
+                                                <div class="layui-col-xs2 layui-col-sm2 layui-col-md2 selectli1">
+                                                    <i class="layui-icon layui-icon-video"></i>
+                                                </div>
+                                                <div class="layui-col-xs8 layui-col-sm8 layui-col-md8 selectli2">
+                                                    <div class="title">上传动态文件</div>
+                                                    <div class="sec">转码时间较长</div>
+                                                </div>
+                                                <div class="layui-col-xs1 layui-col-sm1 layui-col-md1 selectli3">
+                                                    <i class="layui-icon layui-icon-upload-circle"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="upline"></div>
+                                <div class="upsec">
+                                    <li>1.动态文件支持pptx文件格式的内容，上传后还原文件中的动效。</li>
+                                    <li>2.普通课件支持pptx、ppt、word、pdf格式的内容。</li>
+                                    <li>3.课件中不能包含密码。</li>
+                                </div>
+                                <div class="fileuping layui-hide">文件上传中...</div>
+                                <div class="layui-progress convertprogress layui-hide" lay-filter="convertprogress" lay-showPercent="true">
+                                    <div class="layui-progress-bar" lay-percent="0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dianmingset layui-hide" id="dianmingset">
+                    <div class="layui-row layui-col-space20 selectbox ">
+                        <span class="dianing-shutdown"><i class="layui-icon layui-icon-close"></i> </span>
+                    </div>
+                    <div class="upline"></div>
+                    <div class="layui-row set ">请设置学生需要在<input type="text" id="times" required lay-verify="required" class="layui-input" value="10"> 秒内响应</div>
+                    <div class="layui-row left layui-hide"><span id="lefttime">10</span>秒钟后，查看数据统计</div>
+                    <div class="layui-row sub">
+                        <button type="button" class="setbutton layui-btn layui-btn-normal">发起点名</button>
+                        <button type="button" class="dingmingdata layui-btn layui-btn-normal">查看统计</button>
+                    </div>
+                </div>
+                <div class="dianmingset layui-hide" id="fasongdonglema">
+                    <div class="layui-row layui-col-space20 selectbox ">
+                        <span class="huilema-shutdown"><i class="layui-icon layui-icon-close"></i> </span>
+                    </div>
+                    <div class="upline"></div>
+                    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                        <div class="layui-tab-content">
+                            <div class="layui-row dongset ">询问学生这个题听懂了吗？</div>
+                            <div class="layui-row dongleft layui-hide"><span id="donglefttime">20</span>秒钟后，查看数据统计</div>
+                            <div class="layui-row sub">
+                                <button type="button" class="dongbutton layui-btn layui-btn-normal">发起询问</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="up-file layui-hide" id="user-handup">
+                    <div class="layui-row  header">
+                        <div>学生举手列表</div>
+                        <div class="user-handup-shutdown"><i class="layui-icon layui-icon-close"></i> </div>
+                    </div>
+                    <div class="upline"></div>
+                    <div class="user-handup-box">
+
+                    </div>
+                </div>
+                <div class="option-box">
+                    <div class="item layui-hide color-red" tips="下课" id="endclass"><div class="iconfont icon-guanbi"></div></div>
+                    <div class="item" tips="共享屏幕" id="startScreenShare2"><div class="iconfont icon-pingmugongxiang"></div></div>
+                    <div class="item layui-hide" tips="关闭屏幕" id="shutscreenshare"><div class="iconfont icon-24gl-exit"></div></div>
+                    <div class="item" tips="电子白板" id="openwhiteboard2"><div class="iconfont icon-shuxieyijian"></div></div>
+                    <div class="item layui-hide" tips="关闭白板" id="shutWhiteboard"><div class="iconfont icon-jinyongshouxieban-regular"></div></div>
+                    <!--<div class="item" tips="云端录制"><div class="iconfont icon-10luxiang-2"></div></div>-->
+                    <div class="item" tips="点名" id="dianming"><div class="iconfont icon-dianming2"></div></div>
+                    <!--<div class="item" tips="弹题"><div class="iconfont icon-xiti"></div></div>-->
+                    <div class="item" tips="会了吗" id="huilema"><div class="iconfont icon-bangzhu"></div></div>
+                    <div class="item" tips="全体禁言" id="jinyan"><div class="iconfont icon-24gf-volumeCross"></div></div>
+                    <div class="item layui-hide" style="color:red" tips="取消禁言" id="nojinyan"><div class="iconfont icon-24gf-volumeCross"></div></div>
+                </div>
+                <div class="penciltools layui-hide">
+                    <div class="weight-box">
+                        <span class="weight active" applianceweight="2"><div class="weight1"></div></span>
+                        <span class="weight" applianceweight="3"><div class="weight2"></div></span>
+                        <span class="weight" applianceweight="4"><div class="weight3"></div></span>
+                        <span class="weight" applianceweight="6"><div class="weight4"></div></span>
+                    </div>
+                    <div class="color-box">
+                        <span class="color color1 active" appliancecolor="rgba(255,149,0, 1)"></span>
+                        <span class="color color2" appliancecolor="rgba(255,191,47, 1)"></span>
+                        <span class="color color3" appliancecolor="rgba(248,231,28, 1)"></span>
+                        <span class="color color4" appliancecolor="rgba(238,72,68, 1)"></span>
+                        <span class="color color5" appliancecolor="rgba(23,149,255, 1)"></span>
+                        <span class="color color6" appliancecolor="rgba(0,202,245, 1)"></span>
+                        <span class="color color7" appliancecolor="rgba(80,227,194, 1)"></span>
+                        <span class="color color8" appliancecolor="rgba(252,157,154, 1)"></span>
+                        <span class="color color9" appliancecolor="rgba(41,207,66, 1)"></span>
+                        <span class="color color10" appliancecolor="rgba(139,87,42, 1)"></span>
+                        <span class="color color11" appliancecolor="rgba(65,117,5, 1)"></span>
+                        <span class="color color12" appliancecolor="rgba(255,255,255, 1)"></span>
+                    </div>
+                </div>
+                <div class="erasertools layui-hide">
+                    <span class="weight active" applianceweight="20"><div class="weight1"></div></span>
+                    <span class="weight" applianceweight="30"><div class="weight2"></div></span>
+                    <span class="weight" applianceweight="50"><div class="weight3"></div></span>
+                </div>
+            </div>
+            {/if}
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/learningRecord.js"></script>
+<script src="__LIBS__/layui/layui.all.js"></script>
+<script src="__LIBS__/pano/panortc-2.1.6.js"></script>
+<script src="__LIBS__/pano/live.js"></script>
+</html>

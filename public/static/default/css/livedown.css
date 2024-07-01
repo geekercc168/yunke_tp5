@@ -1,0 +1,171 @@
+body .main > .top {
+    background:url("http://live-cdn.baijiayun.com/homepage/asset/frontend/common/img/live/img0_bg_7a06c9f6bc.png") no-repeat 0 50%;
+    background-size:cover;
+    position:relative;
+    width:100%;
+    height:800px;
+    text-align:center;
+}
+body .main > .top > .client {
+    font-family:-apple-system,"Microsoft YaHei";
+    font-size:64px;
+    color:#fff;
+    padding-top:175px;
+    font-weight:bold;
+    margin:0 auto
+}
+body .main > .top > .qiye {
+    font-family:PingFangSC-Regular,"Microsoft YaHei";
+    font-size:18px;
+    color:#fff;
+    margin-top:20px;
+    margin-bottom:0
+}
+body .main > .top > .dot {
+    font-size:12px
+}
+body .main > .top > .question {
+    font-family:PingFangSC-Regular,"Microsoft YaHei";
+    font-size:16px;
+    color:#fff;
+    margin:60px auto;
+}
+body .main > .top > .question > a {
+    color:#fff
+}
+body .main > .top > .download {
+    width:100%;
+    margin-top:86px;
+}
+
+body .main > .top > .download > a {
+    height:176px;
+    width: 350px;
+    display:inline-block;
+    color:#fff;
+    font-family:PingFangSC-Regular,"Microsoft YaHei";
+    padding-top:7px;
+    cursor:pointer;
+}
+body .main > .top > .download > a > p {
+    font-family:PingFangSC-Regular,"Microsoft YaHei";
+    font-size:16px;
+    color:#fff;
+    margin-top:18px;
+    margin-bottom:0
+}
+body .main > .top > .download > a > p:last-child {
+    font-family:PingFangSC-Regular,"Microsoft YaHei";
+    font-size:16px;
+    color:#fff;
+    margin-top:2px
+}
+body .main > .top > .download > a > .phone {
+    background:url("http://live-cdn.baijiayun.com/homepage/asset/frontend/common/img/live/icon_app_830eb03a9b.svg");
+    width:52px;
+    height:100px;
+    margin:0 auto;
+    background-size:cover
+}
+body .main > .top > .download > a > .mac {
+    background:url("http://live-cdn.baijiayun.com/homepage/asset/frontend/common/img/live/icon_mac_373c43b28c.svg");
+    width:117px;
+    height:100px;
+    margin:0 auto
+}
+body .main > .top > .download > a > .windows {
+    background:url("http://live-cdn.baijiayun.com/homepage/asset/frontend/common/img/live/icon_win_e3e2a5ff6f.svg");
+    width:116px;
+    height:100px;
+    margin:0 auto
+}
+body .main > .top > .download > a:nth-child(3) {
+    margin-right:0
+}
+.mask {
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:4;
+    background-color:#000;
+    opacity:.2;
+    filter:alpha(opacity=20);
+}
+.dialog,.mask,body>.mask {
+    position:fixed;
+}
+body .download > .barcode-container > .barcode-wrapper {
+    position:fixed;
+    left:50%;
+    right:0;
+    top:50%;
+    bottom:0;
+    width:140px;
+    height:140px;
+    z-index:4;
+    margin-left:-150px;
+    margin-top:-150px;
+    padding:75px;
+    border:4px solid #fff;
+    background-color:#fff;
+    padding:auto;
+}
+body .download > .barcode-container > .barcode-wrapper > .barcode-close {
+    position:relative;
+    top:-70px;
+    left:190px;
+    height:0;
+    width:20px;
+    padding:0;
+}
+body .download > .barcode-container > .barcode-wrapper > .barcode-close > .one {
+    cursor:pointer;
+    position:relative;
+    display:inline-block;
+    width:20px;
+    height:20px;
+    top:5px;
+    left:-10px;
+    border-top:2px solid #8c8c8c;
+    -webkit-transform:rotate(45deg);
+    -moz-transform:rotate(45deg);
+    -ms-transform:rotate(45deg);
+    -o-transform:rotate(45deg);
+    transform:rotate(45deg);
+}
+body .download > .barcode-container > .barcode-wrapper > .barcode-close > .two {
+    cursor:pointer;
+    position:relative;
+    top:-27px;
+    left:-3px;
+    display:inline-block;
+    width:20px;
+    height:2px;
+    border-top:2px solid #8c8c8c;
+    -webkit-transform:rotate(-45deg);
+    -moz-transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg);
+    -o-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+}
+body .download > .barcode-container > .barcode-wrapper > .barcode-desc {
+    font-size:12px;
+}
+body .download > .barcode-container > .barcode-wrapper > .barcode {
+    left:50%;
+    top:50%;
+    width:150px;
+    height:150px;
+    background:url(../download/img/appDownLoad_55d3601809.png) no-repeat;
+    background-size:100%;
+}
+
+.footer {
+    margin-top:0px !important
+}
+.download img{
+    width: 150px;
+    height: 150px;
+    margin-top: 20px;
+}

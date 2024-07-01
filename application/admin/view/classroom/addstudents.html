@@ -1,0 +1,76 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:url('admin/classroom/addstudents')}" class="layui-form" method="get" style="margin:0px">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="hidden" name="cid" value="{$cid}">
+                    <input type="text" name="key" value="{:input('key')}" autocomplete="off" placeholder="用户名或手机号搜索" class="layui-input"/>
+                </div>
+                {if condition="$regfield[1]['status']==1"}
+                <div class="layui-input-inline">
+                    <select name="school">
+                        <option value="">选择{$regfield[1]['name']}</option>
+                        {foreach name="school" item="v" empty="$empty"}
+                        <option value="{$v.id}" {if condition="input('?school') and (input('school') eq $v.id)"} selected="selected"{/if}>{$v.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                {/if}
+                {if condition="$regfield[0]['status']==1"}
+                <div class="layui-input-inline">
+                    <select name="grade">
+                        <option value="">选择{$regfield[0]['name']}</option>
+                        {foreach name="grade" item="v" empty="$empty"}
+                        <option value="{$v.id}" {if condition="input('?grade') and (input('grade') eq $v.id)"} selected="selected"{/if}>{$v.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                {/if}
+                <div>
+                    <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>手机号</th>
+                {if condition="$regfield[1]['status']==1"}
+                <th>{$regfield[1]['name']}</th>
+                {/if}
+                {if condition="$regfield[0]['status']==1"}
+                <th>{$regfield[0]['name']}</th>
+                {/if}
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.id|getUserName}</td>
+                <td>{$v.mobile}</td>
+                {if condition="$regfield[1]['status']==1"}
+                <td>{$v.schoolId|getUserSchool}</td>
+                {/if}
+                {if condition="$regfield[0]['status']==1"}
+                <td>{$v.greadId|getUserGrade}</td>
+                {/if}
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+        <div class="layui-form-item mt30" style="float:right">
+            <div class="layui-input-block">
+                <a href="{:request()->url()}" class="layui-btn ajax-batch">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,257 @@
+{extend name="base" /}
+{block name="body"}
+<div class="container-fluid larry-wrapper ">
+    <div class="row  mb-20">
+        <div class="col-xs-12 layui-col-md12">
+            {if condition="$liveinfo['code'] eq 0"}
+            <div class="layui-card">
+                <div class="layui-col-md12 card-live-title">云直播 <span class="ml-30">有效期还剩：{$liveinfo['data']['remain']}天</span></div>
+                <div class="layui-card-body edu-live-box b-boder">
+                    <div class="layui-col-md12 edu-live-title">
+                        <span class="layui-badge-dot dot-big layui-bg-blue"></span> 直播套餐用量
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-col-md6 edu-live r-boder">
+                            本日最高峰值<span>{$TodyPeakUser}</span>人
+                        </div>
+                        <div class="layui-col-md6 edu-live">
+                            套餐最高峰值<span>{$liveinfo['data']['user_limit']}</span>人
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body edu-progress-box">
+                    <div class="layui-col-md12 edu-live-title">
+                        <span class="layui-badge-dot dot-big layui-bg-blue"></span> 最近7天数据概况
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="echarts" id="progress-live"></div>
+                    </div>
+                </div>
+            </div>
+            {elseif condition="$liveinfo['code'] eq 1" /}
+            <div class="layui-card">
+                <div class="layui-card-header">教育云账号信息</div>
+                <div class="layui-card-body empty">
+                    <div>{$liveinfo['msg']}</div>
+                    <a class="layui-btn" href="http://www.yxtcmf.com/index/domain/index" target="_blank">去授权</a>
+                </div>
+            </div>
+            {else /}
+            <div class="layui-card">
+                <div class="layui-card-header">教育云账号信息</div>
+                <div class="layui-card-body empty">
+                    <div>直播账号已经过期，请及时续费！</div>
+                    <a class="layui-btn" href="http://www.yxtcmf.com/index/domain/index" target="_blank">去续费</a>
+                </div>
+            </div>
+            {/if}
+            {if condition="$videoinfo['code'] eq 0"}
+            <div class="layui-card">
+                <div class="layui-col-md12 card-live-title">云点播<span class="ml-30">有效期还剩：{$videoinfo['remain']}天</span></div>
+                <div class="layui-card-body edu-video-box b-boder">
+                    <div class="layui-col-md12 edu-live-title">
+                        <span class="layui-badge-dot dot-big layui-bg-blue"></span> 点播套餐用量
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-col-md6 edu-video r-boder">
+                            <div class="left-content">
+                                <label>云点播流量</label>
+                                <div class="item">已用{$videoinfo['used_flow']}</div>
+                                <div class="item">共计{$videoinfo['total_flow_limit']}(流量)</div>
+                            </div>
+                            <div class="progress">
+                                <div class="left-alloc">
+                                    <span>{$videoinfo['remain_flow']}</span><br>剩余流量
+                                </div>
+                                <div class="echarts" id="liuliang"></div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="left-content">
+                                <label>云点播存储</label>
+                                <div class="item">已用{$videoinfo['used_storage']}</div>
+                                <div class="item">共计{$videoinfo['total_storage']}(存储)</div>
+                            </div>
+                            <div class="progress">
+                                <div class="left-alloc">
+                                    <span>{$videoinfo['remain_storage']}</span><br>剩余存储
+                                </div>
+                                <div class="echarts" id="storage"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body edu-progress-box">
+                    <div class="layui-col-md12 edu-live-title">
+                        <span class="layui-badge-dot dot-big layui-bg-blue"></span> 最近7天数据概况
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="echarts" id="progress-video"></div>
+                    </div>
+                </div>
+            </div>
+            {elseif condition="$videoinfo['code'] eq 1" /}
+
+            {else /}
+            <div class="layui-card">
+                <div class="layui-card-header">教育云账号信息</div>
+                <div class="layui-card-body empty">
+                    <div>直播账号已经过期，请及时续费！</div>
+                    <a class="layui-btn" href="http://www.yxtcmf.com/index/domain/index" target="_blank">去续费</a>
+                </div>
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>
+<script>
+    layui.define('echarts', function(exports) {
+        var echarts = layui.echarts;
+        var remain_flow={$remain_flow_GB|default="0"};
+        var used_flow={$used_flow_GB|default="0"};
+        option = {
+            color:['#ccc', '#009688'],
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'right',
+                data:['已用流量','剩余流量']
+            },
+            series: [
+                {
+                    name:'',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '24'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:used_flow, name:'已用流量'},
+                        {value:remain_flow, name:'剩余流量'},
+                    ]
+                }
+            ]
+        };
+        var myecharts = echarts.init(document.getElementById('flow'));
+        myecharts.setOption(option);
+        exports('echart', {});
+    });
+</script>
+<script>
+    layui.define('echarts', function(exports) {
+        var echarts = layui.echarts;
+        var remain_storage={$remain_storage_BG|default="0"};
+        var used_storage={$used_storage_GB|default="0"};
+        option = {
+            color:['#ccc', '#009688'],
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'right',
+                data:['已用存储','剩余存储']
+            },
+            series: [
+                {
+                    name:'',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '24'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:used_storage, name:'已用存储'},
+                        {value:remain_storage, name:'剩余存储'},
+                    ]
+                }
+            ]
+        };
+        var myecharts = echarts.init(document.getElementById('storage'));
+        myecharts.setOption(option);
+        exports('echart', {});
+    });
+</script>
+<script>
+    layui.define('echarts', function(exports) {
+        var echarts = layui.echarts;
+        var time={$str_time|default="0"};
+        var num={$str_num|default="0"};
+        option = {
+            color:['#009688'],
+            xAxis: {
+                type: 'category',
+                data: time
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: num,
+                type: 'line'
+            }]
+        };
+        var myecharts = echarts.init(document.getElementById('progress-live'));
+        myecharts.setOption(option);
+        exports('echart', {});
+    });
+</script>
+<script>
+    layui.define('echarts', function(exports) {
+        var echarts = layui.echarts;
+        var UsedFlowTime={$UsedFlowTime|default="0"};
+        var UsedFlowNum={$UsedFlowNum|default="0"};
+        option = {
+            color:['#009688'],
+            xAxis: {
+                type: 'category',
+                data: UsedFlowTime
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: UsedFlowNum,
+                type: 'line'
+            }]
+        };
+        var myecharts = echarts.init(document.getElementById('progress-video'));
+        myecharts.setOption(option);
+        exports('echart', {});
+    });
+</script>
+{/block}

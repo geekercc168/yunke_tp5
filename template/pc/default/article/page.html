@@ -1,0 +1,15 @@
+{extend name="articlebase" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/article.css" media="all">
+{/block}
+{block name="body"}
+<div class="layui-container mt15">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="content">
+                {$data.content}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,30 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th >资料名称</th>
+                <th style="width:140px;">创建时间</th>
+                <th style="width:60px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="exam-list">
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <th >{$v.exam}</th>
+                <th >{$v.addtime}</th>
+                <th >
+                    <div class="layui-btn-group mb0 exam-list">
+                        <a eid="{$v.id}" ename="{$v.exam}" class="layui-btn layui-btn-xs"> <i class="layui-icon">&#xe654;</i></a>
+                    </div>
+                </th>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

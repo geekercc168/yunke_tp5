@@ -1,0 +1,60 @@
+{extend name="base" /}
+{block name="css"} <link rel="stylesheet" type="text/css" href="__CSS__/home.nav.css" media="all">{/block}
+{block name="body"}
+<div class="layui-container">
+    <div class="layui-layout ">
+        <div class="mt20 scrollto">
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-book  fa-fw mr10"></i>考试说明</div>
+                <div class="layui-card-body">
+                    <div class="exam-preview">
+                        <div class="title">{$title}</div>
+                        <div class="detail">
+                            <ul>
+                                <li> <span class="tag">试卷满分</span><span class="content">{$exam['examsetting']['examscore']}分</span></li>
+                                <li> <span class="tag">考试时间</span><span class="content">{$exam['examsetting']['examtime']}分钟</span></li>
+                                {if condition="$exam['examsetting']['starttime']"}
+                                <li> <span class="tag">开考时间</span><span class="content">{$exam['examsetting']['starttime']}</span></li>
+                                {/if}
+                            </ul>
+                        </div>
+                        <input id="nowTime" type="hidden" value="{$now}">
+                        <input id="endTime" type="hidden" value="{$exam['examsetting']['starttime']}">
+                        <input id="id"  type="hidden" value="{:hashids_encode($info['id'])}">
+                        <input id="type" type="hidden" value="{:hashids_encode($info['coursetype'])}">
+                        <input id="useType" type="hidden" value="{$useType}">
+                        {if condition="$exam['examsetting']['starttime']"}
+                            {if condition="$useType==5"}
+                            <div class="daojishi">
+                                <span class="tag">你来晚了，考试已经结束了！</span>
+                            </div>
+                            {else /}
+                            <div class="daojishi">
+                                <span class="tag">离考试开始还剩：</span><span id="remain" class="time"></span>
+                            </div>
+                            {/if}
+                            {if condition="$myexam['ispost']==0"}
+                            <div class="daojishi mt20">
+                                <a type="button" id="startexam" class="layui-btn layui-btn-primary" href="javascript:void(0)">开始考试</a>
+                            </div>
+                            {else /}
+                            <div class="daojishi mt20">
+                                <a type="button"  class="layui-btn" href="{:url('index/Course/learn',['exam'=>'formal','id'=>hashids_encode($info['id']),'type'=>hashids_encode($info['coursetype'])])}">查看试卷</a>
+                            </div>
+                            {/if}
+                        {else /}
+                        <div class="daojishi mt20">
+                            <a type="button" class="layui-btn" href="{:url('index/Course/learn',['exam'=>'formal','id'=>hashids_encode($info['id']),'type'=>hashids_encode($info['coursetype'])])}">开始考试</a>
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+
+
+{/block}

@@ -1,0 +1,28 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-container">
+    <div class="update-progress layui-hide">
+        <div class="layui-progress layui-progress-big " lay-filter="progress" lay-showPercent="yes">
+            <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+        </div>
+    </div>
+    <div class="layui-row layui-word-aux update-info mt10">
+        {$notes}
+    </div>
+    <div class="update-message layui-word-aux layui-hide mt10 c-studied"></div>
+    <div class="update-bottom">
+        <button class="layui-btn upbutton" id="upbutton"
+                checkUrl="{:url('admin/Mobileterminal/checkEnvironment')}"
+                downLoadFile="{:url('admin/Mobileterminal/downLoadFile',['url' => $downurl])}"
+                delFile="{:url('admin/Mobileterminal/delFile')}"
+                clearCache="{:url('admin/Mobileterminal/clearCache')}"
+                finish="{:url('admin/Mobileterminal/finish',['h5version' =>$newversion])}"
+        >下载</button>
+        <button class="layui-btn  layui-btn-disabled doing layui-hide">升级中...</button>
+        <button class="layui-btn  layui-hide finish">升级完成</button>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/uph5.js"></script>
+{/block}

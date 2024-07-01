@@ -1,0 +1,151 @@
+{extend name="base" /}
+{block name="body"}
+<header class="hui-header">
+    <a href="{:url('index/user/index')}">
+        {if condition="$islogin"}
+        <img src="{$userInfo.avatar|defaultAvatar}" class="layui-nav-img" style="margin:8px 5px 10px 5px;">
+        {else /}
+        <div id="hui-header-user"></div>
+        {/if}
+    </a>
+    <div id="hui-header-sreach">
+        <div id="hui-header-sreach-icon"></div>
+        <form  action="{:url('index/course/search')}" id="search"><input type="search" name="keywords" id="searchKey" onkeydown="if(event.keyCode==13)return false;" placeholder="请输入课程关键字" /></form>
+    </div>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap">
+    <div style="padding:0px 15px; margin:10px;" class="hui-flex">
+        <div style="height:46px; width:20px;">
+            <img src="__HUI__/img/spiker.png" width="20" style="padding:13px 0px;" />
+        </div>
+        <div class="hui-scroll-news" id="scrollnew1">
+            <div class="hui-scroll-news-items"><a href="{:url('index/index/appshere')}">更好的使用体验，请下载APP移动端！</a></div>
+            <div class="hui-scroll-news-items"><a href="{:url('index/index/appshere')}">更好的使用体验，请下载APP移动端！</a></div>
+        </div>
+    </div>
+    <div class="hui-swipe" id="swipe">
+        <div class="hui-swipe-items" >
+            {foreach name="slide" item="vo"}
+            <div class="hui-swipe-item"><a href="{$vo.url}" target="{$vo.target}"><img style="height:150px;" src="{$vo.appimage}"/></a></div>
+            {/foreach}
+        </div>
+    </div>
+
+    <div class="hui-common-title mt10">
+        <div class="hui-common-title-line"></div>
+        <div class="hui-common-title-txt">精品课程</div>
+        <div class="hui-common-title-line"></div>
+    </div>
+    <div class="hui-flex pd10 index-course-list" style="flex-wrap:wrap;">
+        {foreach name="allCourse" item="vo"}
+        <div  class="item">
+            <a href="{:url('index/course/info',array('id'=>hashids_encode($vo['id']),'type'=>hashids_encode($vo['type'])))}">
+                <div class="image"><img src="{$vo['picture']}"></div>
+                <div class="hui-center-title title mt10 layui-elip">{$vo['title']}</div>
+                <div class="tll ml10">
+                    <i class="layui-icon layui-icon-user metas"></i>
+                    <span class="metas">{$vo.id|getUserNum=###,$vo['type']}</span>
+                    <span class="hui-icons hui-icons-eyes metas ml10"></span>
+                    <span class="metas">{$vo.views}</span>
+                    {if condition="$vo['price']==0"}
+                    <span class="free">免费</span>
+                    {else /}
+                    <span class="price"><i class="layui-icon layui-icon-rmb mr5" style="font-size: 14px"></i>{$vo['price']}</span>
+                    {/if}
+                </div>
+            </a>>
+        </div>
+        {/foreach}
+    </div>
+</div>
+<div class="hui-wrap mb70">
+    <div class="hui-common-title mt10">
+        <div class="hui-common-title-line"></div>
+        <div class="hui-common-title-txt">推荐班级</div>
+        <div class="hui-common-title-line"></div>
+    </div>
+    <div class="hui-flex pd10 index-course-list" style="flex-wrap:wrap;">
+        {foreach name="classroom" item="vo"}
+        <div class="item">
+            <a href="{:url('index/classroom/info',array('id'=>hashids_encode($vo['id'])))}">
+                <div class="image"><img src="{$vo['picture']}"></div>
+                <div class="hui-center-title title mt5 layui-elip">{$vo['title']}</div>
+                <div class="tll ml10">
+                    <span class="hui-icons hui-icons-my metas"></span>
+                    <span class="metas">{$vo.id|getUserNum=###,$vo['type']}</span>
+                    <span class="hui-icons hui-icons-eyes metas ml10"></span>
+                    <span class="metas">{$vo.views}</span>
+                    {if condition="$vo['price']==0"}
+                    <span class="free">免费</span>
+                    {else /}
+                    <span class="price"><i class="layui-icon layui-icon-rmb mr5" style="font-size: 14px"></i>{$vo['price']}</span>
+                    {/if}
+                </div>
+             </a>
+        </div>
+        {/foreach}
+    </div>
+</div>
+{/block}
+{block name="foot"}
+<div id="hui-footer">
+    <a href="/" id="nav-home">
+        <div class="iconfont icon-shouye"></div>
+        <div class="hui-footer-text">首页</div>
+    </a>
+    <a href="{:url('index/course/videoindex')}" id="nav-video">
+        <div class="iconfont icon-video"></div>
+        <div class="hui-footer-text">录播</div>
+    </a>
+    <a href="{:url('index/course/liveindex')}" id="nav-live">
+        <div class="iconfont icon-zhiboguanli"></div>
+        <div class="hui-footer-text">直播</div>
+    </a>
+    <a href="{:url('index/classroom/index')}" id="nav-classroom">
+        <div class="hui-footer-icons hui-icons-write"></div>
+        <div class="hui-footer-text">班级</div>
+    </a>
+    <a href="{:url('index/user/index')}" id="nav-my">
+        <div class="iconfont icon-wode"></div>
+        <div class="hui-footer-text">我的</div>
+    </a>
+</div>
+{/block}
+{block name="js"}
+<script src="__HUI__/js/hui-swipe.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var swipe = new huiSwpie('#swipe');
+    swipe.autoPlay = true;
+    swipe.run();
+    hui.slideMenu();
+</script>
+<script type="text/javascript">
+    //监听搜索事件
+    document.getElementById('searchKey').addEventListener('keyup', function(e){if(e.keyCode == 13){searchNow();}});
+    function hotSearch(k){
+        hui('#searchKey').val(k);
+        searchNow();
+    }
+    //核心搜索函数
+    function searchNow(){
+        document.activeElement.blur();
+        var kwd = hui('#searchKey').val();
+        kwd = kwd.trim();
+        if(kwd.length < 2){
+            hui.toast('关键字至少2个字符');
+            hui('.hui-hot-sreach').show();
+            return;
+        }
+        //关闭热搜
+        hui('.hui-hot-sreach').hide();
+        $("#search").submit();
+    }
+    //清空
+    function clearSearch(){
+        hui('#searchKey').val('');
+        hui('.hui-hot-sreach').show();
+    }
+    hui.scrollNews(scrollnew1);
+</script>
+{/block}

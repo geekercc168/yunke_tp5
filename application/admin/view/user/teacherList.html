@@ -1,0 +1,61 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group fl">
+            <a href="{:url('admin/user/addteacher')}" class="layui-btn"><i class="fa fa-plus-circle"></i> 添加教师</a>
+            <a href="{:url('admin/user/teacherimport')}" class="layui-btn layui-btn-primary ajax-iframe" data-width="500px" data-height="300px"><i class="fa fa-plus-circle"></i> 批量导入</a>
+        </div>
+        <div class="fl ml20">
+            <form action="{:url('admin/user/teacherList')}" class="layui-form" method="get" style="padding:0px;">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="key" value="{:input('key')}" autocomplete="off" placeholder="用教师用户名或手机号搜索" class="layui-input"/>
+                    </div>
+                    <div class="fl">
+                        <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th>登录名</th>
+                <th>昵称</th>
+                <th>展示姓名</th>
+                <th>手机号</th>
+                <th>申请时间</th>
+                <th>视频目录ID</th>
+                <th>状态</th>
+                <th>问答管理</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.username}</td>
+                <td>{$v.uid|getUserName}</td>
+                <td>{$v.showname}</td>
+                <td>{$v.mobile}</td>
+                <td>{$v.create_time}</td>
+                <td>{$v.category_id}</td>
+                <td>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="启用|禁用" data-url="{:url('admin/user/teacherstatus', ['uid' => $v.uid])}" {if $v.status eq 1}checked="checked"{/if}>
+                </td>
+                <td>
+                    <input type="checkbox" name="forumadmin" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/user/forumadmin', ['uid' => $v.uid])}" {if $v.forumadmin eq 1}checked="checked"{/if}>
+                </td>
+                <td>
+                    <a href="{:url('admin/user/editteacher', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>
+                    <a href="{:url('admin/user/delteacher', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

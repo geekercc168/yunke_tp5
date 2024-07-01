@@ -1,0 +1,38 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/user/exporttixian')}" class="layui-btn layui-btn-primary"><i class="fa fa-file-excel-o"></i> 导出数据</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th>提现金额</th>
+                <th>收款方式</th>
+                <th>收款账户</th>
+                <th>收款姓名</th>
+                <th>创建时间</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.money} 元</td>
+                <td>{$v.type}</td>
+                <td>{$v.account}</td>
+                <td>{$v.name}</td>
+                <td>{$v.addtime}</td>
+                <td>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="完毕|待处理"
+                     data-url="{:url('admin/user/tianxianPost', ['id' => $v.id])}" {if $v.status eq 1}checked="checked"{/if}>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

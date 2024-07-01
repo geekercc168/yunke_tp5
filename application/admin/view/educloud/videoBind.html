@@ -1,0 +1,60 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">绑定账号</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">KeyID</label>
+                <div class="layui-input-block">
+                    <input type="text" name="KeyID" value="{$data.KeyID}" lay-verify="required" autocomplete="off" placeholder="请填写阿里云Access Key ID" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">KeySecret</label>
+                <div class="layui-input-block">
+                    <input type="text" name="KeySecret" value="{$data.KeySecret}" lay-verify="required" autocomplete="off" placeholder="请填写阿里云Access Key Secret" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">Bucket</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Bucket" value="{$data.Bucket}" lay-verify="required" autocomplete="off" placeholder="请填写阿里云oss的bucket" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">EndPoint</label>
+                <div class="layui-input-block">
+                    <input type="text" name="EndPoint" value="{$data.EndPoint}" lay-verify="required" autocomplete="off" placeholder="请填写阿里云oss的EndPoint" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">UserId</label>
+                <div class="layui-input-block">
+                    <input type="text" name="AliUserId" value="{$data.AliUserId}" lay-verify="required" autocomplete="off" placeholder="请填写阿里云账号ID" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">单页个数</label>
+                <div class="layui-input-block">
+                    <input type="text" name="PageSize" value="{$data.PageSize}" lay-verify="required" autocomplete="off" placeholder="设置视频管理中视频列表的显示个数，不填默认为10个" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">重建视频目录</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="rebuild" value="1" title="是">
+                    <input type="radio" name="rebuild" value="0" title="否" checked>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="c" lay-submit="*">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,61 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group fl">
+            <a  href="{:url('admin/educloud/videoup')}" class="layui-btn ajax-iframe_noshut_nobutton" data-width="700px" data-height="450px"><i class="fa fa-plus-circle"></i> 上传视频</a>
+            <a  href="{:url('admin/educloud/videocategory')}" class="layui-btn  layui-btn-warm ajax-iframe" data-width="700px" data-height="450px"><i class="fa fa-plus-circle"></i> 视频分类</a>
+            <a  href="{:url('admin/educloud/videodel')}"class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i> 批量删除</a>
+        </div>
+        <div class="fl ml20">
+            <form action="{:url('admin/educloud/videoList')}" class="layui-form" method="get" style="padding:0px;">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <select name="CateId">
+                            <option value="">全部分类</option>
+                            {foreach name="videocategory" item="v"}
+                            <option value="{$v.CateId}" {if condition="$cateId eq $v.CateId" }selected="selected"{/if}> {$v.CateName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="fl">
+                        <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="layui-table layui-form">
+            <input type="hidden" id="count" value="{$count}">
+            <input type="hidden" id="PageSize" value="{$PageSize}">
+            <input type="hidden" id="curr" value="{$curr}">
+            <input type="hidden" id="cateId" value="{$cateId}">
+            <input type="hidden" id="url" value="/admin/educloud/videoList/page/">
+            <thead>
+            <tr>
+                <th style="width:30px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th >视频名称</th>
+                <th style="width:50px;">状态</th>
+                <th style="width:160px;">分类</th>
+                <th style="width:70px;">时长</th>
+                <th style="width:70px;">大小</th>
+                <th style="width:140px;">创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id[]" value="{$v.VideoId}" lay-skin="primary"></td>
+                <td>{$v.Title}</td>
+                <td>{$v.Status|video_status}</td>
+                <td>{$v.CateName|getSubCateName}</td>
+                <td>{$v.Duration|sec_to_minute}</td>
+                <td>{$v.Size|format_bytes}</td>
+                <td>{$v.CreateTime}</td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page" id="page"></div>
+    </div>
+</div>
+{/block}

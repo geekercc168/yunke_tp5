@@ -1,0 +1,44 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/flashsale/create',['type'=>1])}" class="layui-btn ajax-iframe" data-width="800px" data-height="500px"><i class="fa fa-plus-circle"></i> 创建课程抢购</a>
+            <a href="{:url('admin/flashsale/create',['type'=>2])}" class="layui-btn layui-btn-normal ajax-iframe" data-width="800px" data-height="500px"><i class="fa fa-plus-circle"></i> 创建班级抢购</a>
+            <a href="{:url('admin/flashsale/del')}" class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i> 批量删除</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:20px;">ID</th>
+                <th >抢购名称</th>
+                <th  style="width:80px;">打折折扣</th>
+                <th  style="width:200px;">开始时间</th>
+                <th  style="width:200px;">结束时间</th>
+                <th  style="width:80px;">状态</th>
+                <th  style="width:70px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.title}</td>
+                <td>{$v.details.rate}折促销</td>
+                <td>{$v.details.starttime}</td>
+                <td>{$v.details.endtime}</td>
+                <td>{:getFlashsaleStatus($v.details.starttime,$v.details.endtime)}</td>
+                <td><div class="layui-btn-group mb0">
+                        <a href="{:url('admin/flashsale/edit', ['id' => $v.id,'ctype'=> $v.c_type])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="800px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>
+                        <a href="{:url('admin/flashsale/del', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}

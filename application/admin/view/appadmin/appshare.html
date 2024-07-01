@@ -1,0 +1,104 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">分享设置</li>
+                <li>评论马甲</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="{:url('admin/appadmin/appshare')}" class="layui-form" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">评分个数</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="comment_times" value="{$data.comment_times|default=''}" placeholder="请输入虚拟评分个数" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">安装次数</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="install_times" value="{$data.install_times|default=''}" placeholder="请输入虚拟安装次数" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">APP年龄</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="app_age" value="{$data.app_age|default=''}" placeholder="请输入APP年龄" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">应用预览</label>
+                            <div class="layui-input-block">
+                                <div class="share-img-box appimages">
+                                    <img class="share-img " src="{$data.share_img_1|default=''}">
+                                    <input type="text"  name="share_img_1" value="{$data.share_img_1|default=''}"  class="layui-input layui-hide">
+                                </div>
+                                <div class="share-img-box appimages">
+                                    <img class="share-img" src="{$data.share_img_2|default=''}">
+                                    <input type="text" name="share_img_2" value="{$data.share_img_2|default=''}"  class="layui-input layui-hide">
+                                </div>
+                                <div class="share-img-box appimages">
+                                    <img class="share-img" src="{$data.share_img_3|default=''}">
+                                    <input type="text" name="share_img_3" value="{$data.share_img_3|default=''}"  class="layui-input layui-hide">
+                                </div>
+                                <div class="share-img-box appimages">
+                                    <img class="share-img" src="{$data.share_img_4|default=''}">
+                                    <input type="text" name="share_img_4" value="{$data.share_img_4|default=''}"  class="layui-input layui-hide">
+                                </div>
+                                <div class="share-img-box appimages">
+                                    <img class="share-img" src="{$data.share_img_5|default=''}">
+                                    <input type="text" name="share_img_5" value="{$data.share_img_5|default=''}"  class="layui-input layui-hide">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                                <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="layui-btn-group">
+                                <a href="{:url('admin/appadmin/addcomment')}" class="layui-btn  ajax-iframe" data-width="600px" data-height="400px"><i class="fa fa-plus-circle"></i> 添加评论</a>
+                            </div>
+                            <table class="layui-table layui-form">
+                                <thead>
+                                <tr>
+                                    <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                                    <th  style="width:100px;">用户名</th>
+                                    <th  >评论内容</th>
+                                    <th  style="width:140px;">添加时间</th>
+                                    <th  style="width:30px;">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach name="comment" item="v" empty="$empty"}
+                                <tr>
+                                    <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                                    <td>{$v.username}</td>
+                                    <td>{$v.comment}</td>
+                                    <td>{$v.addtime}</td>
+                                    <td>
+                                        <div class="layui-btn-group mb0">
+                                            <a href="{:url('admin/appadmin/delcomment', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="layui-icon">&#xe640;</i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+

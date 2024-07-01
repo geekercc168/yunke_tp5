@@ -1,0 +1,35 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">名师推荐</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="yxt_teacher-list">
+                <div class="layui-row layui-col-space10">
+                    {foreach name="teacher" item="vo"}
+                    <div class="layui-col-xs6 layui-col-sm6">
+                        <div class="yxt_teacher-item">
+                            <div class="teacher-pic" style="cursor: pointer;height:160px;">
+                                <div class="img-box" style="height:90px;width:90px;">
+                                    <a href="{:url('index/teacher/centert',['id'=>$vo.id])}">
+                                        <img src="{$vo.uid|getAvatar|defaultAvatar}" alt="{$vo.username}" width="120" height="125">
+                                    </a>
+                                </div>
+                                <p class="teacher-name" style="margin-top:0px;">{$vo.username}</p>
+                            </div>
+                            <div style="padding:0px 10px 10px 10px;"><p>{$vo.sign}</p></div>
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+{/block}

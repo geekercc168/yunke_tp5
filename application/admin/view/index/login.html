@@ -1,0 +1,83 @@
+<html><head>
+    <meta charset="UTF-8">
+    <title>云课网校系统管理后台</title>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="stylesheet" href="__LIBS__/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/default/css/adminlogin.css">
+    <link rel="shortcut icon" href="{:config('website.icon')}" />
+    <link rel="bookmark" href="{:config('website.icon')}" />
+</head>
+<body>
+<div class="bg">
+    <div class="login_bd">
+        <div class="login_bd_l"></div>
+        <div class="login_bd_r">
+            <div class="form_bd">
+                <div class="form_top"><span></span> 管理登录</div>
+                <div class="form_con">
+                    <form class="layui-form" action="{:url('admin/index/login')}" method="post">
+                        <div class="form_item">
+                            <img src="/static/default/img/name.png">
+                            <input type="text" id="input_username" name="username" placeholder="用户名或邮箱" title="用户名或邮箱" value="" lay-verify="required" required="">
+                        </div>
+
+                        <div class="form_item">
+                            <img src="/static/default/img/pass.png">
+                            <input type="password" id="input_password" name="password" placeholder="密码" title="密码" lay-verify="required" required="">
+                        </div>
+                        <div class="form_item captcha">
+                            <img src="/static/default/img/code.png">
+                            <input type="text" name="captcha" placeholder="验证码" class="form-control captcha" lay-verify="required">
+                            <img src="{:url('admin/index/captcha')}" title="换一张" class="captcha captcha-img verify_img" style="cursor: pointer;" onclick="this.src='{:url('admin/index/captcha')}?rand='+Math.random()" />
+                        </div>
+                        <div class="form_submit">
+                            <input type="hidden" name="redirect" value="">
+                            <button class="form_btn" lay-submit="" lay-filter="login">登录</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__LIBS__/layui/layui.js"></script>
+<script>
+    layui.use(['layer', 'form', 'jquery'], function(){
+        var layer = layui.layer,
+            form  = layui.form,
+            $     = layui.jquery;
+        form.on('submit(login)', function(data) {
+            var index = layer.msg('登录中，请稍候', {
+                icon: 16,
+                time: false,
+                shade: 0.3
+            });
+            $.ajax({
+                url: data.form.action,
+                type: data.form.method,
+                dataType: 'json',
+                data: $(data.form).serialize(),
+                success: function(result) {
+                    if (result.code === 1) {
+                        location.href = result.url;
+                    } else {
+                        $('.captcha img').attr('src', '{:url("admin/index/captcha")}?rand='+Math.random());
+                        layer.close(index);
+                        layer.msg(result.msg);
+                    }
+                },
+                error: function (xhr, state, errorThrown) {
+                    layer.close(index);
+                    layer.msg(state + '：' + errorThrown);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+<script type="text/javascript" src="/static/default/js/canvas.min.js" opacity="1" color="255,255,255" zindex="0"></script>
+<canvas width="1007" height="735" style="position: fixed; top: 0px; left: 0px; z-index: 0; opacity: 1;"></canvas>
+</body>
+</html>

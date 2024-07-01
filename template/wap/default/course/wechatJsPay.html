@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>微信支付</title>
+    <script type="text/javascript">
+        callpay();
+
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                    "appId":document.getElementById("appId").value,
+                    "timeStamp":document.getElementById("timeStamp").value,
+                    "nonceStr":document.getElementById("nonceStr").value,
+                    "package":document.getElementById("package").value,
+                    "signType":document.getElementById("signType").value,
+                    "paySign":document.getElementById("paySign").value
+                },
+                function(res){
+                    if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                        window.location.href="{:Url('index/Course/appordersettle')}";
+                    }
+                });
+        }
+
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        }
+
+    </script>
+</head>
+<body>
+<input type="hidden" id="orderid" value="{$order.orderid}">
+<input type="hidden" id="appId" value="{$jsApiParameters.appId}">
+<input type="hidden" id="timeStamp" value="{$jsApiParameters.timeStamp}">
+<input type="hidden" id="nonceStr" value="{$jsApiParameters.nonceStr}">
+<input type="hidden" id="package" value="{$jsApiParameters.package}">
+<input type="hidden" id="signType" value="{$jsApiParameters.signType}">
+<input type="hidden" id="paySign" value="{$jsApiParameters.paySign}">
+</body>
+</html>

@@ -1,0 +1,61 @@
+{extend name="iframe" /}
+{block name="body"}
+<style type="text/css">
+    #categoryList .active{line-height:30px;color:#009688 !important;}
+</style>
+<div class="layui-container">
+    <div class="layui-row mt10">
+        <input  id="files" type="file" name="myFile" multiple="multiple" class="layui-hide"/>
+        <input  id="userId" type="text" name="userId" class="layui-hide" value="{$userId}"/>
+        <input  id="categoryid" type="text" class="layui-hide"  value="{$categoryid}"/>
+        <input type="hidden" id="count" value="{$count}">
+        <input type="hidden" id="PageSize" value="{$PageSize}">
+        <input type="hidden" id="curr" value="{$curr}">
+        <input type="hidden" id="cateId" value="{$categoryid}">
+        <input type="hidden" id="url" value="/admin/course/videoList/page/">
+        <div class="ml20 mb10">
+            <span class="layui-breadcrumb categoryList" id="categoryList" lay-separator="|">
+               <a {if condition="$v.CateId eq $categoryid"}class="active"{/if} href="{:url('admin/course/videoList')}">全部</a>
+                {foreach name="categoryList" item="v"}
+               <a href="{:url('admin/course/videoList', ['CateId'=>$v.CateId])}"
+                  {if condition="$v.CateId eq $categoryid"}class="active"{/if} cid="{$v.CateId}">{$v.CateName}</a>
+                {/foreach}
+            </span>
+        </div>
+        <ul>
+            <li class="layui-col-xs3 layui-col-sm3 layui-col-md3 pd10" onclick="ToSelectFile()">
+                <div class="video-pic">
+                    <i class="fa fa-plus"></i>
+                    <div class="video-title">点击选择上传的视频</div>
+                    <div class="shadow"></div>
+                </div>
+            </li>
+        </ul>
+        <ul class="radio">
+            {foreach name="list" item="v"}
+            <li class="layui-col-xs3 layui-col-sm3 layui-col-md3 pd10">
+                <div class="video-pic">
+                    <img src="{$v.CoverURL|defaultVideoPic}">
+                    <input type="hidden" name="videoid" value="{$v.VideoId}">
+                    <input type="hidden" name="duration" value="{$v.Duration|sec_to_minute}">
+                    <div class="video-title">{$v.Title}</div>
+                    <div class="shadow"></div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+    <div class="page" id="page" style="margin-left: 10Px;"></div>
+    <div class="upvideo-btn mt30">
+        <button class="layui-btn layui-hide" onclick="start()" id="button-start"><i class="fa fa-cloud-upload"></i>  开始上传</button>
+    </div>
+</div>
+<script src="__LIBS__/layui/layui.all.js"></script>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/common.js"></script>
+<script src="__ALIYUN__/es6-promise.min.js"></script>
+<script src="__ALIYUN__/aliyun-oss-sdk-5.3.1.min.js"></script>
+<script src="__ALIYUN__/aliyun-upload-sdk-1.5.0.min.js"></script>
+<script src="__ALIYUN__/md5.js"></script>
+<script src="__ALIYUN__/upvideo-addsection.js"></script>
+{/block}

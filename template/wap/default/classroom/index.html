@@ -1,0 +1,58 @@
+{extend name="base" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">班级列表</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb70">
+    <div class="hui-flex pd10 index-course-list" style="flex-wrap:wrap;">
+        {foreach name="list" item="vo" empty="$empty"}
+        <div  class="item">
+            <a href="{:url('index/classroom/info',array('id'=>hashids_encode($vo['id'])))}">
+                <div class="image"><img src="{$vo['picture']}"></div>
+                <div class="hui-center-title title mt10 layui-elip">{$vo['title']}</div>
+                <div class="tll ml10">
+                    <i class="layui-icon layui-icon-user metas"></i>
+                    <span class="metas">{$vo.id|getUserNum=###,$vo['type']}</span>
+                    <span class="hui-icons hui-icons-play metas ml10"></span>
+                    <span class="metas">{$vo['id']|getClassroomCourseNum}</span>
+                    {if condition="$vo['price']==0"}
+                    <span class="free">免费</span>
+                    {else /}
+                    <span class="price"><i class="layui-icon layui-icon-rmb mr5" style="font-size: 14px"></i>{$vo['price']}</span>
+                    {/if}
+                </div>
+            </a>>
+        </div>
+        {/foreach}
+    </div>
+</div>
+{/block}
+{block name="foot"}
+<div id="hui-footer">
+    <a href="/" id="nav-home">
+        <div class="iconfont icon-shouye"></div>
+        <div class="hui-footer-text">首页</div>
+    </a>
+    <a href="{:url('index/course/videoindex')}" id="nav-video">
+        <div class="iconfont icon-video"></div>
+        <div class="hui-footer-text">录播</div>
+    </a>
+    <a href="{:url('index/course/liveindex')}" id="nav-live">
+        <div class="iconfont icon-zhiboguanli"></div>
+        <div class="hui-footer-text">直播</div>
+    </a>
+    <a href="{:url('index/classroom/index')}" id="nav-classroom">
+        <div class="hui-footer-icons hui-icons-write"></div>
+        <div class="hui-footer-text">班级</div>
+    </a>
+    <a href="{:url('index/user/index')}" id="nav-my">
+        <div class="iconfont icon-wode"></div>
+        <div class="hui-footer-text">我的</div>
+    </a>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

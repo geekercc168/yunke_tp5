@@ -1,0 +1,75 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" type="text/css" href="__CSS__/exam.css" media="all">
+<link rel="stylesheet" type="text/css" href="__CSS__/home.nav.css" media="all">
+{/block}
+{block name="body"}
+<div class="layui-container mt30">
+    <div class="cation-content">
+        <div class="cation-middle mt30">
+            <dl class="cation-list">
+                <dd>
+                    <a href="#" rel="" name="parent" class="all on">全部</a>
+                    {foreach name="parent" item="vo"}
+                    <a href="#" rel="{$vo.id}" name="parent" class="default">{$vo.category_name}</a>
+                    {/foreach}
+                </dd>
+            </dl>
+            {if condition="$second"}
+            <dl class="cation-list">
+                <dd>
+                    <a href="#" rel="" name="second" class="all on">全部</a>
+                    {foreach name="second" item="vo"}
+                    <a href="#" rel="{$vo.id}" name="second" class="default">{$vo.category_name}</a>
+                    {/foreach}
+                </dd>
+            </dl>
+            {/if}
+            {if condition="$third"}
+            <dl class="cation-list">
+                <dd>
+                    <a href="#" rel="" name="third" class="all on">全部</a>
+                    {foreach name="third" item="vo"}
+                    <a href="#" rel="{$vo.id}" name="third" class="default">{$vo.category_name}</a>
+                    {/foreach}
+                </dd>
+            </dl>
+            {/if}
+        </div>
+    </div>
+</div>
+<div class="layui-container mt30">
+    <div class="layui-row layui-col-space20 ">
+        {foreach name="exams" item="vo" empty="$empty"}
+        <div class="layui-col-md4 package">
+            <div  class="item">
+                <div  class="name">{$vo.exam}</div>
+                <div  class="clear bottom">
+                    <div>试卷总分：{$vo['examsetting']['examscore']}分</div>
+                    <div>考试时间：{$vo['examsetting']['examtime']}分钟</div>
+                    {if condition="$vo['examsetting']['starttime']"}
+                    <div>开考时间：{$vo['examsetting']['starttime']}</div>
+                    {/if}
+                </div>
+                <div class="mt20">
+                    <a href="{:url('index/exam/dopackage',array('id'=>hashids_encode($vo['id'])))}" class="lnk f-right">开始</a>
+                </div>
+            </div>
+        </div>
+        {/foreach}
+    </div>
+    <div class="page">{$exams->render()}</div>
+</div>
+{/block}
+{block name="js"}
+<script src="__COMMON__/nav.js"></script>
+<script type="text/javascript">
+    $(function(){
+        new SelectTag({
+            child : ".default", //所有默认
+            over : 'on', //当前选中
+            all : ".all" // 默认全部
+        });
+    })
+</script>
+{/block}

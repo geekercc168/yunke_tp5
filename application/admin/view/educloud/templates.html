@@ -1,0 +1,31 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">短信模板</div>
+    <div class="layui-card-body">
+        <div class="layui-card-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th >模板名称</th>
+                    <th >模板ID</th>
+                    <th  style="width:170px;">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td >注册手机验证码</td>
+                    <td ><input type="text" name="TemplatesId" value="{$MC.TemplatesId}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/educloud/templates', ['type' => 'SmsTemplates_MC'])}"></td>
+                    <td><input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="开启|关闭" data-url="{:url('admin/educloud/templates',['type' => 'SmsTemplates_MC'])}" {if $MC.status eq 1}checked="checked" {/if}></td>
+                </tr>
+                <tr>
+                    <td >直播上课通知</td>
+                    <td ><input type="text" name="TemplatesId" value="{$SK.TemplatesId}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('admin/educloud/templates', ['type' => 'SmsTemplates_SK'])}"></td>
+                    <td ><input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="开启|关闭" data-url="{:url('admin/educloud/templates',['type' => 'SmsTemplates_SK'])}" {if $SK.status eq 1}checked="checked" {/if}></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,47 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">下载地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="downurl" autocomplete="off" placeholder="请上传app安装包" class="layui-input" value="{$data.downurl|default=''}">
+            <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-file"><i class="fa fa-file-image-o"></i>文件</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">app类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="platform" value="android" lay-filter="selectliveplatform" title="安卓" {if $data.platform eq  android}checked="checked" {/if}>
+            <input type="radio" name="platform" value="ios" lay-filter="selectliveplatform" title="苹果" {if $data.platform eq  ios}checked="checked" {/if}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">升级类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="type" value="all"  title="整包" {if $data.type eq  all}checked="checked" {/if}>
+            <input type="radio" name="type" value="wgt"  title="wgt" {if $data.type eq  wgt}checked="checked" {/if}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">app版本</label>
+        <div class="layui-input-block">
+            <input type="text" name="version"  autocomplete="off" placeholder="app版本号" class="layui-input" value="{$data.version|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">升级内容</label>
+        <div class="layui-input-block">
+            <textarea name="notes" placeholder="请输入更新内容" class="layui-textarea" style="height:160px">{$data.notes|default=''}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">提交</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name="js"}
+
+{/block}

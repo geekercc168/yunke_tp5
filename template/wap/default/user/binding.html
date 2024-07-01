@@ -1,0 +1,81 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">绑定账号</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52">
+    {if condition="empty($userInfo.mobile) or empty($userInfo.nickname)"}
+    <form class="hui-form" action="{:request()->url()}" method="post">
+        {if condition="$regfield[0]['status']==1"}
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">所在年级</div>
+            <div class="hui-form-select">
+                <select name="greadId">
+                    <option value="">选择年级</option>
+                    {foreach name="grade" item="v"}
+                    <option value="{$v.id}">{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        {/if}
+        {if condition="$regfield[1]['status']==1"}
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">所在学校</div>
+            <div class="hui-form-select">
+                <select name="schoolId">
+                    <option value="">选择学校</option>
+                    {foreach name="school" item="v"}
+                    <option value="{$v.id}">{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        {/if}
+        {if condition="empty($userInfo.mobile)"}
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">手机号码</div>
+            <input type="text" class="hui-input hui-input-clear"  id="mobile" name="mobile" lay-verify="required|phone"  placeholder="请输入手机号" />
+        </div>
+        {if condition="$data.status eq 1"}
+        <div class="hui-form-items" style="padding: 4px 10px 0px 10px">
+            <div class="hui-form-items-title mt10">手机验证码</div>
+            <input type="text" id="phoneCode"  name="codeverify"  class="hui-input mt10"  lay-verify="required" maxlength="6" />
+            <div style="width:240px;height:45px;">
+                <input type="button" class="layui-btn layui-btn-primary getPhoneCode generate_code " value=" 获取验证码" style="float:right;" url="{:url('api/author/regCode')}">
+            </div>
+        </div>
+        {/if}
+        {/if}
+        {if condition="empty($userInfo.username)"}
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">登录用户名</div>
+            <input type="text" class="hui-input hui-input-clear"   name="username" lay-verify="required|username"  placeholder="可以绑定已有用户名，也可以绑定新用户名" />
+        </div>
+        {/if}
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">显示昵称</div>
+            <input type="text" class="hui-input hui-input-clear"   name="nickname" lay-verify="required|username"  placeholder="可用于系统显示名，可以修改" />
+        </div>
+        {if condition="empty($userInfo.username)"}
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">登录密码</div>
+            <input type="text" class="hui-input hui-input-clear"   name="password" lay-verify="required|password"  placeholder="用于用户名或者手机号登录时的密码" />
+        </div>
+        {/if}
+        <button type="button"  class="hui-button hui-button-large hui-primary"  lay-submit="" lay-filter="*" style="margin-top:15px;">绑定</button>
+    </form>
+    {else /}
+    <form class="hui-form" action="" method="post">
+        <div class="hui-form-items">
+            <div class="hui-form-items-title">已绑手机</div>
+            <input type="text" class="hui-input hui-input-clear" value="{$userInfo.mobile}" disabled="undisabled" />
+        </div>
+    </form>
+    {/if}
+</div>
+{/block}
+{block name="js"}
+{/block}

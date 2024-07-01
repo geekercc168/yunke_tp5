@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<style>
+    html, body, .learn-box {
+        height: 100%;
+        width: 100%;
+        background: #000
+    }
+    .learn-content {
+        height: 100%;
+    }
+    .learn-playroom {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+    <title>{$sectionInfo.title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="__LIBS__/layui/css/layui.css">
+    <link rel="shortcut icon" href="{:config('website.icon')}" />
+    <link rel="bookmark"href="{:config('website.icon')}" />
+</head>
+<body>
+<div class="layui-layout learn-box">
+  
+    <div class="layui-row learn-content">
+        <div class="learn-playroom">
+            <iframe src="{$sectionInfo.shareurl}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="100%" > </iframe>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+
+</script>
+</html>

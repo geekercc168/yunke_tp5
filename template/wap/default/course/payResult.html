@@ -1,0 +1,48 @@
+{extend name="userBase" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">支付结果</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap mb52 pay-result">
+    {if condition="$orderInfo.state==1"}
+    <div class="result">
+        <i class="layui-icon layui-icon-ok-circle"></i>
+        <span>支付成功</span>
+        <div class="orderid">订单编号：{$orderInfo['orderid']}</div>
+    </div>
+    <div class="courseinfo">
+        <div class="title">所购课程：<i>《{$courseinfo.title}》</i></div>
+        <div class="title" style="margin-top:20px;">付款价格：<i class="price"><i class="layui-icon layui-icon-rmb price" style="margin-right:10px;"></i>{$orderInfo.total}</i></div>
+    </div>
+    <div class="btn">
+        {if condition="$courseinfo.type==3"}
+        <a href="{:url('index/classroom/info',['id'=>hashids_encode($courseinfo.id)])}" type="button" class="layui-btn layui-btn-warm">学习课程</a>
+        {else /}
+        <a href="{:url('index/course/info',['id'=>hashids_encode($courseinfo.id),'type'=>hashids_encode($courseinfo.type)])}" type="button" class="layui-btn layui-btn-warm">学习课程</a>
+        {/if}
+        <a href="/" type="button" class="layui-btn layui-btn-warm">返回首页</a>
+    </div>
+    {else /}
+    <div class="result">
+        <i class="error layui-icon layui-icon-close-fill"></i>
+        <span>支付失败</span>
+    </div>
+    <div class="courseinfo">
+        <div class="title">所购课程：<i>《{$courseinfo.title}》</i></div>
+        <div class="title" style="margin-top:20px;">付款价格：<i class="price"><i class="layui-icon layui-icon-rmb price" style="margin-right:10px;"></i>{$orderInfo.total}</i></div>
+    </div>
+    <div class="btn">
+        {if condition="$courseinfo.type==3"}
+        <a  href="{:url('index/classroom/info',['id'=>hashids_encode($courseinfo.id)])}" class="layui-btn layui-btn-warm">返回课程</a>
+        {else /}
+        <a  href="{:url('index/course/info',['id'=>hashids_encode($courseinfo.id),'type'=>hashids_encode($courseinfo.type)])}"  class="layui-btn layui-btn-warm">返回课程</a>
+        {/if}
+        <a href="/" type="button" class="layui-btn layui-btn-warm">返回首页</a>
+    </div>
+    {/if}
+</div>
+{/block}
+{block name="js"}
+{/block}

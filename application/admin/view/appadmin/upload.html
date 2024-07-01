@@ -1,0 +1,37 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/appadmin/uploadapp')}" class="layui-btn ajax-iframe" data-width="800px" data-height="530px"><i class="fa fa-plus-circle"></i>上传</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width: 30px">ID</th>
+                <th>版本</th>
+                <th>下载次数</th>
+                <th>上传时间</th>
+                <th>是否发布</th>
+                <th style="width: 120px">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td>{$v.id}</td>
+                <td>{$v.version}</td>
+                <td>{$v.downtime}</td>
+                <td>{$v.addtime}</td>
+                <td><input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="是|否" data-url="{:url('admin/appadmin/appedit', ['id' => $v.id])}" {if $v.status eq 1}checked="checked" {/if}></td>
+                <td>
+                    <a href="{:url('admin/appadmin/appedit', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-normal ajax-iframe" data-width="800px" data-height="550px"><i class="fa fa-edit"></i> 编辑</a>
+                    <a href="{:url('admin/appadmin/appdel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i> 删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}

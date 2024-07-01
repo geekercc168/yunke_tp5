@@ -1,0 +1,470 @@
+{extend name="examBase" /}
+{block name="css"}
+<style>
+    .layui-colla-content{padding: 10px 5px;}
+</style>
+{/block}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">
+    {if condition="$useType==3"}
+    <span class="exam-daojishi"><span id="remain" class="time"></span></span>
+    {/if}
+    </h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap">
+    <div class="layui-row learn-content">
+        <div class="learn-playroom">
+            <form action="{:url('index/course/exampPost')}" class="layui-form" method="post">
+                <input type="hidden" id="cid" name="cid" value="{$info.csid}">
+                <input type="hidden" id="sid" name="sid" value="{$info.id}">
+                <input type="hidden" id="examid" name="eid" value="{$exam.id}">
+                <input type="hidden" id="ctype" name="ctype" value="{$info.coursetype}">
+                <input type="hidden" id="nowTime"  value="{$now}">
+                <input type="hidden" id="endTime"  value="{$end}">
+                <input type="hidden" id="useType" value="3">
+                <input type="hidden" id="examtype" value="{$exam['examsetting']['examtype']}">
+                <div class="layui-row exam-box" style="padding:0px;">
+                    <div style="padding: 5px;">
+                        {if condition="empty(!$myexam['myanswer'])"}
+                        <div class="layui-row">
+                            <div class="layui-col-xs9">
+                                <h1 class="tac">{$exam['exam']}</h1>
+                                <div class="tac mt10 mb20">试题总分：{$exam['examsetting']['examscore']}分，时间：{$exam['examsetting']['examtime']}分钟</div>
+                            </div>
+                            <div class="layui-col-xs3">
+                                <div class="testpaper-result-total" >
+                                    <div class="well">
+                                        <div class="testpaper-result-total-score" style="color:red;">
+                                            {if condition="$myexam['status']==1"}
+                                            {$myexam['totalscores']}<small>分</small>
+                                            {else /}
+                                            ?<small>分</small>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {else /}
+                        <h1 class="tac">{$exam['exam']}</h1>
+                        <div class="tac mt10 mb20">试题总分：{$exam['examsetting']['examscore']}分，时间：{$exam['examsetting']['examtime']}分钟</div>
+                        {/if}
+                        <div class="layui-card">
+                            <div class="layui-collapse" id="eaxmbox">
+                                {foreach name="exam['examsetting']['questype']" item="vvv"}
+                                <div class="layui-colla-item">
+                                    <h2 class="layui-colla-title" id="question_type_{$key}">{$key|get_question_type} <span class="ml10">({$vvv.describe})</span><i class="layui-icon layui-colla-icon"></i></h2>
+                                    <div class="layui-colla-content layui-show pl20">
+                                        {if condition="get_question_mark($key) eq 'TiMao'"}
+                                        {foreach name="exam['examquestions'][$key]" item="v" key="k"}
+                                        <p style="font-weight: bold; font-size: 15px;">{$v|get_question_info=###,"question"}</p>
+                                        {foreach name="exam['subQuestions'][$v]" item="vv" key="k"}
+                                        <div id="question_{$vv}" class="mt10">
+                                            <div class="question-seq-wrap ">
+                                                <div class="question-seq">
+                                                    {$k+1}
+                                                </div>
+                                                <div class="question-score">
+                                                    {$vvv.score}分
+                                                </div>
+                                                <input type="hidden" name="questionscore[{$vv}]" value="{$vvv.score}">
+                                            </div>
+                                            <div class=" ml50">
+                                                <p style="font-weight: bold; font-size: 15px;">{$vv|get_question_info=###,"question"}</p>
+                                            </div>
+                                            {switch name=$vv|get_question_info=###,"questiontype"|get_question_mark}
+                                            {case value="SingleSelect"}
+                                            <div class="mt20 ml50">
+                                                {$vv|get_question_info=###,"questionselect"}
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <div>
+                                                    <input type="radio" name="answer[{$vv}]" value="A" title="A">
+                                                    <input type="radio" name="answer[{$vv}]" value="B" title="B">
+                                                    <input type="radio" name="answer[{$vv}]" value="C" title="C">
+                                                    <input type="radio" name="answer[{$vv}]" value="D" title="D">
+                                                </div>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="MultiSelect"}
+                                            <div class="mt20 ml50">
+                                                {$vv|get_question_info=###,"questionselect"}
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <div>
+                                                    {$vv|get_multiSelect}
+                                                </div>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="FillInBlanks"}
+                                            <div class="mt20 ml50">
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <block id="editor{$vv}" style="-webkit-user-select:text !important; "></block>
+                                                <textarea  name="answer[{$vv}]"  style="display: none" id="answereditor{$vv}"></textarea>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]|default='<span class="layui-badge layui-bg-green">等待老师批阅</span>'}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="TrueOrfalse"}
+                                            <div class="mt20 ml50">
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <div class="mt10">
+                                                    <input type="radio" name="answer[{$vv}]" value="1" title="正确">
+                                                    <input type="radio" name="answer[{$vv}]" value="0" title="错误">
+                                                </div>
+                                                {else /}
+                                                <div class="layui-row mt10">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="ShortAnswer"}
+                                            <div class="mt20 ml50">
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <block id="editor{$vv}" style="-webkit-user-select:text !important; "></block>
+                                                <textarea  name="answer[{$vv}]"  style="display: none" id="answereditor{$vv}"></textarea>
+                                                {else /}
+                                                <div class="layui-row mt10">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]|default='<span class="layui-badge layui-bg-green">等待老师批阅</span>'}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {/switch}
+                                        </div>
+                                        <hr class="mb20">
+                                        {/foreach}
+                                        {/foreach}
+                                        {else /}
+                                        {foreach name="exam['examquestions'][$key]" item="vv" key="k"}
+                                        <div id="question_{$vv}" class="mt10">
+                                            <div class="question-seq-wrap ">
+                                                <div class="question-seq">
+                                                    {$k+1}
+                                                </div>
+                                                <div class="question-score">
+                                                    {$vvv.score}分
+                                                </div>
+                                                <input type="hidden" name="questionscore[{$vv}]" value="{$vvv.score}">
+                                            </div>
+                                            <div class=" ml50">
+                                                <p style="font-weight: bold; font-size: 15px;">{$vv|get_question_info=###,"question"}</p>
+                                            </div>
+                                            {switch name=$vv|get_question_info=###,"questiontype"|get_question_mark}
+                                            {case value="SingleSelect"}
+                                            <div class="mt20 ml50">
+                                                {$vv|get_question_info=###,"questionselect"}
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <div>
+                                                    <input type="radio" name="answer[{$vv}]" value="A" title="A">
+                                                    <input type="radio" name="answer[{$vv}]" value="B" title="B">
+                                                    <input type="radio" name="answer[{$vv}]" value="C" title="C">
+                                                    <input type="radio" name="answer[{$vv}]" value="D" title="D">
+                                                </div>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="MultiSelect"}
+                                            <div class="mt20 ml50">
+                                                {$vv|get_question_info=###,"questionselect"}
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <div>
+                                                    {$vv|get_multiSelect}
+                                                </div>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="FillInBlanks"}
+                                            <div class="mt20 ml50">
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <block id="editor{$vv}" style="-webkit-user-select:text !important; "></block>
+                                                <textarea  name="answer[{$vv}]"  style="display: none" id="answereditor{$vv}"></textarea>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]|default='<span class="layui-badge layui-bg-green">等待老师批阅</span>'}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="TrueOrfalse"}
+                                            <div class="mt20 ml50">
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <div class="mt10">
+                                                    <input type="radio" name="answer[{$vv}]" value="1" title="正确">
+                                                    <input type="radio" name="answer[{$vv}]" value="0" title="错误">
+                                                </div>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {case value="ShortAnswer"}
+                                            <div class="mt20 ml50">
+                                                {if condition="empty($myexam['myanswer'])"}
+                                                <block id="editor{$vv}" style="-webkit-user-select:text !important; "></block>
+                                                <textarea  name="answer[{$vv}]"  style="display: none" id="answereditor{$vv}"></textarea>
+                                                {else /}
+                                                <div class="layui-row mt10 layui-col-xs12">
+                                                    <div class="layui-col-xs12">
+                                                        正确答案是：{$vv|get_answer}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        你的答案是：{$myexam['myanswer'][$vv]}
+                                                    </div>
+                                                    <div class="layui-col-xs12">
+                                                        <div class="layui-col-xs8">
+                                                            此题得分：{$myexam['myscore'][$vv]|default='<span class="layui-badge layui-bg-green">等待老师批阅</span>'}
+                                                        </div>
+                                                        <div class="layui-col-xs4">
+                                                            <span class="js-analysis">
+                                                                <a style="cursor:pointer;" class="zhankai zhankai{$vv}" aid="{$vv}"><i class="layui-icon layui-icon-down mr10"></i>展开解析</a>
+                                                                <a style="cursor:pointer;" class="shouqi shouqi{$vv} layui-hide" aid="{$vv}"><i class="layui-icon layui-icon-up mr10"></i>收起解析</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="analysis{$vv} well mb0 mt20 layui-hide">
+                                                    <p>{$vv|get_analysis}</p>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                            {/case}
+                                            {/switch}
+                                        </div>
+                                        <hr class="mb20">
+                                        {/foreach}
+                                        {/if}
+                                    </div>
+                                </div>
+                                {/foreach}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {if condition="empty($myexam['myanswer'])"}
+                <div class="layui-row  learn-bottom" style="text-align: center;margin-bottom: 10px;">
+                    <button class="layui-btn layui-btn-normal" lay-filter="*" lay-submit="">我要交卷</button>
+                </div>
+                {/if}
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor;
+    $("#eaxmbox block").each(function () {
+        var id=this.id;
+        var editor = new E('#'+id);
+        editor.customConfig.onchange = function (html) {
+            $('#answer'+id).val(html)
+        };
+        editor.customConfig.showLinkImg = false;
+        editor.customConfig.uploadFileName = 'image';
+        editor.customConfig.uploadImgMaxSize = 10 * 1024 * 1024;
+        editor.customConfig.uploadImgTimeout = 20000;
+        editor.customConfig.uploadImgServer = '/api/Uploader/wangEditorUp';
+        editor.customConfig.menus = ['fontSize', 'fontName', 'underline', 'justify', 'quote', 'image', 'table', 'video', 'code'];
+        editor.create();
+        $('#answer'+id).val(editor.txt.html());
+    })
+</script>
+{/block}

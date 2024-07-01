@@ -1,0 +1,29 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt50 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">点卡面值</label>
+        <div class="layui-input-block">
+            <input type="text" name="money"  autocomplete="off" placeholder="请输入章点卡面值" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">生成数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="count"  autocomplete="off" placeholder="请输入要生成的点卡数量" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">卡号位数</label>
+        <div class="layui-input-block">
+            <input type="text" name="figures"  autocomplete="off" placeholder="请输入要生成的点卡数量" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item mt50">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+{/block}

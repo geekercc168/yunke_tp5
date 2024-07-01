@@ -1,0 +1,46 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" disabled lay-skin="primary"></th>
+                <th style="width:20px;">ID</th>
+                <th style="width:60px;">试题类型</th>
+                <th >试题内容</th>
+                <th  style="width:30px;">难度</th>
+                <th  style="width:30px;">预览</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="ids[]" typeid="{$v.questiontype}" value="{$v.id}" lay-filter="exam" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.questiontype|get_question_type}</td>
+                <td>{$v.question}</td>
+                <td>{$v.questionlevel|get_question_level}</td>
+                <td><a href="{:url('admin/exam/questionsPreview', ['id' => $v.id,'NoBtn'=>1])}" class="layui-btn  layui-btn-warm layui-btn-xs ajax-iframe" data-width="760px" data-height="380px"> <i class="layui-icon">&#xe705;</i></a></td>
+            </tr>
+            {/foreach}
+            </tbody>
+            <input type="hidden" value="{$questiontype}" id="inputquestiontype">
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    layui.use('layer', function(){
+        var questiontype=$("#inputquestiontype").val();
+        var selected=parent.$('#iselectquestions_'+questiontype).val();
+        $("[name='ids[]']").each(function(){if(selected.indexOf(','+$(this).val()+',') >= 0)$(this).attr('checked','checked');});
+        form.render('checkbox');
+    });
+</script>
+{/block}
+
+
+

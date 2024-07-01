@@ -1,0 +1,118 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <form action="{:url('admin/exam/questionsList')}" class="layui-form" method="get">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="question" value="{:input('question')}" autocomplete="off" placeholder="请输入试题关键字" class="layui-input"/>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="questionchapterid" id="chapterid" lay-filter="questionknowsid">
+                        <option value="">全部分类</option>
+                        {foreach name="courseCategory" item="v"}
+                        <option value="{$v.id}" {if condition="input('?questionknowsid') and (input('questionknowsid') eq $v.id)" }selected="selected"{/if}>{neq name="v.level" value="1"}|{for start="1" end="$v.level"} &#45;&#45;&#45;&#45;{/for}{/neq} {$v.category_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="layui-input-inline layui-hide" id="knowledgebox">
+                    <select name="questionknowsid" lay-verify="required" id="knowledge" >
+                        <option value="">知识点</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="questiontype">
+                        <option value="">试题类型</option>
+                        {foreach name="$type" item="v"}
+                        <option value="{$v.id}－{$v.mark}" {if condition="input('?questiontype') and (input('questiontype') eq $v.id)" }selected="selected"{/if}>{$v.type_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="questionlevel">
+                        <option value="">试题难度</option>
+                        <option value="1" {if condition="input('?questionlevel') and (input('questionlevel') eq 1)"} selected="selected"{/if}>易</option>
+                        <option value="2" {if condition="input('?questionlevel') and (input('questionlevel') eq 2)"} selected="selected"{/if}>中</option>
+                        <option value="3" {if condition="input('?questionlevel') and (input('questionlevel') eq 3)"} selected="selected"{/if}>难</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/exam/questionsSingleAdd')}" class="layui-btn ajax-iframe" data-width="900px" data-height="500px"><i class="fa fa-plus-circle"></i> 单题添加</a>
+            <a href="{:url('admin/exam/questionsMoreAdd')}" class="layui-btn ajax-iframe" data-width="900px" data-height="500px"><i class="fa fa-plus-circle"></i> 批量添加</a>
+            <a href="{:url('admin/exam/questionsCSVleAdd')}" class="layui-btn ajax-iframe" data-width="700px" data-height="400px"><i class="fa fa-plus-circle"></i> Excel批量导入</a>
+            <a href="{:url('admin/exam/questionsDel')}" class="layui-btn layui-btn-danger ajax-batch"><i class="fa fa-trash-o"></i> 批量删除</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:40px;">ID</th>
+                <th style="width:100px;">试题类型</th>
+                <th >试题内容</th>
+                <th  style="width:40px;">难度</th>
+                <th  style="width:120px;">录入人</th>
+                <th  style="width:230px;">录入时间</th>
+                <th  style="width:140px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.questiontype|get_question_type}</td>
+                <td class="layui-elip">{$v.question}</td>
+                <td>{$v.questionlevel|get_question_level}</td>
+                <td>{$v.questionuserid|getTeacherName}</td>
+                <td>{$v.questioncreatetime}</td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/exam/questionsPreview', ['id' => $v.id])}" class="layui-btn  layui-btn-warm layui-btn-xs ajax-iframe" data-width="900px" data-height="600px"> <i class="layui-icon">&#xe705;</i></a>
+                        <a href="{:url('admin/exam/questionsEdit', ['id' => $v.id])}" class="layui-btn layui-btn-xs ajax-iframe" data-width="900px" data-height="500px"> <i class="layui-icon">&#xe642;</i></a>
+                        <a href="{:url('admin/exam/questionsDel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use('form', function() {
+        form.on('select(questionknowsid)', function(data){
+            var parentId=$("#chapterid").val();
+            if(null!= parentId && ""!=parentId){
+                $.getJSON("/admin/course/ajaxGetKnowledge",{id:parentId},function(myJSON){
+                        var options="";
+                        if(myJSON.length>0){
+                            $('#knowledgebox').removeClass('layui-hide');
+                            options+="<option value=''>==知识点==</option>";
+                            for(var i=0;i<myJSON.length;i++){
+                                options+="<option value="+myJSON[i].id+">"+myJSON[i].title+"</option>";
+                            }
+                            $("#knowledge").html(options);
+                            form.render('select');
+                        }else{
+                            layer.msg('该分类下没有知识点，请先添加知识点');
+                            setTimeout(function () {
+                                parent.location.href="/admin/course/coursecategory"
+                            }, 1000);
+                        }
+                    }
+                )
+            }
+        })
+    })
+</script>
+{/block}

@@ -1,0 +1,35 @@
+{extend name="base"/}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">编辑数据</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" value="{$data.name|default=''}" autocomplete="off" placeholder="请输入板块名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块图标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="img" value="{$data.img|default=''}" autocomplete="off" placeholder="请输入板块" class="layui-input">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position {$uploadlocation}"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块描述</label>
+                <div class="layui-input-block">
+                    <textarea name="description" autocomplete="off" placeholder="请输入描述" class="layui-textarea">{$data.description|default=''}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,34 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-tab">
+    <table  lay-filter="dianming">
+        <thead>
+        <tr>
+            <th lay-data="{field:'id', width:100,sort: true}">ID</th>
+            <th lay-data="{field:'username', width:200}">学员姓名</th>
+            <th lay-data="{field:'times', width:200,sort: true}">签到次数</th>
+            <th lay-data="{field:'addtimes', width:220,sort: true}">签到时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="v" empty="$empty"}
+        <tr>
+            <td>{$v.id}</td>
+            <td>{$v.username}</td>
+            <td>第{$v.times}次签到</td>
+            <td>{$v.addtimes}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+{/block}
+{block name="js"}
+<script>
+    var table = layui.table;
+    table.init('dianming', {
+    height:340
+    ,toolbar: true
+});
+</script>
+{/block}

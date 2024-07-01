@@ -1,0 +1,125 @@
+{extend name="iframe" /}
+{block name="css"}
+<style>.w-e-text-container{height: 130px !important;}</style>
+{/block}
+{block name="body"}
+<form action="{:request()->url()}" class="layui-form mt30 mr50" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">科目</label>
+        <div class="layui-input-inline">
+            <select name="questionchapterid" lay-verify="required" id="chapterid" lay-filter="questionknowsid">
+                <option value="">全部分类</option>
+                {foreach name="$category" item="v" empty="$empty"}
+                <option value="{$v.id}" {if condition="isset($data) and $data.questionchapterid eq $v.id" }selected="selected"{/if}>{$v.cname}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="layui-input-inline " id="knowledgebox">
+            <select name="questionknowsid" lay-verify="required" id="knowledge" >
+                <option value="">==知识点==</option>
+                {foreach name="$Knowledge" item="v"}
+                <option value="$v.id" {if condition="isset($data) and $data.questionknowsid eq $v.id" }selected="selected"{/if}>{$v.title}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">题型</label>
+        <div class="layui-input-inline">
+            <select name="questiontype" id="questiontype" lay-verify="required" lay-filter="questiontype">
+                <option value="">选择题型</option>
+                {foreach name="$type" item="v"}
+                <option value="{$v.id}－{$v.mark}" {if condition="isset($data) and $data['questiontype'] eq $v.id" }selected="selected"{/if}>{$v.type_name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">题干</label>
+        <div class="layui-input-block">
+            <div id="tigan"><p>{$data.question|default=""}</p></div>
+            <textarea name="question" placeholder="请输入详情内容" id="question"  lay-verify="required" style="display: none;">{$data.question|default=""}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide" id="questionselectbox">
+        <label class="layui-form-label">选项</label>
+        <div class="layui-input-block">
+            <div id="questionselecteditor"><p>{$data.questionselect|default=""}</p></div>
+            <textarea name="questionselect" placeholder="请输入详情内容" id="questionselect"   style="display: none;">{$data.questionselect|default=""}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide" id="questionselectnumberbox">
+        <label class="layui-form-label">选项数量</label>
+        <div class="layui-input-inline">
+            <select name="questionselectnumber">
+                <option value="4" {if condition="isset($data) and $data['questionselectnumber'] eq 4" }selected="selected"{/if}>4</option>
+                <option value="1" {if condition="isset($data) and $data['questionselectnumber'] eq 1" }selected="selected"{/if}>1</option>
+                <option value="2" {if condition="isset($data) and $data['questionselectnumber'] eq 2" }selected="selected"{/if}>2</option>
+                <option value="3" {if condition="isset($data) and $data['questionselectnumber'] eq 3" }selected="selected"{/if}>3</option>
+                <option value="5" {if condition="isset($data) and $data['questionselectnumber'] eq 5" }selected="selected"{/if}>5</option>
+                <option value="6" {if condition="isset($data) and $data['questionselectnumber'] eq 6" }selected="selected"{/if}>6</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide" id="answerbox">
+        <label class="layui-form-label">参考答案</label>
+        <div class="layui-input-block layui-hide" id="answerbox_1">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq A" }checked{/if} name="questionanswerSingleSelect" value="A" title="A">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq B" }checked{/if} name="questionanswerSingleSelect" value="B" title="B">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq C" }checked{/if} name="questionanswerSingleSelect" value="C" title="C">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq D" }checked{/if} name="questionanswerSingleSelect" value="D" title="D">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq E" }checked{/if} name="questionanswerSingleSelect" value="E" title="E">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq F" }checked{/if} name="questionanswerSingleSelect" value="F" title="F">
+        </div>
+        <div class="layui-input-block layui-hide" id="answerbox_2">
+            <input type="checkbox" {if condition="isset($data) and strstr($data['questionanswer'] ,'A')" }checked="checked"{/if} name="questionanswerMultiSelect[]" value="A" title="A">
+            <input type="checkbox" {if condition="isset($data) and strstr($data['questionanswer'] ,'B')" }checked="checked"{/if} name="questionanswerMultiSelect[]" value="B" title="B">
+            <input type="checkbox" {if condition="isset($data) and strstr($data['questionanswer'] ,'C')" }checked="checked"{/if} name="questionanswerMultiSelect[]" value="C" title="C">
+            <input type="checkbox" {if condition="isset($data) and strstr($data['questionanswer'] ,'D')" }checked="checked"{/if} name="questionanswerMultiSelect[]" value="D" title="D">
+            <input type="checkbox" {if condition="isset($data) and strstr($data['questionanswer'] ,'E')" }checked="checked"{/if} name="questionanswerMultiSelect[]" value="E" title="E">
+            <input type="checkbox" {if condition="isset($data) and strstr($data['questionanswer'] ,'F')" }checked="checked"{/if} name="questionanswerMultiSelect[]" value="F" title="F">
+        </div>
+        <div class="layui-input-block layui-hide" id="answerbox_3">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq 1" } checked {/if}  name="questionanswerTrueOrfalse" value="1" title="对">
+            <input type="radio" {if condition="isset($data) and $data['questionanswer'] eq 0" } checked {/if}  name="questionanswerTrueOrfalse" value="0" title="错">
+        </div>
+        <div class="layui-input-block layui-hide" id="answerbox_4">
+            <div id="FillInBlankseditor">{$data.questionanswer|default=""}</div>
+            <textarea name="questionanswerFillInBlanks" placeholder="请输入详情内容" id="questionanswer4"  style="display: none;">{$data.questionanswer|default=""}</textarea>
+        </div>
+        <div class="layui-input-block layui-hide" id="answerbox_5">
+            <div id="ShortAnswereditor">{$data.questionanswer|default=""}</div>
+            <textarea name="questionanswerShortAnswer" placeholder="请输入详情内容" id="questionanswer5"   style="display: none;">{$data.questionanswer|default=""}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" id="questiondescribe_box">
+        <label class="layui-form-label">试题解析</label>
+        <div class="layui-input-block">
+            <div id="describeeditor"><p>{$data.questiondescribe|default=""}</p></div>
+            <textarea name="questiondescribe" placeholder="请输入详情内容" id="questiondescribe"  style="display: none;">{$data.questiondescribe|default=""}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">试题难度</label>
+        <div class="layui-input-block">
+            <select name="questionlevel">
+                <option value="1" {if condition="isset($data) and $data['questionlevel'] eq 1" }selected="selected"{/if}>易</option>
+                <option value="2" {if condition="isset($data) and $data['questionlevel'] eq 2" }selected="selected"{/if}>中</option>
+                <option value="3" {if condition="isset($data) and $data['questionlevel'] eq 3" }selected="selected"{/if}> 难</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item mt30">
+        <div class="layui-input-block">
+            <button id="other-btn" class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+            <button id="timao-btn" class="layui-btn layui-hide" lay-filter="*" lay-submit="">保存并编辑子题</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+    <input type="hidden" name="questioncreatetime" value="{$addtime}">
+</form>
+{/block}
+{block name="js"}
+<script src="__LIBS__/wangeditor/wangEditor.min.js"></script>
+<script src="__LIBS__/common/exam.js"></script>
+{/block}

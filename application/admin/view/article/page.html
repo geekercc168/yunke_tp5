@@ -1,0 +1,48 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <form action="{:url('admin/article/page')}" class="layui-form" method="get">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="title" value="{:input('title')}" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+                </div>
+                <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('admin/article/pageadd')}" class="layui-btn"><i class="fa fa-plus-circle"></i> 添加单页</a>
+        </div>
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th style="width:20px;"><input type="checkbox" lay-skin="primary" lay-filter="*"></th>
+                <th style="width:20px;">ID</th>
+                <th>标题</th>
+                <th style="width:135px;">添加时间</th>
+                <th style="width:60px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="v" empty="$empty"}
+            <tr>
+                <td><input type="checkbox" name="id" value="{$v.id}" lay-skin="primary"></td>
+                <td>{$v.id}</td>
+                <td>{$v.title}</td>
+                <td>{$v.addtime}</td>
+                <td>
+                    <div class="layui-btn-group mb0">
+                        <a href="{:url('admin/article/pageadd', ['id' => $v.id])}" class="layui-btn layui-btn-xs"> <i class="layui-icon">&#xe642;</i></a>
+                        <a href="{:url('admin/article/pagedel', ['id' => $v.id])}" class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"> <i class="layui-icon">&#xe640;</i></a>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

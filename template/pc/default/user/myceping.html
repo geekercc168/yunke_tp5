@@ -1,0 +1,46 @@
+{extend name="userbase" /}
+{block name="body"}
+<div class="fly-panel fly-panel-user" pad20="">
+    <div class="content-header mb20">
+        <ul class="header-item-container">
+            <li class="header-item active"><a href="javascript:;"> 我的测评</a></li>
+        </ul>
+    </div>
+    <div class=" mt30">
+        <div class="layui-row layui-col-space20 ">
+            {foreach name="myceping" item="vo" empty="$empty"}
+            <div class="layui-col-md4 package">
+                <div  class="item">
+                    <div  class="name">{$vo.eid|get_exam_title}</div>
+                    <div  class="clear bottom">
+                        <div>试卷总分：{$vo.examscore}分</div>
+                        <div>我的得分：{$vo.totalscores}分</div>
+                    </div>
+                    <div class="mt20">
+                        {if condition="$vo['totalscores'] egt $vo['passscore']"}
+                        <a href="Javascript:void(0);" class="lnk ">合格</a>
+                        {if condition="$vo['certificate']"}
+                        <a href="{:url('index/user/mycertificate',array('cid'=>hashids_encode($vo['cid']),'eid'=>hashids_encode($vo['eid'])))}" data-width="760px" data-height="580px" class="lnk ajax-iframe">证书</a>
+                        {/if}
+                        <a href="{:url('index/exam/dopackage',array('id'=>hashids_encode($vo['eid'])))}" class="lnk">详情</a>
+                        {else /}
+                        <a href="Javascript:void(0);" class="lnk-red">不合格</a>
+                        {if condition="$vo['cid']"}
+                        <a href="{:url('index/course/learn',array('type'=>hashids_encode($vo['ctype']),'id'=>hashids_encode($vo['sid'])))}" cid="{$vo['cid']}" sid="{$vo['sid']}" type="{$vo['ctype']}" eid="{$vo['eid']}" uid="{$vo['uid']}" class="lnk redoexam">重考</a>
+                        {/if}
+                        {if condition="!$vo['cid']"}
+                        <a href="{:url('index/exam/dopackage',array('id'=>hashids_encode($vo['eid'])))}" class="lnk ">详情</a>
+                        {/if}
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+        <div class="page">{$myceping->render()}</div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

@@ -1,0 +1,34 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">教师申请条例</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <div class="">
+                    <textarea name="value" placeholder="请输入详情内容" id="editor" style="height:400px;">{$ordinance.value|default=''}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="">
+                    <input type="hidden" name="id" value="{$ordinance.id}">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__LIBS__/ueditor/ueditor.config.js"></script>
+<script src="__LIBS__/ueditor/ueditor.all.min.js"></script>
+<script src="__LIBS__/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    UE.getEditor('editor',{
+        // initialFrameWidth :800,// 设置编辑器宽度
+        initialFrameHeight:400,// 设置编辑器高度
+        scaleEnabled:true
+    });
+</script>
+{/block}

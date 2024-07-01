@@ -1,0 +1,35 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-layout" style="display:flex;justify-content: center; align-items:center;padding-top: 40px;padding-right: 40px">
+    <form action="{:request()->url()}" class="layui-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" name="username" lay-verify="required" placeholder="请输入您的真实姓名" autocomplete="off" class="layui-input">
+                <input type="hidden" name="cid" value="{$cid}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" name="tel" lay-verify="required" placeholder="请输入您的联系方式" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">住址：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" name="address" lay-verify="required" placeholder="请输入您的住址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-fluid " lay-filter="i" lay-submit="">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+
+{/block}

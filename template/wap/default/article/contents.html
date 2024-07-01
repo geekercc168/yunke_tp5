@@ -1,0 +1,44 @@
+{extend name="base" /}
+{block name="body"}
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1 style="color:#3f3f3f">行业资讯</h1>
+    <div id="hui-header-menu"  onclick="hui.showSlideMenu();"></div>
+</header>
+<div class="hui-wrap article mb52">
+    <div class="line"></div>
+    <div class="hui-title">
+        {$contents.title}
+    </div>
+    <p class="ml10">{$contents.create_time}</p>
+    <div class="line"></div>
+    <div class="pd10 article-content"><p>{$contents.content}</p></div>
+</div>
+{/block}
+{block name="foot"}
+<div id="hui-footer">
+    <a href="/" id="nav-home">
+        <div class="iconfont icon-shouye"></div>
+        <div class="hui-footer-text">首页</div>
+    </a>
+    <a href="{:url('index/course/videoindex')}" id="nav-video">
+        <div class="iconfont icon-video"></div>
+        <div class="hui-footer-text">录播</div>
+    </a>
+    <a href="{:url('index/course/liveindex')}" id="nav-live">
+        <div class="iconfont icon-zhiboguanli"></div>
+        <div class="hui-footer-text">直播</div>
+    </a>
+    <a href="{:url('index/classroom/index')}" id="nav-classroom">
+        <div class="hui-footer-icons hui-icons-write"></div>
+        <div class="hui-footer-text">班级</div>
+    </a>
+    <a href="{:url('index/user/index')}" id="nav-my">
+        <div class="iconfont icon-wode"></div>
+        <div class="hui-footer-text">我的</div>
+    </a>
+</div>
+{/block}
+{block name="js"}
+
+{/block}
